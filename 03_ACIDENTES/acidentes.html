@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Controle de Acidentes - AGM</title>
+
+    <link rel="icon" type="image/png" href="/01_HOME/img/Logo_AGM.png" />
+
+    <link rel="stylesheet" href="./css/acidentes.css" />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+
+  <body>
+    <div class="container">
+      <header class="top-bar">
+        <h1>Controle de Acidentes</h1>
+
+        <button id="btnNovoRegistro" class="btn-primary">
+          + Novo Registro
+        </button>
+      </header>
+
+      <main class="main-content">
+        <section class="arquivos">
+          <header class="section-header">
+            <h2>Histórico de Registros</h2>
+          </header>
+
+          <div id="listaAnos">
+            <div class="ano" data-ano="2026">
+              <div class="ano-header">
+                <span>2026</span>
+                <i class="icon-arrow"></i>
+              </div>
+
+              <div class="meses">
+                <div class="mes">
+                  <div class="mes-header">Fevereiro</div>
+
+                  <div class="cats">
+                    <div class="cat-item">12/02/2026 - João Silva</div>
+                    <div class="cat-item">25/02/2026 - Carlos Lima</div>
+                  </div>
+                </div>
+
+                <div class="mes">
+                  <div class="mes-header">Janeiro</div>
+
+                  <div class="cats">
+                    <div class="cat-item">05/01/2026 - Pedro Santos</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="ano collapsed" data-ano="2025">
+              <div class="ano-header">2025</div>
+              <div class="meses"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="dashboard">
+          <header class="dashboard-header">
+            <h2>Indicadores</h2>
+          </header>
+
+          <nav class="filtros-container">
+            <div class="filtro-item">
+              <button id="btnGrafico" class="btn-filter">
+                Tipo de Gráfico
+              </button>
+              <div class="painel" id="painelGrafico"></div>
+            </div>
+
+            <div class="filtro-item">
+              <button id="btnTipo" class="btn-filter">Tipo</button>
+              <div class="painel" id="painelTipo"></div>
+            </div>
+
+            <div class="filtro-item">
+              <button id="btnMes" class="btn-filter">Mês</button>
+              <div class="painel" id="painelMes"></div>
+            </div>
+          </nav>
+
+          <!-- GRÁFICO DE MESES -->
+
+          <div class="grafico-wrapper">
+            <h3 class="grafico-titulo">
+              Acidentes em <span id="anoAtual"></span>
+            </h3>
+
+            <canvas id="graficoAcidentes"></canvas>
+          </div>
+
+          <!-- GRÁFICO DE ANOS -->
+
+          <div class="grafico-wrapper">
+            <h3 class="grafico-titulo">Acidentes nos últimos anos</h3>
+
+            <canvas id="graficoAnos"></canvas>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <!-- MODAL REGISTRO DE ACIDENTE -->
+
+    <div id="modalCAT" class="modal-overlay">
+      <div class="modal-content">
+        <h2 id="statusRegistro" class="cat-status aberta">
+          REGISTRO DE ACIDENTE
+        </h2>
+
+        <form id="formCAT">
+          <div class="form-grid">
+            <input
+              type="text"
+              id="nomeAcidentado"
+              placeholder="Nome do Acidentado"
+              required
+            />
+
+            <input type="date" id="dataAcidente" required />
+
+            <select id="tipoAcidente">
+              <option>Dano Material</option>
+              <option>Sem Afastamento</option>
+              <option>Com Afastamento</option>
+            </select>
+
+            <input type="text" id="localAcidente" placeholder="Local" />
+
+            <textarea id="descricaoAcidente" placeholder="Descrição"></textarea>
+          </div>
+
+          <div class="modal-buttons">
+            <button type="button" id="cancelarCAT" class="btn-secondary">
+              Cancelar
+            </button>
+
+            <button type="button" id="baixarCAT" class="btn-secondary">
+              Baixar
+            </button>
+
+            <button type="button" id="registrarCAT" class="btn-primary">
+              Registrar
+            </button>
+          </div>
+
+          <div id="loadingCAT" class="loading">
+            <div class="spinner"></div>
+            <p>Registrando acidente...</p>
+          </div>
+
+          <div id="sucessoCAT" class="sucesso">
+            <p>Registro salvo com sucesso ✅</p>
+
+            <button type="button" id="okCAT" class="btn-primary">OK</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script type="module" src="./js/acidentes.js"></script>
+  </body>
+</html>

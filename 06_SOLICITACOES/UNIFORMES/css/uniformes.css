@@ -1,0 +1,326 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap");
+
+/* ================= RESET ================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Inter", sans-serif;
+}
+
+body {
+  background: linear-gradient(135deg, #1c1f2e, #2b3050);
+  padding: 30px;
+  color: #eaeaf0;
+}
+
+.container {
+  max-width: 1200px;
+  margin: auto;
+}
+
+/* ================= HEADER ================= */
+.top-bar {
+  background: linear-gradient(90deg, #f7c948, #fadb5f);
+  padding: 18px 22px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.top-bar h2 {
+  color: #1c1f2e;
+  font-weight: 600;
+}
+
+/* AGRUPAR BOTÕES */
+.top-bar div {
+  display: flex;
+  gap: 10px;
+}
+
+/* BOTÕES */
+.btn-topo {
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: none;
+  font-weight: 500;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+/* estilos individuais */
+.btn-add {
+  background: #fff;
+  color: #333;
+}
+
+.btn-add:hover {
+  background: #f1f1f1;
+}
+
+.btn-pdf {
+  background: #5b7cfa;
+  color: #fff;
+}
+
+.btn-status {
+  background: rgb(50, 238, 25);
+  color: #fff;
+}
+
+.btn-pdf:hover {
+  background: #4a67eb;
+}
+
+.btn-uniformes {
+  background-color: rgb(51, 226, 51);
+}
+
+.btn-clear {
+  background: #ff5c5c;
+  color: #fff;
+}
+
+.btn-clear:hover {
+  background: #ff3b3b;
+}
+
+/* ================= TABELA ================= */
+.tabela {
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #262b45;
+}
+
+/* HEADER */
+.tabela thead {
+  background: #f7c948;
+}
+
+.tabela th {
+  padding: 12px;
+  color: #1c1f2e;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* LINHAS */
+.tabela td {
+  padding: 12px;
+  text-align: center;
+  font-size: 13px;
+}
+
+/* ZEBRA */
+.tabela tr:nth-child(even) {
+  background: #2e3458;
+}
+
+/* HOVER */
+.tabela tbody tr:hover {
+  background: #3a4070;
+}
+
+/* ================= BOTÕES TABELA ================= */
+.tabela button {
+  border: none;
+  border-radius: 6px;
+  padding: 6px 8px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+/* EDIT */
+.btn-edit {
+  background: #ffd43b;
+  color: #333;
+}
+
+.btn-edit:hover {
+  background: #ffcc00;
+}
+
+/* DELETE */
+.btn-delete {
+  background: #ff5c5c;
+  color: white;
+}
+
+.btn-delete:hover {
+  background: #ff3b3b;
+}
+
+/* ================= MODAL ================= */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  justify-content: center;
+  align-items: center;
+}
+
+.modal.show {
+  display: flex;
+}
+
+/* CARD MODAL */
+.modal-content {
+  background: #262b45;
+  padding: 20px;
+  border-radius: 12px;
+  width: 340px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  animation: aparecer 0.2s ease;
+}
+
+@keyframes aparecer {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* INPUTS */
+.modal-content input,
+.modal-content select {
+  padding: 10px;
+  border-radius: 6px;
+  border: none;
+  background: #1c1f2e;
+  color: #fff;
+}
+
+.modal-content input:focus,
+.modal-content select:focus {
+  outline: 2px solid #f7c948;
+}
+
+/* ================= BOTÕES MODAL ================= */
+.modal-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.modal-buttons button {
+  flex: 1;
+  padding: 10px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+/* CANCELAR */
+.btn-cancel {
+  background: #3a3f66;
+  color: white;
+}
+
+.btn-cancel:hover {
+  background: #4a4f7a;
+}
+
+/* SALVAR */
+.btn-save {
+  background: #5b7cfa;
+  color: white;
+}
+
+.btn-save:hover {
+  background: #4a67eb;
+}
+
+/* CONFIRMAR LIMPAR */
+.btn-danger {
+  background: #ff5c5c;
+  color: white;
+}
+
+.btn-danger:hover {
+  background: #ff3b3b;
+}
+
+/* ================= STATUS ================= */
+#tela-status {
+  margin-top: 20px;
+  background: #262b45;
+  padding: 20px;
+  border-radius: 12px;
+}
+
+#tela-status h2 {
+  margin: 15px 0;
+  font-size: 22px;
+  color: #fff;
+}
+
+.status-card {
+  background: #2e3458;
+  border: 1px solid #3a4070;
+  border-radius: 10px;
+  padding: 15px;
+  margin-bottom: 15px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.status-info {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.status-info p {
+  margin: 0;
+  font-size: 14px;
+}
+
+.status-acoes {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.status-acoes select {
+  padding: 8px;
+  border-radius: 6px;
+  border: none;
+  background: #1c1f2e;
+  color: white;
+}
+
+.status-acoes button {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  background: #5b7cfa;
+  color: white;
+  cursor: pointer;
+}
+
+.status-acoes button:hover {
+  background: #4a67eb;
+}
+
+.card {
+  margin-bottom: 20px;
+}

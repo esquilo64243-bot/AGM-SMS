@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Solicitações</title>
+
+    <link rel="stylesheet" href="./css/solicitacoes.css" />
+    <link rel="icon" type="image/png" href="img/Logo_AGM.png" />
+  </head>
+
+  <body>
+    <div class="home-container">
+      <div class="header-home">
+        <h1>Solicitações</h1>
+        <p class="sub">Escolha o tipo de solicitação</p>
+      </div>
+
+      <div class="cards">
+        <div class="card-home epi" onclick="irEPI()">
+          <div class="emoji">⛑️</div>
+          <p>EPI</p>
+        </div>
+
+        <div class="card-home uniforme" onclick="irUniforme()">
+          <div class="emoji">🦺</div>
+          <p>Uniforme</p>
+        </div>
+      </div>
+
+      <div class="pdf-area">
+        <button onclick="gerarPDFGeral()" class="btn-pdf-geral">
+          📄 Baixar Solicitações (EPI + Uniforme)
+        </button>
+        <p class="sub">Serra Morena / AGM</p>
+      </div>
+    </div>
+
+    <!-- LIBS PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+
+    <!-- JS -->
+    <script>
+      function gerarPDFGeral() {
+        const pedidosUniforme =
+          JSON.parse(localStorage.getItem("pedidosUniforme")) || [];
+
+        const pedidosEPI = JSON.parse(localStorage.getItem("pedidosEPI")) || [];
+
+        const uniformesFiltrados = pedidosUniforme.filter(
+          (p) => p.status === "SOLICITADO",
+        );
+
+        if (uniformesFiltrados.length === 0 && pedidosEPI.length === 0) {
+          alert("Nenhum pedido encontrado!");
+          return;
+        }
+
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+
+        const hoje = new Date().toLocaleDateString("pt-BR");
+
+        // ===== CABEÇALHO =====
+        doc.setFillColor(35, 35, 35);
+        doc.rect(0, 0, 210, 28, "F");
+
+        doc.setTextColor(255, 255, 255);
+        doc.setFontSize(16);
+        doc.text("SOLICITAÇÕES GERAIS", 14, 12);
+
+        doc.setFontSize(10);
+        doc.text("Serra Morena / AGM", 14, 20);
+        doc.text(`Gerado em: ${hoje}`, 150, 20);
+
+        let y = 38;
+
+        // ===== RESUMO =====
+        doc.setTextColor(0, 0, 0);
+        doc.setFontSize(11);
+        doc.text(
+          `Resumo: ${uniformesFiltrados.length} uniformes | ${pedidosEPI.length} EPIs`,
+          14,
+          y,
+        );
+
+        y += 10;
+
+        // ===== UNIFORMES =====
+        if (uniformesFiltrados.length > 0) {
+          doc.setFontSize(13);
+          doc.text("UNIFORMES", 14, y);
+
+          doc.autoTable({
+            startY: y + 4,
+            head: [
+              [
+                "Data",
+                "Nome",
+                "Cargo",
+                "Empresa",
+                "Item",
+                "Tam",
+                "Qtd",
+                "Status",
+              ],
+            ],
+            body: uniformesFiltrados.map((p) => [
+              new Date(p.data).toLocaleDateString("pt-BR"),
+              p.nome,
+              p.cargo,
+              p.empresa,
+              p.item,
+              p.tamanho,
+              p.unidade,
+              p.status,
+            ]),
+            theme: "grid",
+            headStyles: {
+              fillColor: [52, 152, 219],
+              textColor: 255,
+              fontStyle: "bold",
+            },
+            styles: {
+              fontSize: 9,
+              halign: "center",
+              valign: "middle",
+            },
+          });
+
+          y = doc.lastAutoTable.finalY + 12;
+        }
+
+        // ===== EPI =====
+        if (pedidosEPI.length > 0) {
+          doc.setFontSize(13);
+          doc.text("EPI", 14, y);
+
+          doc.autoTable({
+            startY: y + 4,
+            head: [["Item", "Quantidade", "Observação"]],
+            body: pedidosEPI.map((p) => [p.item, p.qtd, p.obs || "-"]),
+            theme: "grid",
+            headStyles: {
+              fillColor: [241, 196, 15],
+              textColor: 0,
+              fontStyle: "bold",
+            },
+            styles: {
+              fontSize: 9,
+              halign: "center",
+            },
+          });
+        }
+
+        // ===== RODAPÉ =====
+        doc.setFontSize(9);
+        doc.setTextColor(120);
+        doc.text("Sistema AGM • Controle de Solicitações", 14, 290);
+
+        doc.save("Solicitacoes_AGM.pdf");
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Controle de Treinamentos</title>
+
+    <link rel="stylesheet" href="./css/treinamentos.css" />
+  </head>
+
+  <body>
+    <div class="container">
+      <header class="top-bar">
+        <h1>Controle de Treinamentos</h1>
+        <button id="btnNovoTreinamento" class="btn-topo">
+          + Novo Treinamento
+        </button>
+      </header>
+
+      <!-- INDICADORES -->
+      <div class="indicadores">
+        <div class="card filtro-card ativo" data-filter="todos">
+          <h3 id="totalFunc">0</h3>
+          <p>Funcionários</p>
+        </div>
+
+        <div class="card filtro-card verde" data-filter="em-dia">
+          <h3 id="totalEmDia">0</h3>
+          <p>Em Dia</p>
+        </div>
+
+        <div class="card filtro-card amarelo" data-filter="a-vencer">
+          <h3 id="totalAVencer">0</h3>
+          <p>A Vencer</p>
+        </div>
+
+        <div class="card filtro-card vermelho" data-filter="vencido">
+          <h3 id="totalVencido">0</h3>
+          <p>Vencidos</p>
+        </div>
+      </div>
+
+      <!-- FILTROS -->
+      <section class="filtros">
+        <input type="text" id="busca" placeholder="Buscar funcionário..." />
+
+        <select id="filtroFuncao">
+          <option value="">Todas Funções</option>
+        </select>
+
+        <select id="filtroEmpresa">
+          <option value="">Todas Empresas</option>
+        </select>
+      </section>
+
+      <!-- LISTA -->
+      <section>
+        <div id="listaFuncionarios"></div>
+      </section>
+    </div>
+
+    <!-- MODAL TREINAMENTO -->
+<div id="modalTreino" class="modal">
+  <div class="modal-content modal-grande">
+    <h2>Adicionar Treinamento</h2>
+
+    <select id="selectTreinamento">
+      <option value="">Selecione um treinamento</option>
+    </select>
+
+    <input type="date" id="dataRealizacao" />
+
+    <div class="modal-buttons">
+      <button id="cancelarTreino">Cancelar</button>
+      <button id="salvarTreino">Salvar</button>
+    </div>
+  </div>
+</div>
+      </div>
+    </div>
+
+    <div id="modalCadastroTreino" class="modal">
+  <div class="modal-content modal-grande">
+    <h2>Cadastrar Treinamento</h2>
+
+    <input type="text" id="nomeNovoTreino" placeholder="Nome do treinamento" />
+    <input type="number" id="validadeNovoTreino" placeholder="Validade (meses)" />
+
+    <div class="modal-buttons">
+      <button id="cancelarCadastroTreino">Cancelar</button>
+      <button id="salvarCadastroTreino">Salvar</button>
+    </div>
+  </div>
+</div>
+
+    <!-- FIREBASE -->
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+      import {
+        getFirestore,
+        collection,
+        getDocs,
+        updateDoc,
+        doc,
+      } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyCtqfwA8RUouJx7V7Jm-LMatxdcvqpLyFM",
+        authDomain: "sms-agm.firebaseapp.com",
+        projectId: "sms-agm",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+
+      window.db = db;
+      window.getDocs = getDocs;
+      window.collection = collection;
+      window.updateDoc = updateDoc;
+      window.doc = doc;
+    </script>
+
+    <script type="module" src="./js/treinamentos.js"></script>
+  </body>
+</html>

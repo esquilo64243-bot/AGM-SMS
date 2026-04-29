@@ -1,0 +1,499 @@
+/* RESET */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Inter", sans-serif;
+}
+
+/* BODY */
+body {
+  background: linear-gradient(135deg, #1e2235, #2c3050);
+  min-height: 100vh;
+  color: white;
+}
+
+/* CONTAINER */
+.container {
+  max-width: 1100px;
+  margin: auto;
+  padding: 40px 20px;
+}
+
+/* TITULO */
+h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+/* =========================
+   FILTROS / BUSCA
+========================= */
+.filtros {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+}
+
+/* INPUT BUSCA */
+#buscaNome {
+  padding: 12px 18px;
+  border-radius: 25px;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  width: 260px;
+  background: #1e2235;
+  color: white;
+  box-shadow: inset 0 0 0 2px transparent;
+  transition: 0.3s;
+}
+
+#buscaNome::placeholder {
+  color: #aaa;
+}
+
+#buscaNome:focus {
+  box-shadow: inset 0 0 0 2px #4e73df;
+}
+
+/* SELECTS */
+.filtros select {
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+  background: #2f375a;
+  color: white;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.filtros select:hover {
+  background: #394374;
+}
+
+/* BOTÃO FILTRAR */
+.filtros button {
+  padding: 10px 16px;
+  border-radius: 10px;
+  border: none;
+  background: linear-gradient(135deg, #4e73df, #375ad3);
+  color: white;
+  cursor: pointer;
+  font-weight: 500;
+  transition: 0.3s;
+}
+
+.filtros button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+/* =========================
+   LISTA
+========================= */
+#lista {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* CARD */
+.card {
+  background: #2f375a;
+  border-radius: 14px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+  overflow: hidden;
+  transition: 0.3s;
+  cursor: pointer;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  background: #394374;
+}
+
+/* HEADER */
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 20px;
+}
+
+/* LEFT */
+.card-header .left h4 {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.card-header .left p {
+  font-size: 13px;
+  opacity: 0.7;
+}
+
+/* RIGHT */
+.card-header .right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* DATA */
+.data {
+  font-size: 12px;
+  opacity: 0.6;
+}
+
+/* STATUS */
+.status {
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+/* CORES STATUS */
+.status.ativo {
+  background: #1cc88a;
+  color: #0b3d2e;
+}
+
+.status.afastado {
+  background: #f6c23e;
+  color: #3d2c00;
+}
+
+.status.desligado {
+  background: #e74a3b;
+  color: #3a0d0d;
+}
+
+/* BOTÕES */
+.btn-editar,
+.btn-excluir {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 15px;
+  transition: 0.2s;
+}
+
+.btn-editar:hover {
+  color: #4e73df;
+}
+
+.btn-excluir:hover {
+  color: #e74a3b;
+}
+
+/* =========================
+   BODY (DETALHES)
+========================= */
+.card-body {
+  display: none;
+  padding: 15px 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  animation: fadeUp 0.3s ease;
+}
+
+.card-body p {
+  font-size: 14px;
+  margin-bottom: 6px;
+}
+
+/* HISTÓRICO */
+.card-body ul {
+  margin-top: 5px;
+  margin-bottom: 10px;
+  padding-left: 18px;
+}
+
+.card-body li {
+  font-size: 13px;
+  opacity: 0.8;
+}
+
+/* =========================
+   BOTÃO FLUTUANTE (FAB)
+========================= */
+.fab {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+
+  background: linear-gradient(135deg, #4e73df, #375ad3);
+  color: white;
+  font-size: 32px;
+
+  border: none;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+
+  transition: 0.3s;
+  z-index: 999;
+}
+
+.fab:hover {
+  transform: scale(1.1) rotate(10deg);
+}
+
+.fab:active {
+  transform: scale(0.95);
+}
+
+/* =========================
+   MODAL
+========================= */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
+
+/* CONTEÚDO */
+.modal-content {
+  background: #2f375a;
+  padding: 25px;
+  border-radius: 15px;
+  width: 100%;
+  max-width: 420px;
+  animation: fadeUp 0.3s ease;
+
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modal-content h3 {
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+/* INPUTS */
+.modal-content input,
+.modal-content select,
+.modal-content textarea {
+  width: 100%;
+  margin-bottom: 12px;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  background: #1e2235;
+  color: white;
+  transition: 0.2s;
+}
+
+.modal-content input:focus,
+.modal-content select:focus,
+.modal-content textarea:focus {
+  outline: 2px solid #4e73df;
+}
+
+/* TEXTAREA */
+.modal-content textarea {
+  min-height: 70px;
+  resize: none;
+}
+
+/* BOTÕES MODAL */
+.modal-content button {
+  width: 100%;
+  padding: 10px;
+  margin-top: 8px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.modal-content button:first-of-type {
+  background: linear-gradient(135deg, #4e73df, #375ad3);
+  color: white;
+}
+
+.modal-content button:last-of-type {
+  background: #e74a3b;
+  color: white;
+}
+
+.modal-content button:hover {
+  transform: translateY(-2px);
+}
+
+/* ANIMAÇÃO */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =========================
+   RESPONSIVO
+========================= */
+@media (max-width: 600px) {
+  .card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .card-header .right {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .filtros {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  #buscaNome {
+    width: 100%;
+  }
+
+  .modal-content {
+    width: 90%;
+  }
+}
+
+.acoes-selecionados {
+  display: none;
+  margin-top: 15px;
+  margin-bottom: 10px;
+  padding: 15px;
+  background: #2f375a;
+  border-radius: 12px;
+  display: none;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.acoes-selecionados button {
+  padding: 10px 15px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  background: #4e73df;
+  color: white;
+  transition: 0.2s;
+}
+
+.acoes-selecionados button:hover {
+  background: #375ad3;
+}
+
+/* =========================
+   CHECKBOX MODERNO COM CHECK ANIMADO
+========================= */
+input[type="checkbox"] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  border: 2px solid #4e73df;
+  border-radius: 6px;
+  background: #1e2235;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.25s ease;
+}
+
+input[type="checkbox"]:hover {
+  border-color: #375ad3;
+  box-shadow: 0 0 8px rgba(55, 90, 211, 0.4);
+}
+
+input[type="checkbox"]:checked {
+  background: #4e73df;
+  border-color: #375ad3;
+}
+
+input[type="checkbox"]:checked::after {
+  content: '';
+  position: absolute;
+  left: 7px;
+  top: 3px;
+  width: 6px;
+  height: 12px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+  animation: check 0.2s ease forwards;
+}
+
+@keyframes check {
+  0% {
+    width: 0;
+    height: 0;
+    opacity: 0;
+  }
+  50% {
+    width: 6px;
+    height: 0;
+    opacity: 1;
+  }
+  100% {
+    width: 6px;
+    height: 12px;
+    opacity: 1;
+  }
+}
+
+/* =========================
+   SCROLLBAR MODAL
+========================= */
+.modal-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.modal-content::-webkit-scrollbar-track {
+  background: #1e2235;
+  border-radius: 10px;
+}
+
+.modal-content::-webkit-scrollbar-thumb {
+  background: #4e73df;
+  border-radius: 10px;
+  transition: 0.3s;
+}
+
+.modal-content::-webkit-scrollbar-thumb:hover {
+  background: #375ad3;
+}
+
+/* Para Firefox */
+.modal-content {
+  scrollbar-width: thin;
+  scrollbar-color: #4e73df #1e2235;
+}
+
+.card.selecionado {
+  border: 2px solid #4e73df;
+  background: #394374;
+}

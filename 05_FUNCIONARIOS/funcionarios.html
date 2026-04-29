@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Funcionarios</title>
+    <link rel="stylesheet" href="./css/funcionarios.css" />
+  </head>
+  <body>
+    <main class="container">
+      <header class="topo">
+        <h2>Funcionários</h2>
+      </header>
+
+      <!-- FILTROS -->
+      <div class="filtros">
+        <div class="busca-wrapper">
+          <input
+            type="text"
+            id="buscaNome"
+            placeholder="Buscar funcionário..."
+            oninput="buscar()"
+          />
+        </div>
+
+        <select id="filtroCargo"></select>
+        <select id="filtroEmpresa"></select>
+
+        <button class="btn-filtrar" onclick="filtrar()">Filtrar</button>
+      </div>
+
+      <div
+        id="acoesSelecionados"
+        class="acoes-selecionados"
+        style="display: none"
+      >
+        <span id="contadorSelecionados">0 selecionados</span>
+        <button onclick="copiarNomes()">📋 Copiar Nomes</button>
+        <button onclick="copiarTudo()">📄 Copiar Tudo</button>
+        <button onclick="gerarPDF()">📥 Baixar Nota</button>
+        <button onclick="selecionarTodos()">Selecionar Todos</button>
+        <button onclick="limparSelecao()">❌ Limpar</button>
+      </div>
+
+      <!-- LISTA -->
+      <div id="lista"></div>
+      <!-- MODAL -->
+      <div id="modal" class="modal">
+        <div class="modal-content">
+          <h3>Novo Funcionário</h3>
+
+          <input type="text" id="nome" placeholder="Nome" />
+
+          <label>Data de Entrada</label>
+          <input type="date" id="dataEntrada" />
+
+          <select id="empresa"></select>
+          <select id="setor"></select>
+          <select id="cargo"></select>
+
+          <input type="email" id="email" placeholder="Email" />
+
+          <input type="text" id="telefone" placeholder="Telefone" />
+
+          <select id="sexo">
+            <option value="">Sexo</option>
+            <option value="Masculino">Masculino</option>
+            <option value="Feminino">Feminino</option>
+          </select>
+
+          <textarea id="notas" placeholder="Observações"></textarea>
+
+          <hr />
+
+          <h4>Promoção</h4>
+
+          <select id="novoCargo" placeholder="Escolher Novo Cargo"></select>
+          <input type="date" id="dataPromocao" />
+
+          <select id="status">
+            <option value="Ativo">Ativo</option>
+            <option value="Afastado">Afastado</option>
+            <option value="Desligado">Desligado</option>
+          </select>
+
+          <button onclick="salvar()">Salvar</button>
+          <button onclick="fecharModal()">Cancelar</button>
+        </div>
+      </div>
+    </main>
+    <button class="fab" onclick="abrirModal()">+</button>
+    <script type="module" src="./js/funcionarios.js"></script>
+  </body>
+</html>

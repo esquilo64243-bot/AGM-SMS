@@ -1,0 +1,190 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Inter", sans-serif;
+}
+
+body {
+  background: linear-gradient(135deg, #1e2235, #2c3050);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}
+
+/* CONTAINER */
+.home-container {
+  width: 100%;
+  max-width: 1100px;
+  text-align: center;
+  padding: 40px 20px;
+}
+
+/* HEADER */
+.header-home {
+  margin-bottom: 60px;
+  animation: fadeUp 0.8s ease;
+}
+
+.logo {
+  width: 170px;
+  margin-bottom: 20px;
+}
+
+.header-home h1 {
+  font-size: 30px;
+  font-weight: 700;
+  background: linear-gradient(90deg, #4e73df, #1cc88a);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.sub {
+  font-size: 14px;
+  opacity: 0.7;
+  margin-top: 8px;
+}
+
+/* GRID */
+.cards {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+/* CARD BASE */
+.card-home {
+  width: 230px;
+  height: 210px;
+  background: #2f375a;
+  border-radius: 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: 0.3s ease;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  border-top: 4px solid transparent;
+  animation: fadeUp 0.6s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.card-home:active {
+  transform: scale(0.95);
+}
+
+.card-home:hover {
+  transform: translateY(-10px) scale(1.03);
+  background: #394374;
+}
+
+.card-home::before {
+  content: "";
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255,255,255,0.15), transparent 60%);
+  top: -50%;
+  left: -50%;
+  opacity: 0;
+  transition: 0.4s;
+}
+
+.card-home:hover::before {
+  opacity: 1;
+}
+
+/* CORES INDIVIDUAIS */
+.ext {
+  border-top-color: #e74a3b;
+}
+.acid {
+  border-top-color: #f0f0f0;
+}
+.trein {
+  border-top-color: #4e73df;
+}
+.func {
+  border-top-color: #36b9cc;
+}
+
+.solic {
+  border-top-color: #f6c23e;
+}
+
+.emoji {
+  font-size: 55px;
+  margin-bottom: 20px;
+}
+
+.card-home p {
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.footer-home {
+  position: fixed;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 10px;
+  opacity: 0.25;
+  letter-spacing: 1px;
+  pointer-events: none;
+  transition: 0.3s ease;
+}
+
+.footer-home:hover {
+  opacity: 0.6;
+}
+
+.fab {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 65px;
+  height: 65px;
+  border-radius: 50%;
+  background: #4e73df;
+  color: white;
+  font-size: 32px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+  transition: 0.3s;
+}
+
+.fab:hover {
+  transform: scale(1.1);
+  background: #375ad3;
+}
+
+/* ANIMAÇÃO */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* RESPONSIVO */
+@media (max-width: 768px) {
+  .cards {
+    gap: 25px;
+  }
+
+  .card-home {
+    width: 100%;
+    max-width: 320px;
+  }
+}

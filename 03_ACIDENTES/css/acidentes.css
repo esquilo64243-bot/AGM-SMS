@@ -1,0 +1,484 @@
+/* ============================= */
+/* 🔹 GLOBAL & RESET */
+/* ============================= */
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:"Inter",sans-serif;
+}
+
+body{
+background:linear-gradient(135deg,#1e2235,#2c3050);
+padding:30px;
+color:#fff;
+min-height:100vh;
+}
+
+.container{
+max-width:1400px;
+margin:auto;
+}
+
+
+/* ============================= */
+/* 🔹 HEADER */
+/* ============================= */
+
+.top-bar{
+background:linear-gradient(90deg,#4e73df,#6ea8fe);
+padding:22px 30px;
+border-radius:14px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:25px;
+box-shadow:0 4px 15px rgba(0,0,0,0.2);
+}
+
+.top-bar h1{
+font-size:22px;
+font-weight:600;
+}
+
+.btn-primary{
+background:#ffffff;
+color:#4e73df;
+border:none;
+padding:10px 20px;
+border-radius:8px;
+font-weight:700;
+cursor:pointer;
+transition:all .3s ease;
+}
+
+.btn-primary:hover{
+transform:translateY(-2px);
+box-shadow:0 5px 15px rgba(255,255,255,.2);
+}
+
+
+/* ============================= */
+/* 🔹 SEÇÃO ARQUIVOS */
+/* ============================= */
+
+.arquivos{
+margin-bottom:40px;
+}
+
+.ano{
+margin-bottom:12px;
+}
+
+.ano-header{
+background:#2f375a;
+padding:14px 20px;
+border-radius:10px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+cursor:pointer;
+transition:background .3s;
+border-left:4px solid #4e73df;
+}
+
+.ano-header:hover{
+background:#3a446e;
+}
+
+.meses{
+margin-top:10px;
+padding-left:10px;
+max-height:0;
+overflow:hidden;
+opacity:0;
+transform:translateY(-10px);
+transition:max-height .4s ease,opacity .3s ease,transform .3s ease;
+}
+
+.ano.open>.meses{
+max-height:500px;
+opacity:1;
+transform:translateY(0);
+}
+
+.mes-header{
+background:#3e4872;
+padding:10px 15px;
+border-radius:8px;
+margin-bottom:6px;
+cursor:pointer;
+font-weight:500;
+}
+
+.cats{
+max-height:0;
+overflow:hidden;
+opacity:0;
+transform:translateY(-8px);
+transition:max-height .3s ease,opacity .25s ease,transform .25s ease;
+}
+
+.mes.open>.cats{
+max-height:300px;
+opacity:1;
+transform:translateY(0);
+}
+
+.cat-item{
+background:#2a3150;
+padding:10px;
+border-radius:6px;
+margin-bottom:5px;
+font-size:14px;
+cursor:pointer;
+transition:.2s;
+border:1px solid transparent;
+}
+
+.cat-item:hover{
+background:#394374;
+border-color:#6ea8fe;
+}
+
+
+/* ============================= */
+/* 🔹 DASHBOARD */
+/* ============================= */
+
+.dashboard{
+background:#202744;
+padding:30px;
+border-radius:14px;
+box-shadow:0 10px 30px rgba(0,0,0,.3);
+}
+
+.filtros-container{
+display:flex;
+gap:15px;
+flex-wrap:wrap;
+margin-bottom:30px;
+}
+
+.filtro-item{
+position:relative;
+}
+
+.btn-filter{
+background:#394374;
+color:#fff;
+padding:10px 16px;
+border-radius:8px;
+border:1px solid #4e567d;
+cursor:pointer;
+font-size:14px;
+transition:.2s;
+}
+
+.btn-filter:hover{
+background:#46528e;
+}
+
+
+/* ============================= */
+/* 🔹 DROPDOWN FILTROS */
+/* ============================= */
+
+.painel{
+display:none;
+position:absolute;
+top:110%;
+left:0;
+background:#2a3150;
+min-width:200px;
+border-radius:8px;
+box-shadow:0 8px 16px rgba(0,0,0,.4);
+z-index:100;
+overflow:hidden;
+border:1px solid #3e4872;
+}
+
+.painel.show{
+display:block;
+}
+
+.painel div{
+padding:12px 16px;
+cursor:pointer;
+font-size:14px;
+border-bottom:1px solid #343c63;
+}
+
+.painel div:hover{
+background:#394374;
+color:#6ea8fe;
+}
+
+
+/* ============================= */
+/* 🔹 GRÁFICO */
+/* ============================= */
+
+.grafico-wrapper{
+  margin-top: 35px;
+  padding: 25px;
+  background: #1a213c;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+}
+
+.grafico-wrapper + .grafico-wrapper{
+  margin-top: 40px;
+}
+
+#graficoAcidentes{
+width:100%!important;
+max-height:400px;
+}
+
+
+/* ============================= */
+/* 🔹 MODAL */
+/* ============================= */
+
+.modal-overlay{
+position:fixed;
+inset:0;
+background:rgba(10,15,35,.85);
+display:none;
+justify-content:center;
+align-items:center;
+z-index:999;
+animation:fadeIn .3s ease;
+}
+
+.modal-overlay.show{
+display:flex;
+}
+
+.modal-content{
+background:#1f2540;
+width:600px;
+padding:25px;
+border-radius:14px;
+box-shadow:0 10px 30px rgba(0,0,0,.5);
+animation:slideUp .3s ease;
+}
+
+.cat-status{
+text-align:center;
+margin-bottom:20px;
+font-weight:bold;
+letter-spacing:1px;
+color:#6ea8fe;
+}
+
+
+/* ============================= */
+/* 🔹 FORMULÁRIO */
+/* ============================= */
+
+.form-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:15px;
+}
+
+.form-grid input,
+.form-grid select,
+.form-grid textarea{
+
+width:100%;
+padding:10px;
+border-radius:6px;
+border:none;
+background:#2f375a;
+color:white;
+font-size:14px;
+}
+
+textarea{
+resize:none;
+min-height:80px;
+grid-column:span 2;
+}
+
+input:focus,
+select:focus,
+textarea:focus{
+outline:2px solid #4e73df;
+}
+
+
+/* ============================= */
+/* 🔹 BOTÕES MODAL */
+/* ============================= */
+
+.modal-buttons{
+margin-top:20px;
+display:flex;
+justify-content:space-between;
+gap:10px;
+}
+
+.btn-secondary{
+background:#394374;
+color:white;
+border:none;
+padding:8px 14px;
+border-radius:6px;
+cursor:pointer;
+}
+
+
+/* ============================= */
+/* 🔹 LOADING */
+/* ============================= */
+
+.loading,
+.sucesso{
+display:none;
+text-align:center;
+margin-top:20px;
+}
+
+.spinner{
+border:4px solid #2f375a;
+border-top:4px solid #4e73df;
+border-radius:50%;
+width:40px;
+height:40px;
+margin:10px auto;
+animation:spin 1s linear infinite;
+}
+
+
+/* ============================= */
+/* 🔹 ANIMAÇÕES */
+/* ============================= */
+
+@keyframes spin{
+to{transform:rotate(360deg);}
+}
+
+@keyframes fadeIn{
+from{opacity:0}
+to{opacity:1}
+}
+
+@keyframes slideUp{
+from{transform:translateY(20px);opacity:0}
+to{transform:translateY(0);opacity:1}
+}
+
+
+/* ============================= */
+/* 📱 RESPONSIVO */
+/* ============================= */
+
+@media(max-width:768px){
+
+body{
+padding:15px;
+}
+
+.top-bar{
+flex-direction:column;
+gap:15px;
+text-align:center;
+}
+
+.btn-primary{
+width:100%;
+}
+
+.dashboard{
+padding:20px;
+}
+
+.filtros-container{
+flex-direction:column;
+gap:10px;
+}
+
+.btn-filter{
+width:100%;
+}
+
+.grafico-wrapper{
+padding:15px;
+}
+
+#graficoAcidentes{
+max-height:300px;
+}
+
+.modal-content{
+width:95%;
+}
+
+.form-grid{
+grid-template-columns:1fr;
+}
+
+textarea{
+grid-column:span 1;
+}
+
+.modal-buttons{
+flex-direction:column;
+}
+
+.modal-buttons button{
+width:100%;
+}
+
+}
+
+/* ============================= */
+/* 🔹 FILTRO DE MESES */
+/* ============================= */
+
+.painel label{
+display:flex;
+align-items:center;
+gap:8px;
+padding:10px 14px;
+cursor:pointer;
+border-bottom:1px solid #343c63;
+font-size:14px;
+transition:0.2s;
+}
+
+.painel label:hover{
+background:#394374;
+color:#6ea8fe;
+}
+
+.painel input[type="checkbox"]{
+accent-color:#4e73df;
+cursor:pointer;
+}
+
+/* grid para meses */
+
+.meses-grid{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:4px;
+padding:6px;
+}
+
+/* ============================= */
+/* 🔹 TITULOS DOS GRAFICOS */
+/* ============================= */
+
+.grafico-titulo{
+font-size:16px;
+font-weight:600;
+margin-bottom:15px;
+color:#6ea8fe;
+text-align:center;
+letter-spacing:0.5px;
+}

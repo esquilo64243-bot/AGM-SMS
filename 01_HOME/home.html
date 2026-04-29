@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home - SMS</title>
+    <link rel="stylesheet" href="./css/home.css" />
+    <link rel="icon" type="image/png" href="img/Logo_AGM.png" />
+  </head>
+
+  <body>
+    <!-- CONTEÚDO -->
+
+    <main class="home-container">
+      <div class="header-home">
+        <h1>Painel de Gestão SMS</h1>
+        <p class="sub">Sistema interno de Segurança, Meio Ambiente e Saúde</p>
+      </div>
+
+      <div class="cards">
+        <div class="card-home ext" onclick="abrirExtintores()">
+          <span class="emoji">🧯</span>
+          <p>Extintores</p>
+        </div>
+
+        <div class="card-home acid" onclick="abrirAcidentes()">
+          <span class="emoji">🚑</span>
+          <p>Acidentes</p>
+        </div>
+
+        <div class="card-home trein" onclick="abrirTreinamentos()">
+          <span class="emoji">🎓</span>
+          <p>Treinamentos</p>
+        </div>
+
+        <div class="card-home func" onclick="abrirFuncionarios()">
+          <span class="emoji">👷‍♂️</span>
+          <p>Funcionários</p>
+        </div>
+
+        <div class="card-home solic" onclick="abrirSolicitacoes()">
+          <span class="emoji">📦</span>
+          <p>Solicitações</p>
+        </div>
+      </div>
+      <div class="footer-home">
+        <p>Versão 1.0.0</p>
+        <p>Desenvolvido por Richard Lucas</p>
+        <span>© 2026 - Sistema Interno SMS</span>
+      </div>
+    </main>
+
+    <!-- SCRIPT -->
+    <script>
+      // NAVEGAÇÃO
+
+      function abrirExtintores() {
+        window.location.href = "../02_EXTINTORES/extintores.html";
+      }
+
+      function abrirAcidentes() {
+        window.location.href = "../03_ACIDENTES/acidentes.html";
+      }
+
+      function abrirTreinamentos() {
+        window.location.href = "../04_TREINAMENTOS/treinamentos.html";
+      }
+
+      function abrirFuncionarios() {
+        window.location.href = "../05_FUNCIONARIOS/funcionarios.html";
+      }
+
+      function abrirSolicitacoes() {
+        window.location.href = "../06_SOLICITACOES/solicitacoes.html";
+      }
+    </script>
+    <script type="module">
+      import { auth } from "./js/firebase.js";
+      import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+      onAuthStateChanged(auth, (user) => {
+        if (!user) {
+          window.location.href = "index.html";
+        }
+      });
+    </script>
+  </body>
+</html>
