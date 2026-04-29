@@ -42,6 +42,14 @@
 
     <!-- JS -->
     <script>
+      function irEPI() {
+        window.location.href = "./EPI/epi.html";
+      }
+
+      function irUniforme() {
+        window.location.href = "./UNIFORMES/uniformes.html";
+      }
+
       function gerarPDFGeral() {
         const pedidosUniforme =
           JSON.parse(localStorage.getItem("pedidosUniforme")) || [];
