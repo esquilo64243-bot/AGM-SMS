@@ -20,6 +20,7 @@ function abrirModalCadastro() {
 }
 
 function abrirModalPedido() {
+  editIndex = null;
   preencherSelect();
   limparCamposPedido();
   modalPedido.classList.add("show");
@@ -165,6 +166,16 @@ function renderTipos() {
     listaTipos.appendChild(tr);
   });
 }
+// ================= EXCLUIR =================
+function excluir(i) {
+  if (!confirm("Deseja excluir este pedido?")) return;
+
+  pedidos.splice(i, 1);
+
+  localStorage.setItem("pedidosEPI", JSON.stringify(pedidos));
+
+  render();
+}
 
 function aumentarQtd(i) {
   tipos[i].quantidade = (tipos[i].quantidade || 0) + 1;
@@ -257,3 +268,4 @@ window.fecharModal = fecharModal;
 window.aumentarQtd = aumentarQtd;
 window.diminuirQtd = diminuirQtd;
 window.editarQtd = editarQtd;
+window.excluir = excluir;
