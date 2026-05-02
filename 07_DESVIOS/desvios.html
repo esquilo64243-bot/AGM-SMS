@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Desvios</title>
+
+    <link rel="stylesheet" href="./css/desvios.css" />
+    <link rel="icon" type="image/png" href="img/Logo_AGM.png" />
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+
+  <body>
+    <div class="container">
+      <!-- HEADER -->
+      <div class="top-bar">
+        <h1>Controle de Desvios de EPI</h1>
+        <button class="btn-primary" onclick="abrirModal()">
+          + Novo Desvio
+        </button>
+      </div>
+
+      <!-- DASHBOARD -->
+      <div class="dashboard">
+        <div class="grafico-wrapper">
+          <div class="grafico-titulo">Desvios por Tipo</div>
+          <canvas id="graficoDesvios"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================= -->
+    <!-- 🔹 MODAL -->
+    <!-- ============================= -->
+
+    <div class="modal-overlay" id="modal">
+      <div class="modal-content">
+        <div class="cat-status">Registrar Desvio</div>
+
+        <div class="form-grid">
+          <input
+            type="text"
+            id="buscaNome"
+            placeholder="Buscar colaborador..."
+          />
+
+          <select id="selectFuncionario"></select>
+
+          <input type="text" id="nome" placeholder="Nome completo" readonly />
+          <input type="text" id="funcao" placeholder="Função" readonly />
+
+          <select id="setor" placeholder="Setor">
+            <option value="">Setor</option>
+            <option>Operação</option>
+            <option>Manutenção</option>
+          </select>
+
+          <input type="date" id="data" />
+
+          <select id="tipoDesvio">
+            <option value="">Tipo de desvio</option>
+            <option>Sem capacete</option>
+            <option>Sem óculos</option>
+            <option>Sem jugular</option>
+            <option>Sem luva</option>
+            <option>Sem colete refletivo</option>
+            <option>Sem mascara</option>
+            <option>Sem proteção de raspa</option>
+            <option>Outro</option>
+          </select>
+
+          <textarea id="observacao" placeholder="Observação"></textarea>
+        </div>
+
+        <div class="modal-buttons">
+          <button class="btn-secondary" onclick="fecharModal()">
+            Cancelar
+          </button>
+
+          <button class="btn-primary" onclick="salvarDesvio()">Salvar</button>
+        </div>
+
+        <div class="loading" id="loading">
+          <div class="spinner"></div>
+          Salvando...
+        </div>
+
+        <div class="sucesso" id="sucesso">✔ Salvo com sucesso!</div>
+      </div>
+    </div>
+
+    <!-- SEU JS COMO MODULE -->
+    <script type="module" src="./js/desvios.js"></script>
+  </body>
+</html>
