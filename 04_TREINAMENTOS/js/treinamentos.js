@@ -1,3 +1,5 @@
+import { addDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
 const buscaInput = document.getElementById("busca");
 const filtroFuncao = document.getElementById("filtroFuncao");
 const filtroEmpresa = document.getElementById("filtroEmpresa");
@@ -25,20 +27,17 @@ async function carregarFuncionarios() {
 
   funcionarios = [];
 
-  snapshot.forEach(docSnap => {
+  snapshot.forEach((docSnap) => {
     const data = docSnap.data();
-    console.log("DATA:", data);
-    console.log("HISTORICO:", data.historico);
 
-    // 🔥 pega historico sendo array OU objeto
     let hist = {};
 
-if (Array.isArray(data.historico)) {
-  hist = data.historico[0];
-} else if (typeof data.historico === "object") {
-  const valores = Object.values(data.historico);
-  hist = valores[0];
-}
+    if (Array.isArray(data.historico) && data.historico.length > 0) {
+      hist = data.historico[0];
+    } else if (typeof data.historico === "object" && data.historico !== null) {
+      const valores = Object.values(data.historico);
+      hist = valores[0] || {};
+    }
 
     funcionarios.push({
       id: docSnap.id,
@@ -46,18 +45,17 @@ if (Array.isArray(data.historico)) {
       nome: data.nome || hist.nome || "Sem nome",
       cargo: hist.cargo || data.setor || "Sem cargo",
       empresa: data.empresa || "Sem empresa",
-      treinamentos: data.treinamentos || []
+      treinamentos: data.treinamentos || [],
     });
   });
 
   preencherFiltros();
   renderizar();
 }
-
 // 📊 STATUS
 function verificarStatus(data) {
   const hoje = new Date();
-  const venc = new Date(data);
+
   const diff = (venc - hoje) / (1000 * 60 * 60 * 24);
 
   if (diff < 0) return "vencido";
@@ -67,15 +65,19 @@ function verificarStatus(data) {
 
 // 📈 INDICADORES
 function atualizarIndicadores() {
-  let emDia = 0, aVencer = 0, vencido = 0;
+  let emDia = 0,
+    aVencer = 0,
+    vencido = 0;
 
-  funcionarios.forEach(f => {
-    f.treinamentos.forEach(t => {
-      const status = verificarStatus(t.vencimento);
-      if (status === "em-dia") emDia++;
-      if (status === "a-vencer") aVencer++;
-      if (status === "vencido") vencido++;
-    });
+  funcionarios.forEach((f) => {
+    [...f.treinamentos]
+      .sort((a, b) => new Date(a.vencimento) - new Date(b.vencimento))
+      .forEach((t) => {
+        const status = verificarStatus(t.vencimento);
+        if (status === "em-dia") emDia++;
+        if (status === "a-vencer") aVencer++;
+        if (status === "vencido") vencido++;
+      });
   });
 
   totalFunc.innerText = funcionarios.length;
@@ -93,21 +95,22 @@ function renderizar() {
   const empresaFiltro = filtroEmpresa.value;
 
   funcionarios
-    .filter(f => {
+    .filter((f) => {
       const matchBusca = (f.nome || "").toLowerCase().includes(busca);
       const matchFuncao = !funcaoFiltro || f.cargo === funcaoFiltro;
       const matchEmpresa = !empresaFiltro || f.empresa === empresaFiltro;
 
       if (!filtroAtual) return matchBusca && matchFuncao && matchEmpresa;
 
-      const temStatus = f.treinamentos.some(t =>
-        verificarStatus(t.vencimento) === filtroAtual
+      const temStatus = f.treinamentos.some(
+        (t) => verificarStatus(t.vencimento) === filtroAtual,
       );
 
       return matchBusca && matchFuncao && matchEmpresa && temStatus;
     })
-    .forEach(f => {
 
+    .sort((a, b) => a.nome.localeCompare(b.nome, "pt-BR"))
+    .forEach((f) => {
       const div = document.createElement("div");
       div.classList.add("funcionario");
 
@@ -122,43 +125,49 @@ function renderizar() {
       const treinos = document.createElement("div");
       treinos.classList.add("treinamentos");
 
-      f.treinamentos.forEach(t => {
-        const status = verificarStatus(t.vencimento);
+      [...f.treinamentos]
+        .sort((a, b) => new Date(a.vencimento) - new Date(b.vencimento))
+        .forEach((t) => {
+          const status = verificarStatus(t.vencimento);
 
-        const el = document.createElement("div");
-        el.classList.add("treinamento", status);
+          const el = document.createElement("div");
+          el.classList.add("treinamento", status);
 
-        el.innerHTML = `
-        <div class="treino-topo">
-          <strong>${t.nome}</strong>
-          <button class="btn-delete">🗑️</button>
-        </div>
+          if (!data) return "em-dia";
+          const venc = new Date(data + "T00:00:00");
 
-        Realizado: ${new Date(t.realizacao).toLocaleDateString("pt-BR")} <br>
-        Vence: ${new Date(t.vencimento).toLocaleDateString("pt-BR")}
-      `;
+          el.innerHTML = `
+          <div class="treino-topo">
+            <strong>${t.nome}</strong>
+            <button class="btn-delete">🗑️</button>
+          </div>
 
-// Excluir
-const btnDelete = el.querySelector(".btn-delete");
+          Realizado: ${new Date(t.realizacao).toLocaleDateString("pt-BR")} <br>
+          Vence: ${venc.toLocaleDateString("pt-BR")}
+        `;
 
-btnDelete.onclick = async () => {
+          // Excluir
+          const btnDelete = el.querySelector(".btn-delete");
 
-  const confirmar = confirm("Deseja excluir este treinamento?");
-  if (!confirmar) return;
+          btnDelete.onclick = async () => {
+            const confirmar = confirm("Deseja excluir este treinamento?");
+            if (!confirmar) return;
 
-  // remove do array
-  f.treinamentos = f.treinamentos.filter(x => x !== t);
+            // remove do array
+            f.treinamentos = f.treinamentos.filter(
+              (x) => !(x.nome === t.nome && x.vencimento === t.vencimento),
+            );
 
-  // atualiza no firebase
-  await updateDoc(doc(db, "funcionarios", f.id), {
-    treinamentos: f.treinamentos
-  });
+            // atualiza no firebase
+            await updateDoc(doc(db, "funcionarios", f.id), {
+              treinamentos: f.treinamentos,
+            });
 
-  carregarFuncionarios();
-};
+            carregarFuncionarios();
+          };
 
-        treinos.appendChild(el);
-      });
+          treinos.appendChild(el);
+        });
 
       const btn = document.createElement("button");
       btn.classList.add("btn-add");
@@ -186,13 +195,17 @@ function preencherFiltros() {
   filtroFuncao.innerHTML = `<option value="">Todas Funções</option>`;
   filtroEmpresa.innerHTML = `<option value="">Todas Empresas</option>`;
 
-  [...new Set(funcionarios.map(f => f.cargo))].forEach(f => {
-    filtroFuncao.innerHTML += `<option value="${f}">${f}</option>`;
-  });
+  [...new Set(funcionarios.map((f) => f.cargo))]
+    .sort((a, b) => a.localeCompare(b, "pt-BR"))
+    .forEach((f) => {
+      filtroFuncao.innerHTML += `<option value="${f}">${f}</option>`;
+    });
 
-  [...new Set(funcionarios.map(f => f.empresa))].forEach(e => {
-    filtroEmpresa.innerHTML += `<option value="${e}">${e}</option>`;
-  });
+  [...new Set(funcionarios.map((f) => f.empresa))]
+    .sort((a, b) => a.localeCompare(b, "pt-BR"))
+    .forEach((e) => {
+      filtroEmpresa.innerHTML += `<option value="${e}">${e}</option>`;
+    });
 }
 
 const modalCadastroTreino = document.getElementById("modalCadastroTreino");
@@ -202,7 +215,9 @@ const nomeNovoTreino = document.getElementById("nomeNovoTreino");
 const validadeNovoTreino = document.getElementById("validadeNovoTreino");
 
 const salvarCadastroTreino = document.getElementById("salvarCadastroTreino");
-const cancelarCadastroTreino = document.getElementById("cancelarCadastroTreino");
+const cancelarCadastroTreino = document.getElementById(
+  "cancelarCadastroTreino",
+);
 
 // abrir modal
 btnNovoTreinamento.onclick = () => {
@@ -224,12 +239,12 @@ async function carregarTreinamentos() {
   const select = document.getElementById("selectTreinamento");
   select.innerHTML = `<option value="">Selecione um treinamento</option>`;
 
-  snapshot.forEach(docSnap => {
+  snapshot.forEach((docSnap) => {
     const data = docSnap.data();
 
     listaTreinamentos.push({
       id: docSnap.id,
-      ...data
+      ...data,
     });
 
     select.innerHTML += `
@@ -249,7 +264,7 @@ salvarTreino.onclick = async () => {
     return alert("Preencha tudo!");
   }
 
-  const treino = listaTreinamentos.find(t => t.id === treinoId);
+  const treino = listaTreinamentos.find((t) => t.id === treinoId);
 
   // 🧠 calcular vencimento automático
   const dataReal = new Date(realizacao);
@@ -259,20 +274,19 @@ salvarTreino.onclick = async () => {
   const novoTreino = {
     nome: treino.nome,
     realizacao,
-    vencimento: vencimento.toISOString().split("T")[0]
+    vencimento: vencimento.toISOString().split("T")[0],
   };
 
   funcionarioSelecionado.treinamentos.push(novoTreino);
 
   await updateDoc(doc(db, "funcionarios", funcionarioSelecionado.id), {
-    treinamentos: funcionarioSelecionado.treinamentos
+    treinamentos: funcionarioSelecionado.treinamentos,
   });
 
   modalTreino.classList.remove("show");
   carregarFuncionarios();
 };
 
-import { addDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 window.addDoc = addDoc;
 
 salvarCadastroTreino.onclick = async () => {
@@ -285,7 +299,7 @@ salvarCadastroTreino.onclick = async () => {
 
   await addDoc(collection(db, "treinamentos"), {
     nome,
-    validade
+    validade,
   });
 
   modalCadastroTreino.classList.remove("show");
@@ -301,11 +315,11 @@ salvarCadastroTreino.onclick = async () => {
 // ❌ CANCELAR
 cancelarTreino.onclick = () => modalTreino.classList.remove("show");
 
-// 🔍 EVENTOS
-busca.addEventListener("input", renderizar);
+// EVENTOS
+buscaInput.addEventListener("input", renderizar);
 filtroFuncao.addEventListener("change", renderizar);
 filtroEmpresa.addEventListener("change", renderizar);
 
-// 🎯 INICIAR
+// INIT
 carregarFuncionarios();
 carregarTreinamentos();
