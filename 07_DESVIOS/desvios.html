@@ -1,4 +1,5 @@
 <!doctype html>
+<<<<<<< HEAD
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
@@ -16,6 +17,18 @@
   <body>
     <div class="container">
       <!-- HEADER -->
+=======
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./css/desvios.css" />
+    <link rel="icon" type="image/png" href="img/Logo_AGM.png" />
+    <title>Desvios</title>
+  </head>
+  <body>
+    <div class="container">
+>>>>>>> 7f9e052 (Melhoria em sistema)
       <div class="top-bar">
         <h1>Controle de Desvios de EPI</h1>
         <button class="btn-primary" onclick="abrirModal()">
@@ -23,6 +36,15 @@
         </button>
       </div>
 
+<<<<<<< HEAD
+=======
+      <!-- HISTÓRICO -->
+      <div class="historico">
+        <h2>Histórico de Desvios</h2>
+        <div id="historicoContainer"></div>
+      </div>
+
+>>>>>>> 7f9e052 (Melhoria em sistema)
       <!-- DASHBOARD -->
       <div class="dashboard">
         <div class="grafico-wrapper">
@@ -32,15 +54,20 @@
       </div>
     </div>
 
+<<<<<<< HEAD
     <!-- ============================= -->
     <!-- 🔹 MODAL -->
     <!-- ============================= -->
 
+=======
+    <!-- MODAL -->
+>>>>>>> 7f9e052 (Melhoria em sistema)
     <div class="modal-overlay" id="modal">
       <div class="modal-content">
         <div class="cat-status">Registrar Desvio</div>
 
         <div class="form-grid">
+<<<<<<< HEAD
           <input
             type="text"
             id="buscaNome"
@@ -58,6 +85,15 @@
             <option>Manutenção</option>
           </select>
 
+=======
+          <input type="text" id="buscaNome" placeholder="Buscar colaborador" />
+
+          <select id="selectFuncionario"></select>
+
+          <input type="text" id="funcao" placeholder="Função" />
+
+          <input type="text" id="setor" placeholder="Setor" />
+>>>>>>> 7f9e052 (Melhoria em sistema)
           <input type="date" id="data" />
 
           <select id="tipoDesvio">
@@ -66,9 +102,12 @@
             <option>Sem óculos</option>
             <option>Sem jugular</option>
             <option>Sem luva</option>
+<<<<<<< HEAD
             <option>Sem colete refletivo</option>
             <option>Sem mascara</option>
             <option>Sem proteção de raspa</option>
+=======
+>>>>>>> 7f9e052 (Melhoria em sistema)
             <option>Outro</option>
           </select>
 
@@ -79,7 +118,10 @@
           <button class="btn-secondary" onclick="fecharModal()">
             Cancelar
           </button>
+<<<<<<< HEAD
 
+=======
+>>>>>>> 7f9e052 (Melhoria em sistema)
           <button class="btn-primary" onclick="salvarDesvio()">Salvar</button>
         </div>
 
@@ -91,8 +133,14 @@
         <div class="sucesso" id="sucesso">✔ Salvo com sucesso!</div>
       </div>
     </div>
+<<<<<<< HEAD
 
     <!-- SEU JS COMO MODULE -->
+=======
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+>>>>>>> 7f9e052 (Melhoria em sistema)
     <script type="module" src="./js/desvios.js"></script>
   </body>
 </html>
