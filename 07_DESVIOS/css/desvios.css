@@ -2,7 +2,6 @@
 /* 🔹 RESET */
 /* ============================= */
 
-<<<<<<< HEAD
 * {
   margin: 0;
   padding: 0;
@@ -22,7 +21,6 @@ body {
   margin: auto;
 }
 
-=======
 *{
 margin:0;
 padding:0;
@@ -42,13 +40,10 @@ max-width:1400px;
 margin:auto;
 }
 
-
->>>>>>> 7f9e052 (Melhoria em sistema)
 /* ============================= */
 /* 🔹 HEADER */
 /* ============================= */
 
-<<<<<<< HEAD
 .top-bar {
   background: linear-gradient(90deg, #4e73df, #6ea8fe);
   padding: 22px 30px;
@@ -66,7 +61,6 @@ margin:auto;
   letter-spacing: 0.5px;
 }
 
-=======
 .top-bar{
 background:linear-gradient(90deg,#4e73df,#6ea8fe);
 padding:22px 30px;
@@ -84,13 +78,11 @@ font-weight:600;
 letter-spacing:.5px;
 }
 
-
->>>>>>> 7f9e052 (Melhoria em sistema)
 /* ============================= */
 /* 🔹 BOTÕES */
 /* ============================= */
 
-<<<<<<< HEAD
+
 .btn-primary {
   background: #ffffff;
   color: #4e73df;
@@ -143,7 +135,6 @@ letter-spacing:.5px;
   background: #4e567d;
 }
 
-=======
 .btn-primary{
 background:#ffffff;
 color:#4e73df;
@@ -191,8 +182,6 @@ transition:.2s;
 background:#4e567d;
 }
 
-
->>>>>>> 7f9e052 (Melhoria em sistema)
 /* ============================= */
 /* 🔹 DASHBOARD */
 /* ============================= */
@@ -232,7 +221,6 @@ canvas {
   max-height: 400px;
 }
 
-=======
 .dashboard{
 background:#202744;
 padding:30px;
@@ -267,13 +255,10 @@ width:100%!important;
 max-height:400px;
 }
 
-
->>>>>>> 7f9e052 (Melhoria em sistema)
 /* ============================= */
 /* 🔹 MODAL */
 /* ============================= */
 
-<<<<<<< HEAD
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -317,7 +302,6 @@ max-height:400px;
   color: #6ea8fe;
 }
 
-=======
 .modal-overlay{
 position:fixed;
 inset:0;
@@ -361,28 +345,24 @@ letter-spacing:1px;
 color:#6ea8fe;
 }
 
-
->>>>>>> 7f9e052 (Melhoria em sistema)
 /* ============================= */
 /* 🔹 FORM */
 /* ============================= */
 
-<<<<<<< HEAD
 .form-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 15px;
-=======
+ }
+
 .form-grid{
 display:grid;
 grid-template-columns:1fr 1fr;
 gap:15px;
->>>>>>> 7f9e052 (Melhoria em sistema)
 }
 
 .form-grid input,
 .form-grid select,
-<<<<<<< HEAD
 .form-grid textarea {
   width: 100%;
   padding: 10px;
@@ -392,7 +372,8 @@ gap:15px;
   color: white;
   font-size: 14px;
   transition: 0.25s;
-=======
+}
+
 .form-grid textarea{
 width:100%;
 padding:10px;
@@ -402,12 +383,10 @@ background:#2f375a;
 color:white;
 font-size:14px;
 transition:.25s;
->>>>>>> 7f9e052 (Melhoria em sistema)
 }
 
 .form-grid input:hover,
 .form-grid select:hover,
-<<<<<<< HEAD
 .form-grid textarea:hover {
   background: #3a446e;
 }
@@ -416,7 +395,8 @@ textarea {
   resize: none;
   min-height: 80px;
   grid-column: span 2;
-=======
+}
+
 .form-grid textarea:hover{
 background:#3a446e;
 }
@@ -425,12 +405,10 @@ textarea{
 resize:none;
 min-height:80px;
 grid-column:span 2;
->>>>>>> 7f9e052 (Melhoria em sistema)
 }
 
 input:focus,
 select:focus,
-<<<<<<< HEAD
 textarea:focus {
   outline: 2px solid #4e73df;
 }
@@ -445,7 +423,6 @@ select {
   padding-right: 30px;
 }
 
-=======
 textarea:focus{
 outline:2px solid #4e73df;
 }
@@ -461,13 +438,10 @@ background-size:16px;
 padding-right:30px;
 }
 
-
->>>>>>> 7f9e052 (Melhoria em sistema)
 /* ============================= */
 /* 🔹 MODAL BUTTONS */
 /* ============================= */
 
-<<<<<<< HEAD
 .modal-buttons {
   margin-top: 20px;
   display: flex;
@@ -475,7 +449,6 @@ padding-right:30px;
   gap: 10px;
 }
 
-=======
 .modal-buttons{
 margin-top:20px;
 display:flex;
@@ -483,14 +456,11 @@ justify-content:space-between;
 gap:10px;
 }
 
-
->>>>>>> 7f9e052 (Melhoria em sistema)
 /* ============================= */
 /* 🔹 LOADING */
 /* ============================= */
 
 .loading,
-<<<<<<< HEAD
 .sucesso {
   display: none;
   text-align: center;
@@ -516,7 +486,6 @@ gap:10px;
   animation: spin 1s linear infinite;
 }
 
-=======
 .sucesso{
 display:none;
 text-align:center;
@@ -543,12 +512,10 @@ animation:spin 1s linear infinite;
 }
 
 
->>>>>>> 7f9e052 (Melhoria em sistema)
 /* ============================= */
 /* 🔹 ANIMAÇÕES */
 /* ============================= */
 
-<<<<<<< HEAD
 @keyframes spin {
   to {
     transform: rotate(360deg);
@@ -565,7 +532,7 @@ animation:spin 1s linear infinite;
     opacity: 1;
   }
 }
-=======
+
 @keyframes spin{
 to{transform:rotate(360deg);}
 }
@@ -581,13 +548,10 @@ opacity:1;
 }
 }
 
->>>>>>> 7f9e052 (Melhoria em sistema)
-
 /* ============================= */
 /* 🔹 SCROLL */
 /* ============================= */
 
-<<<<<<< HEAD
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -605,7 +569,6 @@ opacity:1;
   background: #6ea8fe;
 }
 
-=======
 ::-webkit-scrollbar{
 width:8px;
 }
@@ -623,13 +586,10 @@ border-radius:10px;
 background:#6ea8fe;
 }
 
-
->>>>>>> 7f9e052 (Melhoria em sistema)
 /* ============================= */
 /* 📱 RESPONSIVO */
 /* ============================= */
 
-<<<<<<< HEAD
 @media (max-width: 768px) {
   .top-bar {
     flex-direction: column;
@@ -665,7 +625,7 @@ background:#6ea8fe;
     width: 100%;
   }
 }
-=======
+
 @media(max-width:768px){
 
 .top-bar{
@@ -747,4 +707,3 @@ width:100%;
   cursor: pointer;
   border-radius: 5px;
 }
->>>>>>> 7f9e052 (Melhoria em sistema)
