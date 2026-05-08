@@ -6,6 +6,8 @@ import {
   doc
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
+import Chart from "https://cdn.jsdelivr.net/npm/chart.js/auto/+esm";
+
 import { db } from "../../01_HOME/js/firebase.js";
 
 // =============================
@@ -13,6 +15,7 @@ import { db } from "../../01_HOME/js/firebase.js";
 // =============================
 let funcionarios = [];
 let mapaFuncionarios = {};
+let grafico = null;
 
 // =============================
 // 🔹 ELEMENTOS
@@ -285,37 +288,106 @@ async function carregarGrafico() {
 
   try {
 
+    console.log("🔥 FUNÇÃO GRÁFICO INICIADA");
+
     const hoje = new Date();
     const ano = hoje.getFullYear();
     const mes = (hoje.getMonth() + 1).toString().padStart(2, "0");
 
+    // 🔹 BUSCA DADOS NO FIREBASE
     const ref = collection(db, "desvios", String(ano), mes);
     const snapshot = await getDocs(ref);
 
+    console.log("📦 Docs encontrados:", snapshot.size);
+
+    // 🔹 OBJETO DE CONTAGEM
     const contagem = {};
 
-    snapshot.forEach(doc => {
-      const tipo = doc.data().tipo;
-      if (!contagem[tipo]) contagem[tipo] = 0;
+    snapshot.forEach((docSnap) => {
+
+      const tipo = docSnap.data().tipo;
+
+      if (!contagem[tipo]) {
+        contagem[tipo] = 0;
+      }
+
       contagem[tipo]++;
     });
 
-    new Chart(document.getElementById("graficoDesvios"), {
+    console.log("📊 Dados:", contagem);
+
+    // 🔹 PEGA CANVAS
+    const canvas = document.getElementById("graficoDesvios");
+
+    if (!canvas) {
+      console.error("❌ Canvas não encontrado");
+      return;
+    }
+
+    // 🔹 CONTEXTO 2D
+    const ctx = canvas.getContext("2d");
+
+    // 🔹 DESTRÓI GRÁFICO ANTIGO
+    if (grafico) {
+      grafico.destroy();
+    }
+
+    // 🔹 CRIA NOVO GRÁFICO
+    grafico = new Chart(ctx, {
+
       type: "bar",
+
       data: {
         labels: Object.keys(contagem),
+
         datasets: [{
           label: "Quantidade de Desvios",
-          data: Object.values(contagem)
+
+          data: Object.values(contagem),
+
+          borderWidth: 1
         }]
+      },
+
+      options: {
+
+        responsive: true,
+        maintainAspectRatio: false,
+
+        plugins: {
+          legend: {
+            labels: {
+              color: "#fff"
+            }
+          }
+        },
+
+        scales: {
+
+          x: {
+            ticks: {
+              color: "#fff"
+            }
+          },
+
+          y: {
+            beginAtZero: true,
+
+            ticks: {
+              color: "#fff"
+            }
+          }
+        }
       }
     });
 
+    console.log("✅ GRÁFICO CRIADO");
+
   } catch (erro) {
-    console.error("Erro ao carregar gráfico:", erro);
+
+    console.error("❌ Erro ao carregar gráfico:", erro);
   }
 }
-
 // =============================
 // 🔹 INICIAR
 // =============================

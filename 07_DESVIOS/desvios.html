@@ -8,8 +8,6 @@
 
     <link rel="stylesheet" href="./css/desvios.css" />
     <link rel="icon" type="image/png" href="img/Logo_AGM.png" />
-
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   </head>
 
   <body>
@@ -31,14 +29,111 @@
       </div>
 
       <!-- DASHBOARD -->
-      <div class="dashboard">
-        <div class="grafico-wrapper">
-          <div class="grafico-titulo">Desvios por Tipo</div>
+<!-- DASHBOARD -->
+<div class="dashboard">
 
-          <canvas id="graficoDesvios"></canvas>
-        </div>
-      </div>
+  <!-- FILTROS -->
+  <div class="dashboard-filtros">
+
+    <select id="filtroMes">
+      <option value="01">Janeiro</option>
+      <option value="02">Fevereiro</option>
+      <option value="03">Março</option>
+      <option value="04">Abril</option>
+      <option value="05">Maio</option>
+      <option value="06">Junho</option>
+      <option value="07">Julho</option>
+      <option value="08">Agosto</option>
+      <option value="09">Setembro</option>
+      <option value="10">Outubro</option>
+      <option value="11">Novembro</option>
+      <option value="12">Dezembro</option>
+    </select>
+
+    <select id="filtroAno"></select>
+
+    <button class="btn-primary" id="btnAtualizarDashboard">
+      Atualizar Dashboard
+    </button>
+
+  </div>
+
+  <!-- CARDS -->
+  <div class="cards-dashboard">
+
+    <div class="card-dashboard">
+      <h3>Total de Desvios</h3>
+      <span id="cardTotal">0</span>
     </div>
+
+    <div class="card-dashboard">
+      <h3>EPI Mais Recorrente</h3>
+      <span id="cardEPI">-</span>
+    </div>
+
+    <div class="card-dashboard">
+      <h3>Setor Crítico</h3>
+      <span id="cardSetor">-</span>
+    </div>
+
+    <div class="card-dashboard">
+      <h3>Colaborador Recorrente</h3>
+      <span id="cardColaborador">-</span>
+    </div>
+
+  </div>
+
+  <!-- GRÁFICOS -->
+  <div class="graficos-grid">
+
+    <!-- EPI -->
+    <div class="grafico-wrapper">
+      <div class="grafico-titulo">
+        Desvios por EPI
+      </div>
+
+      <canvas id="graficoEPI"></canvas>
+    </div>
+
+    <!-- SETORES -->
+    <div class="grafico-wrapper">
+      <div class="grafico-titulo">
+        Desvios por Setor
+      </div>
+
+      <canvas id="graficoSetores"></canvas>
+    </div>
+
+    <!-- COLABORADORES -->
+    <div class="grafico-wrapper full-width">
+      <div class="grafico-titulo">
+        Colaboradores com Mais Desvios
+      </div>
+
+      <canvas id="graficoColaboradores"></canvas>
+    </div>
+
+  </div>
+
+  <!-- ANUAL -->
+  <div class="grafico-wrapper">
+    <div class="grafico-titulo">
+      Levantamento do Ano Atual
+    </div>
+
+    <canvas id="graficoAnual"></canvas>
+  </div>
+
+  <!-- 3 ANOS -->
+  <div class="grafico-wrapper">
+    <div class="grafico-titulo">
+      Comparativo Últimos 3 Anos
+    </div>
+
+    <canvas id="graficoTresAnos"></canvas>
+  </div>
+
+</div>
 
     <!-- MODAL -->
     <div class="modal-overlay" id="modal">
@@ -67,7 +162,12 @@
             <option>Sem óculos</option>
             <option>Sem jugular</option>
             <option>Sem luva</option>
-            <option>Outro</option>
+            <option>Sem mascára</option>
+            <option>Sem perneira</option>
+            <option>Sem viseira</option>
+            <option>Sem avental de couro</option>
+            <option>Sem luva</option>
+            <option>Outros</option>
           </select>
 
           <textarea id="observacao" placeholder="Observação"></textarea>
