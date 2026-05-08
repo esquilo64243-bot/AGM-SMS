@@ -215,7 +215,9 @@ body{
   transition:.3s;
 
   box-shadow:
-    0 10px 30px rgba(0,0,0,.25);
+  0 10px 30px rgba(0,0,0,.25);
+
+  animation: fadeGraph .6s ease forwards;
 }
 
 .grafico-wrapper:hover{
@@ -241,6 +243,18 @@ body{
     #4e73df,
     #6ea8fe
   );
+}
+
+.grafico-wrapper:nth-child(1){
+  animation-delay: .05s;
+}
+
+.grafico-wrapper:nth-child(2){
+  animation-delay: .15s;
+}
+
+.grafico-wrapper:nth-child(3){
+  animation-delay: .25s;
 }
 
 /* ============================= */
@@ -417,15 +431,15 @@ canvas{
 }
 
 @keyframes fadeGraph{
-
   from{
     opacity:0;
-    transform:translateY(10px);
+    transform:scale(.96) translateY(15px);
+    filter:blur(2px);
   }
-
   to{
     opacity:1;
-    transform:translateY(0);
+    transform:scale(1) translateY(0);
+    filter:blur(0);
   }
 }
 
