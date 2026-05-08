@@ -15,7 +15,17 @@ import { db } from "../../01_HOME/js/firebase.js";
 // =============================
 let funcionarios = [];
 let mapaFuncionarios = {};
+
 let grafico = null;
+
+let graficoEPI = null;
+let graficoSetores = null;
+let graficoColaboradores = null;
+
+let graficoAnual = null;
+
+let graficoAnoAtual = null;
+let graficoTresAnos = null;
 
 // =============================
 // 🔹 ELEMENTOS
@@ -388,14 +398,551 @@ async function carregarGrafico() {
     console.error("❌ Erro ao carregar gráfico:", erro);
   }
 }
+
+// =============================
+// 🔹 PREENCHER ANOS
+// =============================
+function preencherAnos() {
+
+  const selectAno = document.getElementById("filtroAno");
+
+  const anoAtual = new Date().getFullYear();
+
+  for (let ano = anoAtual; ano >= 2020; ano--) {
+
+    const option = document.createElement("option");
+
+    option.value = ano;
+    option.textContent = ano;
+
+    selectAno.appendChild(option);
+  }
+
+  // 🔹 DEIXA ANO ATUAL SELECIONADO
+  selectAno.value = anoAtual;
+}
+
+// =============================
+// 🔹 DEFINIR MÊS ATUAL
+// =============================
+function definirMesAtual() {
+
+  const selectMes = document.getElementById("filtroMes");
+
+  const mesAtual = String(
+    new Date().getMonth() + 1
+  ).padStart(2, "0");
+
+  selectMes.value = mesAtual;
+}
+
+// =============================
+// 🔹 DASHBOARD
+// =============================
+async function carregarDashboard() {
+
+  try {
+
+    const mes = document.getElementById("filtroMes").value;
+    const ano = document.getElementById("filtroAno").value;
+
+    console.log("📊 DASHBOARD:", mes, ano);
+
+    // 🔹 BUSCA FIREBASE
+    const ref = collection(db, "desvios", ano, mes);
+
+    const snapshot = await getDocs(ref);
+
+    // 🔹 OBJETOS DE CONTAGEM
+    const contagemEPI = {};
+    const contagemSetores = {};
+    const contagemColaboradores = {};
+
+    let totalDesvios = 0;
+
+    // 🔹 PERCORRE DESVIOS
+    snapshot.forEach((docSnap) => {
+
+      const d = docSnap.data();
+
+      totalDesvios++;
+
+      // 🔹 EPI
+      if (!contagemEPI[d.tipo]) {
+        contagemEPI[d.tipo] = 0;
+      }
+
+      contagemEPI[d.tipo]++;
+
+      // 🔹 SETOR
+      if (!contagemSetores[d.setor]) {
+        contagemSetores[d.setor] = 0;
+      }
+
+      contagemSetores[d.setor]++;
+
+      // 🔹 COLABORADOR
+      if (!contagemColaboradores[d.nome]) {
+        contagemColaboradores[d.nome] = 0;
+      }
+
+      contagemColaboradores[d.nome]++;
+    });
+
+    console.log("EPI:", contagemEPI);
+    console.log("Setores:", contagemSetores);
+    console.log("Colaboradores:", contagemColaboradores);
+
+    // =============================
+    // 🔹 CARDS
+    // =============================
+
+    document.getElementById("cardTotal").textContent =
+      totalDesvios;
+
+    document.getElementById("cardEPI").textContent =
+      pegarMaior(contagemEPI);
+
+    document.getElementById("cardSetor").textContent =
+      pegarMaior(contagemSetores);
+
+    document.getElementById("cardColaborador").textContent =
+      pegarMaior(contagemColaboradores);
+
+    // =============================
+    // 🔹 GRÁFICOS
+    // =============================
+
+    criarGraficoEPI(contagemEPI);
+
+    criarGraficoSetores(contagemSetores);
+
+    criarGraficoColaboradores(
+      contagemColaboradores
+    );
+
+  } catch (erro) {
+
+    console.error(
+      "❌ Erro dashboard:",
+      erro
+    );
+  }
+}
+
+// =============================
+// 🔹 PEGAR MAIOR
+// =============================
+function pegarMaior(obj) {
+
+  let maior = "-";
+  let valor = 0;
+
+  for (const chave in obj) {
+
+    if (obj[chave] > valor) {
+
+      valor = obj[chave];
+      maior = chave;
+    }
+  }
+
+  return maior;
+}
+
+// =============================
+// 🔹 GRÁFICO EPI
+// =============================
+function criarGraficoEPI(dados) {
+
+  const canvas = document.getElementById("graficoEPI");
+
+  if (!canvas) return;
+
+  const ctx = canvas.getContext("2d");
+
+  if (graficoEPI) {
+    graficoEPI.destroy();
+  }
+
+  graficoEPI = new Chart(ctx, {
+
+    type: "bar",
+
+    data: {
+
+      labels: Object.keys(dados),
+
+      datasets: [{
+        label: "Desvios por EPI",
+        data: Object.values(dados),
+        borderWidth: 1
+      }]
+    },
+
+    options: {
+
+      responsive: true,
+      maintainAspectRatio: false,
+
+      plugins: {
+        legend: {
+          labels: {
+            color: "#fff"
+          }
+        }
+      },
+
+      scales: {
+
+        x: {
+          ticks: {
+            color: "#fff"
+          }
+        },
+
+        y: {
+          beginAtZero: true,
+          ticks: {
+            color: "#fff"
+          }
+        }
+      }
+    }
+  });
+}
+
+// =============================
+// 🔹 GRÁFICO SETORES
+// =============================
+function criarGraficoSetores(dados) {
+
+  const canvas = document.getElementById("graficoSetores");
+
+  if (!canvas) return;
+
+  const ctx = canvas.getContext("2d");
+
+  if (graficoSetores) {
+    graficoSetores.destroy();
+  }
+
+  graficoSetores = new Chart(ctx, {
+
+    type: "pie",
+
+    data: {
+
+      labels: Object.keys(dados),
+
+      datasets: [{
+        data: Object.values(dados)
+      }]
+    },
+
+    options: {
+
+      responsive: true,
+      maintainAspectRatio: false,
+
+      plugins: {
+        legend: {
+          labels: {
+            color: "#fff"
+          }
+        }
+      }
+    }
+  });
+}
+
+// =============================
+// 🔹 GRÁFICO COLABORADORES
+// =============================
+function criarGraficoColaboradores(dados) {
+
+  const canvas = document.getElementById("graficoColaboradores");
+
+  if (!canvas) return;
+
+  const ctx = canvas.getContext("2d");
+
+  if (graficoColaboradores) {
+    graficoColaboradores.destroy();
+  }
+
+  graficoColaboradores = new Chart(ctx, {
+
+    type: "bar",
+
+    data: {
+
+      labels: Object.keys(dados),
+
+      datasets: [{
+        label: "Desvios por Colaborador",
+        data: Object.values(dados),
+        borderWidth: 1
+      }]
+    },
+
+    options: {
+
+      indexAxis: "y",
+
+      responsive: true,
+      maintainAspectRatio: false,
+
+      plugins: {
+        legend: {
+          labels: {
+            color: "#fff"
+          }
+        }
+      },
+
+      scales: {
+
+        x: {
+          beginAtZero: true,
+          ticks: {
+            color: "#fff"
+          }
+        },
+
+        y: {
+          ticks: {
+            color: "#fff"
+          }
+        }
+      }
+    }
+  });
+}
+
+// =============================
+// 🔹 GRÁFICO ANO ATUAL
+// =============================
+async function carregarGraficoAnoAtual() {
+
+  try {
+
+    const anoAtual = String(
+      new Date().getFullYear()
+    );
+
+    const meses = [
+      "01","02","03","04","05","06",
+      "07","08","09","10","11","12"
+    ];
+
+    const nomesMeses = [
+      "Jan","Fev","Mar","Abr","Mai","Jun",
+      "Jul","Ago","Set","Out","Nov","Dez"
+    ];
+
+    const dados = [];
+
+    for (const mes of meses) {
+
+      const ref = collection(
+        db,
+        "desvios",
+        anoAtual,
+        mes
+      );
+
+      const snapshot = await getDocs(ref);
+
+      dados.push(snapshot.size);
+    }
+
+    const canvas =
+      document.getElementById(
+        "graficoAnoAtual"
+      );
+
+    if (!canvas) return;
+
+    const ctx = canvas.getContext("2d");
+
+    if (graficoAnoAtual) {
+      graficoAnoAtual.destroy();
+    }
+
+    graficoAnoAtual = new Chart(ctx, {
+
+      type: "line",
+
+      data: {
+
+        labels: nomesMeses,
+
+        datasets: [{
+          label: "Desvios no Ano",
+          data: dados,
+          tension: 0.3
+        }]
+      },
+
+      options: {
+
+        responsive: true,
+        maintainAspectRatio: false,
+
+        plugins: {
+          legend: {
+            labels: {
+              color: "#fff"
+            }
+          }
+        },
+
+        scales: {
+
+          x: {
+            ticks: {
+              color: "#fff"
+            }
+          },
+
+          y: {
+            beginAtZero: true,
+            ticks: {
+              color: "#fff"
+            }
+          }
+        }
+      }
+    });
+
+  } catch (erro) {
+
+    console.error(
+      "Erro gráfico ano:",
+      erro
+    );
+  }
+}
+
+// =============================
+// 🔹 GRÁFICO 3 ANOS
+// =============================
+async function carregarGraficoTresAnos() {
+
+  try {
+
+    const anoAtual =
+      new Date().getFullYear();
+
+    const anos = [
+      anoAtual - 2,
+      anoAtual - 1,
+      anoAtual
+    ];
+
+    const meses = [
+      "01","02","03","04","05","06",
+      "07","08","09","10","11","12"
+    ];
+
+    const dados = [];
+
+    for (const ano of anos) {
+
+      let totalAno = 0;
+
+      for (const mes of meses) {
+
+        const ref = collection(
+          db,
+          "desvios",
+          String(ano),
+          mes
+        );
+
+        const snapshot =
+          await getDocs(ref);
+
+        totalAno += snapshot.size;
+      }
+
+      dados.push(totalAno);
+    }
+
+    const canvas =
+      document.getElementById(
+        "graficoTresAnos"
+      );
+
+    if (!canvas) return;
+
+    const ctx = canvas.getContext("2d");
+
+    if (graficoTresAnos) {
+      graficoTresAnos.destroy();
+    }
+
+    graficoTresAnos = new Chart(ctx, {
+
+      type: "doughnut",
+
+      data: {
+
+        labels: anos,
+
+        datasets: [{
+          label: "Desvios",
+          data: dados
+        }]
+      },
+
+      options: {
+
+        responsive: true,
+        maintainAspectRatio: false,
+
+        plugins: {
+          legend: {
+            labels: {
+              color: "#fff"
+            }
+          }
+        }
+      }
+    });
+
+  } catch (erro) {
+
+    console.error(
+      "Erro gráfico 3 anos:",
+      erro
+    );
+  }
+}
+
+document
+  .getElementById("btnAtualizarDashboard")
+  .addEventListener("click", carregarDashboard);
+
 // =============================
 // 🔹 INICIAR
 // =============================
 document.addEventListener("DOMContentLoaded", async () => {
 
+  preencherAnos();
+
+  definirMesAtual();
+
   await carregarFuncionarios();
+
   preencherSelect(funcionarios);
 
   carregarHistorico();
-  carregarGrafico();
+
+  carregarDashboard();
+
+  carregarGraficoAnoAtual();
+
+  carregarGraficoTresAnos();
 });
