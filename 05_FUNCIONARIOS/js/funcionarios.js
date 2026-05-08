@@ -137,7 +137,6 @@ let cargoFinal = cargo;
 if (novoCargo && novoCargo.trim() !== "") {
   cargoFinal = novoCargo;
 } else if (cargo !== snap.data().cargoAtual) {
-  // se mudou o cargo manualmente
   const dataFinal = new Date().toISOString().split("T")[0];
 
   historico.push({
@@ -147,8 +146,8 @@ if (novoCargo && novoCargo.trim() !== "") {
 
   cargoFinal = cargo;
 } else if (historico.length) {
-        cargoFinal = historico[historico.length - 1].cargo;
-      }
+  cargoFinal = historico[historico.length - 1].cargo;
+}
 
       await updateDoc(ref, {
         nome,
