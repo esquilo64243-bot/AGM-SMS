@@ -3,63 +3,83 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <title>Home - SMS</title>
+
     <link rel="stylesheet" href="./css/home.css" />
     <link rel="icon" type="image/png" href="img/Logo_AGM.png" />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
   </head>
 
   <body>
-    <!-- CONTEÚDO -->
+    <div class="background-glow"></div>
 
     <main class="home-container">
-      <div class="header-home">
-        <h1>Painel de Gestão SMS</h1>
-        <p class="sub">Sistema interno de Segurança, Meio Ambiente e Saúde</p>
-      </div>
+      <!-- HEADER -->
 
-      <div class="cards">
+      <header class="header-home">
+        <div class="title-area">
+          <span class="badge">SMS MANAGEMENT</span>
+
+          <h1>Painel de Gestão SMS</h1>
+
+          <p class="sub">Sistema interno de Segurança, Meio Ambiente e Saúde</p>
+        </div>
+      </header>
+
+      <!-- CARDS -->
+
+      <section class="cards">
         <div class="card-home ext" onclick="abrirExtintores()">
           <span class="emoji">🧯</span>
-          <p>Extintores</p>
+          <h2>Extintores</h2>
+          <p>Controle e inspeções</p>
         </div>
 
         <div class="card-home acid" onclick="abrirAcidentes()">
           <span class="emoji">🚑</span>
-          <p>Acidentes</p>
+          <h2>Acidentes</h2>
+          <p>Registro e acompanhamento</p>
         </div>
 
         <div class="card-home trein" onclick="abrirTreinamentos()">
           <span class="emoji">🎓</span>
-          <p>Treinamentos</p>
+          <h2>Treinamentos</h2>
+          <p>Capacitações e validade</p>
         </div>
 
         <div class="card-home func" onclick="abrirFuncionarios()">
           <span class="emoji">👷‍♂️</span>
-          <p>Funcionários</p>
+          <h2>Funcionários</h2>
+          <p>Gestão de colaboradores</p>
         </div>
 
         <div class="card-home solic" onclick="abrirSolicitacoes()">
           <span class="emoji">📦</span>
-          <p>Solicitações</p>
+          <h2>Solicitações</h2>
+          <p>Pedidos e requisições</p>
         </div>
 
         <div class="card-home desvi" onclick="abrirDesvios()">
           <span class="emoji">⚠️</span>
-          <p>Desvios</p>
+          <h2>Desvios</h2>
+          <p>Ocorrências e análises</p>
         </div>
-      </div>
+      </section>
 
-      <div class="footer-home">
+      <!-- FOOTER -->
+
+      <footer class="footer-home">
         <p>Versão 1.0.0</p>
-        <p>Desenvolvido por Richard Lucas</p>
-        <span>© 2026 - Sistema Interno SMS</span>
-      </div>
+        <span>© 2026 • Desenvolvido por Richard Lucas</span>
+      </footer>
     </main>
 
-    <!-- SCRIPT -->
     <script>
-      // NAVEGAÇÃO
-
       function abrirExtintores() {
         window.location.href = "../02_EXTINTORES/extintores.html";
       }
@@ -84,8 +104,10 @@
         window.location.href = "../07_DESVIOS/desvios.html";
       }
     </script>
+
     <script type="module">
       import { auth } from "./js/firebase.js";
+
       import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
       onAuthStateChanged(auth, (user) => {
