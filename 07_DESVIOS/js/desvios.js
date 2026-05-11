@@ -247,7 +247,7 @@ async function carregarHistorico() {
         item.innerHTML = `
   <div class="desvio-info">
     <strong>${d.nome}</strong> - ${d.setor} <br>
-    ${d.tipo} | ${d.data}
+    ${limparTipo(limparTipo(d.tipo))} | ${d.data}
 
     <div class="obs-box" style="display:none; margin-top:10px;">
       <strong>Observação:</strong><br>
@@ -315,7 +315,7 @@ async function carregarGrafico() {
 
     snapshot.forEach((docSnap) => {
 
-      const tipo = docSnap.data().tipo;
+      const tipo = limparTipo(docSnap.data().tipo);
 
       if (!contagem[tipo]) {
         contagem[tipo] = 0;
@@ -468,11 +468,11 @@ async function carregarDashboard() {
       totalDesvios++;
 
       // 🔹 EPI
-      if (!contagemEPI[d.tipo]) {
-        contagemEPI[d.tipo] = 0;
+      if (!contagemEPI[limparTipo(d.tipo)]) {
+        contagemEPI[limparTipo(d.tipo)] = 0;
       }
 
-      contagemEPI[d.tipo]++;
+      contagemEPI[limparTipo(d.tipo)]++;
 
       // 🔹 SETOR
       if (!contagemSetores[d.setor]) {
@@ -924,6 +924,16 @@ async function carregarGraficoTresAnos() {
 document
   .getElementById("btnAtualizarDashboard")
   .addEventListener("click", carregarDashboard);
+
+  // new function
+  function limparTipo(tipo) {
+
+  if (!tipo) return "-";
+
+  return tipo
+    .replace(/^Sem\s+/i, "")
+    .trim();
+}
 
 // =============================
 // 🔹 INICIAR

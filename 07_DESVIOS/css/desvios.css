@@ -403,6 +403,8 @@ body{
 
   margin-bottom:28px;
 
+  align-items:stretch;
+
 }
 
 .card-dashboard{
@@ -420,6 +422,16 @@ body{
   box-shadow:
   0 10px 25px rgba(0,0,0,.2);
 
+  min-height:140px;
+
+  display:flex;
+
+  flex-direction:column;
+
+  justify-content:space-between;
+
+  overflow:hidden;
+
 }
 
 .card-dashboard:hover{
@@ -436,13 +448,68 @@ body{
 
   margin-bottom:14px;
 
+  font-weight:600;
+
 }
+
+/* TEXTO DOS VALORES */
 
 .card-dashboard span{
 
-  font-size:28px;
+  display:block;
+
+  width:100%;
 
   font-weight:800;
+
+  line-height:1.1;
+
+  word-break:break-word;
+
+  overflow:hidden;
+
+  text-overflow:ellipsis;
+
+}
+
+/* TOTAL */
+
+#cardTotal{
+
+  font-size:34px;
+
+}
+
+/* EPI / SETOR */
+
+#cardEPI,
+#cardSetor{
+
+  font-size:22px;
+
+}
+
+/* COLABORADOR */
+
+#cardColaborador{
+
+  font-size:clamp(14px,1.1vw,24px);
+
+  line-height:1.2;
+
+  word-break:break-word;
+
+  overflow-wrap:break-word;
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  min-height:60px;
+
+  text-align:center;
 
 }
 
