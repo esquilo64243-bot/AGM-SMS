@@ -11,27 +11,38 @@
 
   <body>
     <div class="home-container">
-      <div class="header-home">
-        <h1>Solicitações</h1>
-        <p class="sub">Escolha o tipo de solicitação</p>
-      </div>
+      <div class="hero-layout">
+        <!-- PAINEL -->
+        <div class="hero-panel">
+          <span class="badge">⚡ CENTRAL AGM</span>
 
-      <div class="cards">
-        <div class="card-home epi" onclick="irEPI()">
-          <div class="emoji">⛑️</div>
-          <p>EPI</p>
+          <h1>Central de<br />Solicitações</h1>
+
+          <p>
+            Gerencie pedidos de EPI e Uniformes de forma rápida e organizada.
+          </p>
         </div>
 
-        <div class="card-home uniforme" onclick="irUniforme()">
-          <div class="emoji">🦺</div>
-          <p>Uniforme</p>
+        <!-- CARDS -->
+        <div class="cards">
+          <div class="card-home epi" onclick="irEPI()">
+            <div class="emoji">⛑️</div>
+            <p>EPI</p>
+          </div>
+
+          <div class="card-home uniforme" onclick="irUniforme()">
+            <div class="emoji">🦺</div>
+            <p>Uniforme</p>
+          </div>
         </div>
       </div>
 
+      <!-- PDF -->
       <div class="pdf-area">
         <button onclick="gerarPDFGeral()" class="btn-pdf-geral">
-          📄 Baixar Solicitações (EPI + Uniforme)
+          📄 Baixar Solicitações
         </button>
+
         <p class="sub">Serra Morena / AGM</p>
       </div>
     </div>

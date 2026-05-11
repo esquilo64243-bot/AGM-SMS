@@ -24,8 +24,21 @@
         </button>
       </header>
 
-      <!-- DASHBOARD -->
-      <section class="dashboard">
+      <div class="main-content">
+
+  <!-- LATERAL -->
+  <aside class="arquivos">
+
+    <div class="section-header">
+      <h2>Histórico de Desvios</h2>
+    </div>
+
+    <div id="historicoContainer"></div>
+
+  </aside>
+
+  <!-- DASHBOARD -->
+  <section class="dashboard">
         <!-- FILTROS -->
         <div class="dashboard-filtros">
           <select id="filtroMes">
@@ -114,11 +127,10 @@
 
       <!-- HISTÓRICO -->
       <section class="historico">
-        <h2>Histórico de Desvios</h2>
 
         <div id="historicoContainer"></div>
-      </section>
-    </div>
+</section>
+</div>
 
     <!-- MODAL -->
     <div class="modal-overlay" id="modal">
@@ -144,7 +156,7 @@
           <select id="tipoDesvio">
             <option value="">Tipo de desvio</option>
             <option>Sem capacete</option>
-            <option>Sem óculos</option>
+            <option>Óculos</option>
             <option>Sem jugular</option>
             <option>Sem luva</option>
             <option>Sem máscara</option>

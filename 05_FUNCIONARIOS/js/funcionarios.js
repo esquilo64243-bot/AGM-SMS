@@ -276,7 +276,7 @@ async function carregar() {
         </div>
       </div>
 
-      <div class="card-body" id="body-${f.id}" style="display:none;">
+      <div class="card-body" id="body-${f.id}">
         <p><strong>Email:</strong> ${f.email || "-"}</p>
         <p><strong>Sexo:</strong> ${f.sexo || "-"}</p>
         <p><strong>Setor:</strong> ${f.setor || "-"}</p>
@@ -323,7 +323,8 @@ async function excluir(id, e) {
 // =========================
 function toggle(id) {
   const el = document.getElementById("body-" + id);
-  el.style.display = el.style.display === "block" ? "none" : "block";
+
+  el.classList.toggle("open");
 }
 
 // =========================
