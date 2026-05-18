@@ -9,6 +9,7 @@ from "../../01_HOME/js/firebase.js";
 /* ============================= */
 /* ELEMENTOS */
 /* ============================= */
+
 const areaDDS =
   document.getElementById("areaDDS");
 
@@ -754,6 +755,14 @@ function trocarDocumento(){
   /* ================================= */
   /* ESCONDER TUDO PRIMEIRO */
   /* ================================= */
+camposDDS.style.display =
+  "none";
+
+previewDDS.style.display =
+  "none";
+
+areaDDS.style.display =
+  "none";
 
   camposRegistroFotografico.style.display =
     "none";
@@ -800,6 +809,20 @@ function trocarDocumento(){
     previewRegistroFotografico.style.display =
       "block";
 
+    camposListaPresenca.style.display =
+      "none";
+
+    areaListaPresenca.style.display =
+      "none";
+
+    previewListaPresenca.style.display =
+      "none";
+
+
+
+    areaDDS.style.display =
+      "none";
+
   }
 
   /* ================================= */
@@ -807,6 +830,15 @@ function trocarDocumento(){
   /* ================================= */
 
   else if(tipo === "listaPresenca"){
+
+    camposRegistroFotografico.style.display =
+      "none";
+
+    areaRegistroFotografico.style.display =
+      "none";
+
+    previewRegistroFotografico.style.display =
+      "none";
 
     camposListaPresenca.style.display =
       "block";
@@ -817,6 +849,12 @@ function trocarDocumento(){
     previewListaPresenca.style.display =
       "block";
 
+    camposDDS.style.display =
+  "none";
+
+previewDDS.style.display =
+  "none";
+
   }
 
   /* ================================= */
@@ -825,12 +863,34 @@ function trocarDocumento(){
 
   else if(tipo === "dds"){
 
+    camposRegistroFotografico.style.display =
+      "none";
+
+    areaRegistroFotografico.style.display =
+      "none";
+
+    previewRegistroFotografico.style.display =
+      "none";
+
+
+
+    camposListaPresenca.style.display =
+      "none";
+
+    areaListaPresenca.style.display =
+      "none";
+
+    previewListaPresenca.style.display =
+      "none";
+
     camposDDS.style.display =
       "block";
 
     previewDDS.style.display =
       "block";
 
+      areaDDS.style.display =
+  "block";
   }
 
 }
