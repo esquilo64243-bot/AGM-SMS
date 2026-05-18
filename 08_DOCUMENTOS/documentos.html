@@ -12,8 +12,6 @@
       src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"
       defer
     ></script>
-
-    <script src="./js/documentos.js" defer></script>
   </head>
 
   <body>
@@ -25,10 +23,13 @@
       <aside class="sidebar">
         <div class="topo-sidebar">
           <h1>📄 Documentos</h1>
+
           <p>Gerador de documentos</p>
         </div>
 
+        <!-- ====================================== -->
         <!-- TIPO -->
+        <!-- ====================================== -->
 
         <div class="campo">
           <label> Tipo de documento </label>
@@ -37,13 +38,17 @@
             <option value="registroFotografico">Registro Fotográfico</option>
 
             <option value="listaPresenca">Lista de Presença</option>
+
+            <option value="dds">DDS</option>
           </select>
         </div>
 
+        <!-- ====================================== -->
         <!-- EMPRESAS -->
+        <!-- ====================================== -->
 
         <div class="campo">
-          <label>Empresas</label>
+          <label> Empresas </label>
 
           <div class="checkbox-group">
             <label class="check-item">
@@ -66,13 +71,13 @@
 
         <div id="camposRegistroFotografico">
           <div class="campo">
-            <label>Data</label>
+            <label> Data </label>
 
             <input type="date" id="dataRegistro" />
           </div>
 
           <div class="campo">
-            <label>Local</label>
+            <label> Local </label>
 
             <input
               type="text"
@@ -82,7 +87,7 @@
           </div>
 
           <div class="campo">
-            <label>Responsável</label>
+            <label> Responsável </label>
 
             <input
               type="text"
@@ -92,7 +97,7 @@
           </div>
 
           <div class="campo">
-            <label>Serviço executado</label>
+            <label> Serviço executado </label>
 
             <textarea
               id="servicoRegistro"
@@ -121,7 +126,7 @@
 
         <div id="camposListaPresenca" style="display: none">
           <div class="campo">
-            <label>Treinamento</label>
+            <label> Treinamento </label>
 
             <input
               type="text"
@@ -140,7 +145,7 @@
           </div>
 
           <div class="campo">
-            <label>Instrutor</label>
+            <label> Instrutor </label>
 
             <input
               type="text"
@@ -150,7 +155,7 @@
           </div>
 
           <div class="campo">
-            <label>Horas/Aula</label>
+            <label> Horas/Aula </label>
 
             <input
               type="text"
@@ -161,14 +166,12 @@
         </div>
 
         <!-- ====================================== -->
-        <!-- LISTA DE PRESENÇA -->
+        <!-- LISTA PRESENÇA -->
         <!-- ====================================== -->
 
         <div id="areaListaPresenca" style="display: none">
-          <!-- EMPRESA -->
-
           <div class="campo">
-            <label>Empresa</label>
+            <label> Empresa </label>
 
             <select id="empresaTreinamento">
               <option value="AGM">AGM</option>
@@ -177,24 +180,75 @@
             </select>
           </div>
 
-          <!-- BUSCA -->
-
           <div class="campo">
-            <label> Buscar colaborador </label>
+            <label> Colaboradores </label>
+
+            <div class="acoes-colaboradores">
+              <label class="check-acao">
+                <input type="checkbox" id="selecionarTodos" />
+
+                Selecionar todos
+              </label>
+
+              <button id="gerarListaVazia">Gerar lista vazia</button>
+            </div>
 
             <input
               type="text"
               id="buscaColaborador"
-              placeholder="Digite o nome"
+              placeholder="Buscar colaborador"
+            />
+
+            <div id="listaColaboradores"></div>
+          </div>
+        </div>
+
+        <!-- ====================================== -->
+        <!-- CAMPOS DDS -->
+        <!-- ====================================== -->
+
+        <div id="camposDDS" style="display: none">
+          <div class="campo">
+            <label> Título do DDS </label>
+
+            <input
+              type="text"
+              id="tituloDDS"
+              placeholder="Digite o título do DDS"
             />
           </div>
 
-          <!-- LISTA -->
+          <div class="campo">
+            <label> Tipo de DDS </label>
+
+            <select id="tipoDDS">
+              <option value="">Selecione</option>
+
+              <option>Segurança do Trabalho</option>
+
+              <option>Meio Ambiente</option>
+
+              <option>Saúde Ocupacional</option>
+
+              <option>Comportamental</option>
+
+              <option>Operacional</option>
+            </select>
+          </div>
 
           <div class="campo">
-            <label>Colaboradores</label>
+            <label> Data </label>
 
-            <div id="listaColaboradores"></div>
+            <input type="date" id="dataDDS" />
+          </div>
+
+          <div class="campo">
+            <label> Conteúdo </label>
+
+            <textarea
+              id="conteudoDDS"
+              placeholder="Digite o conteúdo do DDS..."
+            ></textarea>
           </div>
         </div>
       </aside>
@@ -204,12 +258,12 @@
       <!-- ====================================== -->
 
       <main class="preview-area">
-        <div class="folha" id="documentoPreview">
+        <div id="documentoPreview">
           <!-- ====================================== -->
           <!-- PREVIEW REGISTRO -->
           <!-- ====================================== -->
 
-          <div id="previewRegistroFotografico">
+          <div class="folha" id="previewRegistroFotografico">
             <div class="cabecalho-doc">
               <div class="topo-logos">
                 <img
@@ -261,12 +315,20 @@
           <!-- PREVIEW LISTA PRESENÇA -->
           <!-- ====================================== -->
 
-          <div id="previewListaPresenca" style="display: none">
+          <div class="folha" id="previewListaPresenca" style="display: none">
             <div class="cabecalho-doc">
               <div class="topo-logos">
-                <img src="../assets/logo_AGM.png" class="logo-doc" />
+                <img
+                  src="../assets/logo_AGM.png"
+                  class="logo-doc"
+                  id="logoAGMLista"
+                />
 
-                <img src="../assets/logo_SM.webp" class="logo-doc" />
+                <img
+                  src="../assets/logo_SM.webp"
+                  class="logo-doc"
+                  id="logoSerraLista"
+                />
               </div>
 
               <h1>LISTA DE PRESENÇA</h1>
@@ -295,7 +357,7 @@
             <div class="servico-doc">
               <h3>Conteúdo Programático</h3>
 
-              <p id="previewConteudo">-</p>
+              <ul id="previewConteudo"></ul>
             </div>
 
             <table class="tabela-presenca">
@@ -312,8 +374,102 @@
               <tbody id="corpoTabelaPresenca"></tbody>
             </table>
           </div>
+
+          <!-- ====================================== -->
+          <!-- PREVIEW DDS -->
+          <!-- ====================================== -->
+
+          <div class="folha" id="previewDDS" style="display: none">
+            <div class="cabecalho-doc">
+              <div class="topo-logos">
+                <img src="../assets/logo_AGM.png" class="logo-doc" />
+
+                <img src="../assets/logo_SM.webp" class="logo-doc" />
+              </div>
+
+              <h1>DIÁLOGO DIÁRIO DE SEGURANÇA</h1>
+            </div>
+
+            <div class="info-doc">
+              <p>
+                <strong>Título:</strong>
+
+                <span id="previewTituloDDS"> - </span>
+              </p>
+
+              <p>
+                <strong>Tipo:</strong>
+
+                <span id="previewTipoDDS"> - </span>
+              </p>
+
+              <p>
+                <strong>Data:</strong>
+
+                <span id="previewDataDDS"> - </span>
+              </p>
+            </div>
+
+            <div class="servico-doc">
+              <h3>Conteúdo</h3>
+
+              <p id="previewConteudoDDS">-</p>
+            </div>
+
+            <table class="tabela-presenca">
+              <thead>
+                <tr>
+                  <th>Nome</th>
+
+                  <th>Função</th>
+
+                  <th>Assinatura</th>
+                </tr>
+              </thead>
+
+              <tbody id="corpoTabelaDDS">
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </main>
+    </div>
+
+    <!-- ====================================== -->
+    <!-- RODAPÉ -->
+    <!-- ====================================== -->
+
+    <div class="rodape-doc">
+      Documento emitido automaticamente pelo sistema AGM
     </div>
 
     <!-- ====================================== -->
@@ -321,5 +477,7 @@
     <!-- ====================================== -->
 
     <button class="btn-pdf" id="btnExportar">Exportar PDF</button>
+
+    <script type="module" src="./js/documentos.js"></script>
   </body>
 </html>

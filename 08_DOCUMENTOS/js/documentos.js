@@ -1,6 +1,74 @@
+import {
+  collection,
+  getDocs
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+import { db }
+from "../../01_HOME/js/firebase.js";
+
 /* ============================= */
 /* ELEMENTOS */
 /* ============================= */
+
+const tituloDDS =
+  document.getElementById("tituloDDS");
+
+const tipoDDS =
+  document.getElementById("tipoDDS");
+
+const dataDDS =
+  document.getElementById("dataDDS");
+
+const conteudoDDS =
+  document.getElementById("conteudoDDS");
+
+const previewTituloDDS =
+  document.getElementById("previewTituloDDS");
+
+const previewTipoDDS =
+  document.getElementById("previewTipoDDS");
+
+const previewDataDDS =
+  document.getElementById("previewDataDDS");
+
+const previewConteudoDDS =
+  document.getElementById("previewConteudoDDS");
+
+const camposDDS =
+  document.getElementById("camposDDS");
+
+const previewDDS =
+  document.getElementById("previewDDS");
+
+const selecionarTodos =
+  document.getElementById("selecionarTodos");
+
+const gerarListaVazia =
+  document.getElementById("gerarListaVazia");
+
+const nomeTreinamento =
+  document.getElementById("nomeTreinamento");
+
+const conteudoProgramatico =
+  document.getElementById("conteudoProgramatico");
+
+const instrutorTreinamento =
+  document.getElementById("instrutorTreinamento");
+
+const horasTreinamento =
+  document.getElementById("horasTreinamento");
+
+const previewTreinamento =
+  document.getElementById("previewTreinamento");
+
+const previewInstrutor =
+  document.getElementById("previewInstrutor");
+
+const previewHoras =
+  document.getElementById("previewHoras");
+
+const previewConteudo =
+  document.getElementById("previewConteudo");
 
 const tipoDocumento =
   document.getElementById("tipoDocumento");
@@ -38,6 +106,8 @@ const previewListaPresenca =
 let funcionarios = [];
 let mapaFuncionarios = {};
 
+let selecionados = [];
+
 const empresaTreinamento =
   document.getElementById("empresaTreinamento");
 
@@ -58,6 +128,12 @@ const logoAGM =
 
 const logoSerra =
   document.getElementById("logoSerra");
+
+const logoAGMLista =
+  document.getElementById("logoAGMLista");
+
+const logoSerraLista =
+  document.getElementById("logoSerraLista");
 
 const dataRegistro = document.getElementById("dataRegistro");
 const localRegistro = document.getElementById("localRegistro");
@@ -94,21 +170,94 @@ function atualizarPreview(){
 
 }
 
+/* ============================= */
+/* PREVIEW LISTA PRESENÇA */
+/* ============================= */
+
+function atualizarPreviewLista() {
+
+  previewTreinamento.textContent =
+    nomeTreinamento.value || "-";
+
+  previewInstrutor.textContent =
+    instrutorTreinamento.value || "-";
+
+  previewHoras.textContent =
+    horasTreinamento.value || "-";
+
+  const linhas =
+  conteudoProgramatico.value
+    .split("\n")
+    .filter((linha) => linha.trim() !== "");
+
+previewConteudo.innerHTML = "";
+
+if(linhas.length === 0){
+
+  previewConteudo.innerHTML =
+    "<li>-</li>";
+
+} else {
+
+  linhas.forEach((linha) => {
+
+    const li =
+      document.createElement("li");
+
+    li.textContent = linha;
+
+    previewConteudo.appendChild(li);
+
+  });
+
+}
+
+}
+
+// futions dds
+
+function atualizarPreviewDDS(){
+
+  previewTituloDDS.textContent =
+    tituloDDS.value || "-";
+
+  previewTipoDDS.textContent =
+    tipoDDS.value || "-";
+
+  previewDataDDS.textContent =
+    dataDDS.value || "-";
+
+  previewConteudoDDS.textContent =
+    conteudoDDS.value || "-";
+
+}
+
 /* EMPRESAS */
 function atualizarLogos(){
 
-  logoAGM.style.display =
+  const mostrarAGM =
     checkAGM.checked
       ? "block"
       : "none";
 
-  logoSerra.style.display =
+  const mostrarSerra =
     checkSerra.checked
       ? "block"
       : "none";
 
-}
+  logoAGM.style.display =
+    mostrarAGM;
 
+  logoSerra.style.display =
+    mostrarSerra;
+
+  logoAGMLista.style.display =
+    mostrarAGM;
+
+  logoSerraLista.style.display =
+    mostrarSerra;
+
+}
 /* ============================= */
 /* EVENTOS INPUT */
 /* ============================= */
@@ -117,6 +266,25 @@ dataRegistro.addEventListener("input", atualizarPreview);
 localRegistro.addEventListener("input", atualizarPreview);
 responsavelRegistro.addEventListener("input", atualizarPreview);
 servicoRegistro.addEventListener("input", atualizarPreview);
+nomeTreinamento.addEventListener(
+  "input",
+  atualizarPreviewLista
+);
+
+conteudoProgramatico.addEventListener(
+  "input",
+  atualizarPreviewLista
+);
+
+instrutorTreinamento.addEventListener(
+  "input",
+  atualizarPreviewLista
+);
+
+horasTreinamento.addEventListener(
+  "input",
+  atualizarPreviewLista
+);
 
 checkAGM.addEventListener(
   "change",
@@ -128,6 +296,25 @@ checkSerra.addEventListener(
   atualizarLogos
 );
 
+tituloDDS.addEventListener(
+  "input",
+  atualizarPreviewDDS
+);
+
+tipoDDS.addEventListener(
+  "change",
+  atualizarPreviewDDS
+);
+
+dataDDS.addEventListener(
+  "input",
+  atualizarPreviewDDS
+);
+
+conteudoDDS.addEventListener(
+  "input",
+  atualizarPreviewDDS
+);
 /* ============================= */
 /* ADICIONAR REGISTRO */
 /* ============================= */
@@ -227,35 +414,42 @@ btnExportar.addEventListener("click", () => {
   const elemento =
     document.getElementById("documentoPreview");
 
-const options = {
+  const options = {
 
-  margin:0,
+    margin:0,
 
-  filename:"registro-fotografico.pdf",
+    filename:
+      tipoDocumento.value === "registroFotografico"
+        ? "registro-fotografico.pdf"
+        : "lista-presenca.pdf",
 
-  image:{
-    type:"jpeg",
-    quality:1
-  },
+    image:{
+      type:"jpeg",
+      quality:1
+    },
 
-  html2canvas:{
-    scale:3,
-    useCORS:true
-  },
+    html2canvas:{
+      scale:2,
+      useCORS:true,
+      scrollY:0
+    },
 
-  jsPDF:{
-    unit:"mm",
-    format:"a4",
-    orientation:"portrait"
-  },
+    jsPDF:{
+      unit:"mm",
+      format:"a4",
+      orientation:"portrait"
+    },
 
-  pagebreak:{
-    mode:["avoid-all","css","legacy"]
-  }
+    pagebreak:{
+      mode:["avoid-all"]
+    }
 
-};
+  };
 
-  html2pdf().set(options).from(elemento).save();
+  html2pdf()
+    .set(options)
+    .from(elemento)
+    .save();
 
 });
 
@@ -303,26 +497,177 @@ async function carregarFuncionarios() {
 
 }
 
-function renderizarColaboradores() {
+//selecionar Todos
+selecionarTodos.addEventListener(
+  "change",
+  () => {
 
-  const empresaSelecionada =
-    empresaTreinamento.value;
+    const empresaSelecionada =
+      empresaTreinamento.value
+        .toLowerCase()
+        .trim();
 
-  const busca =
-    buscaColaborador.value.toLowerCase();
+    const funcionariosEmpresa =
+      funcionarios.filter((f) => {
 
-  listaColaboradores.innerHTML = "";
+        return (
+          (f.empresa || "")
+            .toLowerCase()
+            .trim()
+          === empresaSelecionada
+        );
 
-  const filtrados = funcionarios.filter((f) => {
+      });
 
-    return (
-      f.empresa === empresaSelecionada &&
-      f.nome.toLowerCase().includes(busca)
+    if(selecionarTodos.checked){
+
+      funcionariosEmpresa.forEach((f) => {
+
+        if(
+          !selecionados.includes(f.id)
+        ){
+
+          selecionados.push(f.id);
+
+        }
+
+      });
+
+    } else {
+
+      selecionados =
+        selecionados.filter((id) => {
+
+          const funcionario =
+            mapaFuncionarios[id];
+
+          return (
+            funcionario?.empresa
+              .toLowerCase()
+              .trim()
+            !== empresaSelecionada
+          );
+
+        });
+
+    }
+
+    renderizarColaboradores();
+
+    atualizarTabelaPresenca();
+
+  }
+);
+
+// lista Vazia
+gerarListaVazia.addEventListener(
+  "click",
+  () => {
+
+    const corpoTabela =
+      document.getElementById(
+        "corpoTabelaPresenca"
+      );
+
+    corpoTabela.innerHTML = "";
+
+    for(let i = 0; i < 15; i++){
+
+      const tr =
+        document.createElement("tr");
+
+      tr.innerHTML = `
+      
+        <td style="height:35px;"></td>
+
+        <td></td>
+
+        <td></td>
+
+      `;
+
+      corpoTabela.appendChild(tr);
+
+    }
+
+  }
+);
+
+// atualizar tabela de PRESENÇA
+
+function atualizarTabelaPresenca() {
+
+  const corpoTabela =
+    document.getElementById(
+      "corpoTabelaPresenca"
     );
+
+  corpoTabela.innerHTML = "";
+
+  const funcionariosOrdenados =
+    funcionarios.filter((f) =>
+      selecionados.includes(f.id)
+    );
+
+  funcionariosOrdenados.forEach((funcionario) => {
+
+    const tr =
+      document.createElement("tr");
+
+    tr.innerHTML = `
+    
+      <td>${funcionario.nome}</td>
+
+      <td>${funcionario.cargo}</td>
+
+      <td></td>
+
+    `;
+
+    corpoTabela.appendChild(tr);
 
   });
 
+}
+
+function renderizarColaboradores() {
+
+  const empresaSelecionada =
+    empresaTreinamento.value
+      .toLowerCase()
+      .trim();
+
+  const busca =
+    buscaColaborador.value
+      .toLowerCase()
+      .trim();
+
+  listaColaboradores.innerHTML = "";
+
+  const filtrados =
+    funcionarios.filter((f) => {
+
+      const nome =
+        (f.nome || "")
+          .toLowerCase()
+          .trim();
+
+      const empresa =
+        (f.empresa || "")
+          .toLowerCase()
+          .trim();
+
+      return (
+        empresa === empresaSelecionada &&
+        nome.includes(busca)
+      );
+
+    });
+
   filtrados.forEach((f) => {
+
+    const marcado =
+      selecionados.includes(f.id);
 
     const div =
       document.createElement("div");
@@ -333,15 +678,57 @@ function renderizarColaboradores() {
     
       <input
         type="checkbox"
+        class="check-colaborador"
+        data-id="${f.id}"
+        ${marcado ? "checked" : ""}
       >
 
       <label>
-        ${f.nome} - ${f.cargo}
+
+        <span class="nome-colab">
+          ${f.nome}
+        </span>
+
+        <span class="cargo-colab">
+          ${f.cargo}
+        </span>
+
       </label>
 
     `;
 
     listaColaboradores.appendChild(div);
+
+    const checkbox =
+      div.querySelector("input");
+
+    checkbox.addEventListener(
+      "change",
+      () => {
+
+        if(checkbox.checked){
+
+          if(
+            !selecionados.includes(f.id)
+          ){
+
+            selecionados.push(f.id);
+
+          }
+
+        } else {
+
+          selecionados =
+            selecionados.filter(
+              (id) => id !== f.id
+            );
+
+        }
+
+        atualizarTabelaPresenca();
+
+      }
+    );
 
   });
 
@@ -356,10 +743,6 @@ buscaColaborador.addEventListener(
   "input",
   renderizarColaboradores
 );
-
-/* ============================= */
-/* TROCAR DOCUMENTO */
-/* ============================= */
 
 function trocarDocumento(){
 
@@ -392,6 +775,11 @@ function trocarDocumento(){
     previewListaPresenca.style.display =
       "none";
 
+
+
+    areaDDS.style.display =
+      "none";
+
   }
 
   /* ================================= */
@@ -418,6 +806,48 @@ function trocarDocumento(){
       "block";
 
     previewListaPresenca.style.display =
+      "block";
+
+
+
+    camposDDS.style.display =
+  "none";
+
+previewDDS.style.display =
+  "none";
+
+  }
+
+  /* ================================= */
+  /* DDS */
+  /* ================================= */
+
+  else if(tipo === "dds"){
+
+    camposRegistroFotografico.style.display =
+      "none";
+
+    areaRegistroFotografico.style.display =
+      "none";
+
+    previewRegistroFotografico.style.display =
+      "none";
+
+
+
+    camposListaPresenca.style.display =
+      "none";
+
+    areaListaPresenca.style.display =
+      "none";
+
+    previewListaPresenca.style.display =
+      "none";
+
+    camposDDS.style.display =
+      "block";
+
+    previewDDS.style.display =
       "block";
 
   }
