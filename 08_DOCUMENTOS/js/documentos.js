@@ -10,9 +10,6 @@ from "../../01_HOME/js/firebase.js";
 /* ELEMENTOS */
 /* ============================= */
 
-const areaDDS =
-  document.getElementById("areaDDS");
-
 const tituloDDS =
   document.getElementById("tituloDDS");
 
@@ -230,8 +227,8 @@ function atualizarPreviewDDS(){
   previewDataDDS.textContent =
     dataDDS.value || "-";
 
-  previewConteudoDDS.textContent =
-    conteudoDDS.value || "-";
+  previewConteudoDDS.innerHTML =
+  conteudoDDS.value.replace(/\n/g, "<br>") || "-";
 
 }
 
@@ -322,88 +319,92 @@ conteudoDDS.addEventListener(
 /* ADICIONAR REGISTRO */
 /* ============================= */
 
-btnAdicionar.addEventListener("click", () => {
+if(btnAdicionar){
 
-  const index = document.querySelectorAll(".registro-item").length;
+  btnAdicionar.addEventListener("click", () => {
 
-  /* CARD LATERAL */
+    const index =
+      document.querySelectorAll(".registro-item").length;
 
-  const registro = document.createElement("div");
-  registro.classList.add("registro-item");
+    const registro =
+      document.createElement("div");
 
-  registro.innerHTML = `
-  
-    <input type="file" accept="image/*" id="foto-${index}">
+    registro.classList.add("registro-item");
 
-    <textarea
-      placeholder="Descrição da foto"
-      id="descricao-${index}"
-    ></textarea>
+    registro.innerHTML = `
+      <input type="file" accept="image/*" id="foto-${index}">
 
-  `;
+      <textarea
+        placeholder="Descrição da foto"
+        id="descricao-${index}"
+      ></textarea>
+    `;
 
-  registrosContainer.appendChild(registro);
+    registrosContainer.appendChild(registro);
 
-  /* PREVIEW */
+    const preview =
+      document.createElement("div");
 
-  const preview = document.createElement("div");
-  preview.classList.add("preview-registro");
+    preview.classList.add("preview-registro");
 
-preview.innerHTML = `
-  
-    <h3>Registro ${index + 1}</h3>
+    preview.innerHTML = `
+      <h3>Registro ${index + 1}</h3>
 
-    <img id="preview-img-${index}" />
+      <img id="preview-img-${index}" />
 
-    <p id="preview-desc-${index}">
-      -
-    </p>
+      <p id="preview-desc-${index}">
+        -
+      </p>
+    `;
 
-  `;
+    previewRegistros.appendChild(preview);
 
-  previewRegistros.appendChild(preview);
+    /* FOTO */
 
-  /* FOTO */
+    const fotoInput =
+      document.getElementById(`foto-${index}`);
 
-  const fotoInput = document.getElementById(`foto-${index}`);
-  const previewImg = document.getElementById(`preview-img-${index}`);
+    const previewImg =
+      document.getElementById(`preview-img-${index}`);
 
-  fotoInput.addEventListener("change", (event) => {
+    fotoInput.addEventListener("change", (event) => {
 
-    const arquivo = event.target.files[0];
+      const arquivo = event.target.files[0];
 
-    if(arquivo){
+      if(arquivo){
 
-      const reader = new FileReader();
+        const reader = new FileReader();
 
-      reader.onload = function(e){
+        reader.onload = function(e){
 
-        previewImg.src = e.target.result;
+          previewImg.src = e.target.result;
 
-      };
+        };
 
-      reader.readAsDataURL(arquivo);
+        reader.readAsDataURL(arquivo);
 
-    }
+      }
+
+    });
+
+    /* DESCRIÇÃO */
+
+    const descricaoInput =
+      document.getElementById(`descricao-${index}`);
+
+    const previewDesc =
+      document.getElementById(`preview-desc-${index}`);
+
+    descricaoInput.addEventListener("input", () => {
+
+      previewDesc.textContent =
+        descricaoInput.value || "-";
+
+    });
 
   });
 
-  /* DESCRIÇÃO */
-
-  const descricaoInput =
-    document.getElementById(`descricao-${index}`);
-
-  const previewDesc =
-    document.getElementById(`preview-desc-${index}`);
-
-  descricaoInput.addEventListener("input", () => {
-
-    previewDesc.textContent =
-      descricaoInput.value || "-";
-
-  });
-
-});
+}
 
 /* ============================= */
 /* EXPORTAR PDF */
@@ -422,9 +423,11 @@ btnExportar.addEventListener("click", () => {
     margin:0,
 
     filename:
-      tipoDocumento.value === "registroFotografico"
-        ? "registro-fotografico.pdf"
-        : "lista-presenca.pdf",
+  tipoDocumento.value === "registroFotografico"
+    ? "registro-fotografico.pdf"
+    : tipoDocumento.value === "dds"
+    ? "dds.pdf"
+    : "lista-presenca.pdf",
 
     image:{
       type:"jpeg",
@@ -747,6 +750,17 @@ buscaColaborador.addEventListener(
   renderizarColaboradores
 );
 
+console.log(camposDDS);
+console.log(previewDDS);
+
+console.log(camposRegistroFotografico);
+console.log(areaRegistroFotografico);
+console.log(previewRegistroFotografico);
+
+console.log(camposListaPresenca);
+console.log(areaListaPresenca);
+console.log(previewListaPresenca);
+
 function trocarDocumento(){
 
   const tipo =
@@ -756,12 +770,6 @@ function trocarDocumento(){
   /* ESCONDER TUDO PRIMEIRO */
   /* ================================= */
 camposDDS.style.display =
-  "none";
-
-previewDDS.style.display =
-  "none";
-
-areaDDS.style.display =
   "none";
 
   camposRegistroFotografico.style.display =
@@ -816,11 +824,6 @@ areaDDS.style.display =
       "none";
 
     previewListaPresenca.style.display =
-      "none";
-
-
-
-    areaDDS.style.display =
       "none";
 
   }
@@ -889,19 +892,21 @@ previewDDS.style.display =
     previewDDS.style.display =
       "block";
 
-      areaDDS.style.display =
-  "block";
   }
 
 }
 
-tipoDocumento.addEventListener(
-  "change",
-  trocarDocumento
-);
+window.addEventListener("DOMContentLoaded", () => {
 
-trocarDocumento();
+  tipoDocumento.addEventListener(
+    "change",
+    trocarDocumento
+  );
 
-carregarFuncionarios();
+  trocarDocumento();
 
-atualizarLogos();
+  carregarFuncionarios();
+
+  atualizarLogos();
+
+});
