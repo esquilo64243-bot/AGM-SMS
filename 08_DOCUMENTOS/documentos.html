@@ -1,0 +1,483 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Documentos</title>
+
+    <link rel="stylesheet" href="./css/documentos.css" />
+
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"
+      defer
+    ></script>
+  </head>
+
+  <body>
+    <div class="container">
+      <!-- ====================================== -->
+      <!-- SIDEBAR -->
+      <!-- ====================================== -->
+
+      <aside class="sidebar">
+        <div class="topo-sidebar">
+          <h1>📄 Documentos</h1>
+
+          <p>Gerador de documentos</p>
+        </div>
+
+        <!-- ====================================== -->
+        <!-- TIPO -->
+        <!-- ====================================== -->
+
+        <div class="campo">
+          <label> Tipo de documento </label>
+
+          <select id="tipoDocumento">
+            <option value="registroFotografico">Registro Fotográfico</option>
+
+            <option value="listaPresenca">Lista de Presença</option>
+
+            <option value="dds">DDS</option>
+          </select>
+        </div>
+
+        <!-- ====================================== -->
+        <!-- EMPRESAS -->
+        <!-- ====================================== -->
+
+        <div class="campo">
+          <label> Empresas </label>
+
+          <div class="checkbox-group">
+            <label class="check-item">
+              <input type="checkbox" id="checkAGM" checked />
+
+              AGM
+            </label>
+
+            <label class="check-item">
+              <input type="checkbox" id="checkSerra" checked />
+
+              Serra Morena
+            </label>
+          </div>
+        </div>
+
+        <!-- ====================================== -->
+        <!-- CAMPOS REGISTRO FOTOGRÁFICO -->
+        <!-- ====================================== -->
+
+        <div id="camposRegistroFotografico">
+          <div class="campo">
+            <label> Data </label>
+
+            <input type="date" id="dataRegistro" />
+          </div>
+
+          <div class="campo">
+            <label> Local </label>
+
+            <input
+              type="text"
+              id="localRegistro"
+              placeholder="Digite o local"
+            />
+          </div>
+
+          <div class="campo">
+            <label> Responsável </label>
+
+            <input
+              type="text"
+              id="responsavelRegistro"
+              placeholder="Nome do responsável"
+            />
+          </div>
+
+          <div class="campo">
+            <label> Serviço executado </label>
+
+            <textarea
+              id="servicoRegistro"
+              placeholder="Descreva o serviço"
+            ></textarea>
+          </div>
+        </div>
+
+        <!-- ====================================== -->
+        <!-- REGISTRO FOTOGRÁFICO -->
+        <!-- ====================================== -->
+
+        <div id="areaRegistroFotografico">
+          <div class="registros-header">
+            <h2>📸 Registros</h2>
+
+            <button id="btnAdicionar">+ Adicionar</button>
+          </div>
+
+          <div id="registrosContainer"></div>
+        </div>
+
+        <!-- ====================================== -->
+        <!-- CAMPOS LISTA PRESENÇA -->
+        <!-- ====================================== -->
+
+        <div id="camposListaPresenca" style="display: none">
+          <div class="campo">
+            <label> Treinamento </label>
+
+            <input
+              type="text"
+              id="nomeTreinamento"
+              placeholder="Nome do treinamento"
+            />
+          </div>
+
+          <div class="campo">
+            <label> Conteúdo Programático </label>
+
+            <textarea
+              id="conteudoProgramatico"
+              placeholder="Digite os tópicos"
+            ></textarea>
+          </div>
+
+          <div class="campo">
+            <label> Instrutor </label>
+
+            <input
+              type="text"
+              id="instrutorTreinamento"
+              placeholder="Nome do instrutor"
+            />
+          </div>
+
+          <div class="campo">
+            <label> Horas/Aula </label>
+
+            <input
+              type="text"
+              id="horasTreinamento"
+              placeholder="Ex: 2 horas"
+            />
+          </div>
+        </div>
+
+        <!-- ====================================== -->
+        <!-- LISTA PRESENÇA -->
+        <!-- ====================================== -->
+
+        <div id="areaListaPresenca" style="display: none">
+          <div class="campo">
+            <label> Empresa </label>
+
+            <select id="empresaTreinamento">
+              <option value="AGM">AGM</option>
+
+              <option value="Serra Morena">Serra Morena</option>
+            </select>
+          </div>
+
+          <div class="campo">
+            <label> Colaboradores </label>
+
+            <div class="acoes-colaboradores">
+              <label class="check-acao">
+                <input type="checkbox" id="selecionarTodos" />
+
+                Selecionar todos
+              </label>
+
+              <button id="gerarListaVazia">Gerar lista vazia</button>
+            </div>
+
+            <input
+              type="text"
+              id="buscaColaborador"
+              placeholder="Buscar colaborador"
+            />
+
+            <div id="listaColaboradores"></div>
+          </div>
+        </div>
+
+        <!-- ====================================== -->
+        <!-- CAMPOS DDS -->
+        <!-- ====================================== -->
+
+        <div id="camposDDS" style="display: none">
+          <div class="campo">
+            <label> Título do DDS </label>
+
+            <input
+              type="text"
+              id="tituloDDS"
+              placeholder="Digite o título do DDS"
+            />
+          </div>
+
+          <div class="campo">
+            <label> Tipo de DDS </label>
+
+            <select id="tipoDDS">
+              <option value="">Selecione</option>
+
+              <option>Segurança do Trabalho</option>
+
+              <option>Meio Ambiente</option>
+
+              <option>Saúde Ocupacional</option>
+
+              <option>Comportamental</option>
+
+              <option>Operacional</option>
+            </select>
+          </div>
+
+          <div class="campo">
+            <label> Data </label>
+
+            <input type="date" id="dataDDS" />
+          </div>
+
+          <div class="campo">
+            <label> Conteúdo </label>
+
+            <textarea
+              id="conteudoDDS"
+              placeholder="Digite o conteúdo do DDS..."
+            ></textarea>
+          </div>
+        </div>
+      </aside>
+
+      <!-- ====================================== -->
+      <!-- PREVIEW -->
+      <!-- ====================================== -->
+
+      <main class="preview-area">
+        <div id="documentoPreview">
+          <!-- ====================================== -->
+          <!-- PREVIEW REGISTRO -->
+          <!-- ====================================== -->
+
+          <div class="folha" id="previewRegistroFotografico">
+            <div class="cabecalho-doc">
+              <div class="topo-logos">
+                <img
+                  src="../assets/logo_AGM.png"
+                  class="logo-doc"
+                  id="logoAGM"
+                />
+
+                <img
+                  src="../assets/logo_SM.webp"
+                  class="logo-doc"
+                  id="logoSerra"
+                />
+              </div>
+
+              <h1>REGISTRO FOTOGRÁFICO</h1>
+            </div>
+
+            <div class="info-doc">
+              <p>
+                <strong>Data:</strong>
+
+                <span id="previewData"> - </span>
+              </p>
+
+              <p>
+                <strong>Local:</strong>
+
+                <span id="previewLocal"> - </span>
+              </p>
+
+              <p>
+                <strong>Responsável:</strong>
+
+                <span id="previewResponsavel"> - </span>
+              </p>
+            </div>
+
+            <div class="servico-doc">
+              <h3>Serviço Executado</h3>
+
+              <p id="previewServico">-</p>
+            </div>
+
+            <div id="previewRegistros"></div>
+          </div>
+
+          <!-- ====================================== -->
+          <!-- PREVIEW LISTA PRESENÇA -->
+          <!-- ====================================== -->
+
+          <div class="folha" id="previewListaPresenca" style="display: none">
+            <div class="cabecalho-doc">
+              <div class="topo-logos">
+                <img
+                  src="../assets/logo_AGM.png"
+                  class="logo-doc"
+                  id="logoAGMLista"
+                />
+
+                <img
+                  src="../assets/logo_SM.webp"
+                  class="logo-doc"
+                  id="logoSerraLista"
+                />
+              </div>
+
+              <h1>LISTA DE PRESENÇA</h1>
+            </div>
+
+            <div class="info-doc">
+              <p>
+                <strong>Treinamento:</strong>
+
+                <span id="previewTreinamento"> - </span>
+              </p>
+
+              <p>
+                <strong>Instrutor:</strong>
+
+                <span id="previewInstrutor"> - </span>
+              </p>
+
+              <p>
+                <strong>Horas/Aula:</strong>
+
+                <span id="previewHoras"> - </span>
+              </p>
+            </div>
+
+            <div class="servico-doc">
+              <h3>Conteúdo Programático</h3>
+
+              <ul id="previewConteudo"></ul>
+            </div>
+
+            <table class="tabela-presenca">
+              <thead>
+                <tr>
+                  <th>Nome</th>
+
+                  <th>Função</th>
+
+                  <th>Assinatura</th>
+                </tr>
+              </thead>
+
+              <tbody id="corpoTabelaPresenca"></tbody>
+            </table>
+          </div>
+
+          <!-- ====================================== -->
+          <!-- PREVIEW DDS -->
+          <!-- ====================================== -->
+
+          <div class="folha" id="previewDDS" style="display: none">
+            <div class="cabecalho-doc">
+              <div class="topo-logos">
+                <img src="../assets/logo_AGM.png" class="logo-doc" />
+
+                <img src="../assets/logo_SM.webp" class="logo-doc" />
+              </div>
+
+              <h1>DIÁLOGO DIÁRIO DE SEGURANÇA</h1>
+            </div>
+
+            <div class="info-doc">
+              <p>
+                <strong>Título:</strong>
+
+                <span id="previewTituloDDS"> - </span>
+              </p>
+
+              <p>
+                <strong>Tipo:</strong>
+
+                <span id="previewTipoDDS"> - </span>
+              </p>
+
+              <p>
+                <strong>Data:</strong>
+
+                <span id="previewDataDDS"> - </span>
+              </p>
+            </div>
+
+            <div class="servico-doc">
+              <h3>Conteúdo</h3>
+
+              <p id="previewConteudoDDS">-</p>
+            </div>
+
+            <table class="tabela-presenca">
+              <thead>
+                <tr>
+                  <th>Nome</th>
+
+                  <th>Função</th>
+
+                  <th>Assinatura</th>
+                </tr>
+              </thead>
+
+              <tbody id="corpoTabelaDDS">
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- ====================================== -->
+    <!-- RODAPÉ -->
+    <!-- ====================================== -->
+
+    <div class="rodape-doc">
+      Documento emitido automaticamente pelo sistema AGM
+    </div>
+
+    <!-- ====================================== -->
+    <!-- BOTÃO PDF -->
+    <!-- ====================================== -->
+
+    <button class="btn-pdf" id="btnExportar">Exportar PDF</button>
+
+    <script type="module" src="./js/documentos.js"></script>
+  </body>
+</html>

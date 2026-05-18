@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Controle de Desvios</title>
+
+    <link rel="stylesheet" href="./css/desvios.css" />
+    <link rel="icon" type="image/png" href="img/Logo_AGM.png" />
+  </head>
+
+  <body>
+    <div class="container">
+      <!-- HEADER -->
+      <header class="top-bar">
+        <div>
+          <h1>Controle de Desvios de EPI</h1>
+          <p class="subtitulo">Dashboard de monitoramento de desvios</p>
+        </div>
+
+        <button class="btn-primary" onclick="abrirModal()">
+          + Novo Desvio
+        </button>
+      </header>
+
+      <div class="main-content">
+
+  <!-- LATERAL -->
+  <aside class="arquivos">
+
+    <div class="section-header">
+      <h2>Histórico de Desvios</h2>
+    </div>
+
+    <div id="historicoContainer"></div>
+
+  </aside>
+
+  <!-- DASHBOARD -->
+  <section class="dashboard">
+        <!-- FILTROS -->
+        <div class="dashboard-filtros">
+          <select id="filtroMes">
+            <option value="01">Janeiro</option>
+            <option value="02">Fevereiro</option>
+            <option value="03">Março</option>
+            <option value="04">Abril</option>
+            <option value="05">Maio</option>
+            <option value="06">Junho</option>
+            <option value="07">Julho</option>
+            <option value="08">Agosto</option>
+            <option value="09">Setembro</option>
+            <option value="10">Outubro</option>
+            <option value="11">Novembro</option>
+            <option value="12">Dezembro</option>
+          </select>
+
+          <select id="filtroAno"></select>
+
+          <button class="btn-primary" id="btnAtualizarDashboard">
+            Atualizar Dashboard
+          </button>
+        </div>
+
+        <!-- CARDS -->
+        <div class="cards-dashboard">
+          <div class="card-dashboard">
+            <h3>Total de Desvios</h3>
+            <span id="cardTotal">0</span>
+          </div>
+
+          <div class="card-dashboard">
+            <h3>EPI Mais Recorrente</h3>
+            <span id="cardEPI">-</span>
+          </div>
+
+          <div class="card-dashboard">
+            <h3>Setor Crítico</h3>
+            <span id="cardSetor">-</span>
+          </div>
+
+          <div class="card-dashboard">
+            <h3>Colaborador Recorrente</h3>
+            <span id="cardColaborador">-</span>
+          </div>
+        </div>
+
+        <!-- GRÁFICOS -->
+        <div class="graficos-grid">
+          <!-- EPI -->
+          <div class="grafico-wrapper">
+            <div class="grafico-titulo">Desvios por EPI</div>
+
+            <canvas id="graficoEPI"></canvas>
+          </div>
+
+          <!-- SETORES -->
+          <div class="grafico-wrapper">
+            <div class="grafico-titulo">Desvios por Setor</div>
+
+            <canvas id="graficoSetores"></canvas>
+          </div>
+
+          <!-- COLABORADORES -->
+          <div class="grafico-wrapper full-width">
+            <div class="grafico-titulo">Colaboradores com Mais Desvios</div>
+
+            <canvas id="graficoColaboradores"></canvas>
+          </div>
+
+          <!-- ANO -->
+          <div class="grafico-wrapper">
+            <div class="grafico-titulo">Levantamento do Ano Atual</div>
+
+            <canvas id="graficoAnoAtual"></canvas>
+          </div>
+
+          <!-- 3 ANOS -->
+          <div class="grafico-wrapper">
+            <div class="grafico-titulo">Comparativo Últimos 3 Anos</div>
+
+            <canvas id="graficoTresAnos"></canvas>
+          </div>
+        </div>
+      </section>
+
+      <!-- HISTÓRICO -->
+      <section class="historico">
+
+        <div id="historicoContainer"></div>
+</section>
+</div>
+
+    <!-- MODAL -->
+    <div class="modal-overlay" id="modal">
+      <div class="modal-content">
+        <div class="cat-status">Registrar Desvio</div>
+
+        <div class="form-grid">
+          <input
+            type="text"
+            id="buscaNome"
+            placeholder="Buscar colaborador..."
+            autocomplete="off"
+          />
+
+          <select id="selectFuncionario"></select>
+
+          <input type="text" id="funcao" placeholder="Função" readonly />
+
+          <input type="text" id="setor" placeholder="Setor" readonly />
+
+          <input type="date" id="data" />
+
+          <select id="tipoDesvio">
+            <option value="">Tipo de desvio</option>
+            <option>Capacete</option>
+            <option>Óculos</option>
+            <option>Jugular</option>
+            <option>Luva</option>
+            <option>Máscara</option>
+            <option>Perneira</option>
+            <option>Viseira</option>
+            <option>Avental de couro</option>
+            <option>Outros</option>
+          </select>
+
+          <textarea id="observacao" placeholder="Observação"></textarea>
+        </div>
+
+        <div class="modal-buttons">
+          <button class="btn-secondary" onclick="fecharModal()">
+            Cancelar
+          </button>
+
+          <button class="btn-primary" onclick="salvarDesvio()">Salvar</button>
+        </div>
+
+        <div class="loading" id="loading">
+          <div class="spinner"></div>
+          Salvando...
+        </div>
+
+        <div class="sucesso" id="sucesso">✔ Salvo com sucesso!</div>
+      </div>
+    </div>
+
+    <script type="module" src="./js/desvios.js"></script>
+  </body>
+</html>

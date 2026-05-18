@@ -1,0 +1,477 @@
+/* ================= RESET ================= */
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:"Inter",sans-serif;
+}
+
+body{
+  min-height:100vh;
+
+  background:
+    radial-gradient(circle at top left,#33408a 0%,transparent 30%),
+    radial-gradient(circle at bottom right,#24306e 0%,transparent 30%),
+    linear-gradient(135deg,#171c30,#242b4d);
+
+  color:white;
+  padding:35px;
+}
+
+/* ================= CONTAINER ================= */
+
+.container{
+  max-width:1300px;
+  margin:auto;
+}
+
+/* ================= TOP BAR ================= */
+
+.top-bar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:20px;
+
+  padding:28px 35px;
+  margin-bottom:30px;
+
+  border-radius:28px;
+
+  background:
+    linear-gradient(145deg,
+    rgba(246,194,62,.15),
+    rgba(255,190,11,.08));
+
+  border:1px solid rgba(255,255,255,.08);
+
+  backdrop-filter:blur(10px);
+
+  box-shadow:
+    0 20px 50px rgba(0,0,0,.4);
+}
+
+.top-bar h2{
+  font-size:34px;
+  font-weight:800;
+  letter-spacing:.5px;
+}
+
+.acoes-topo{
+  display:flex;
+  gap:15px;
+  flex-wrap:wrap;
+}
+
+/* ================= BOTÕES ================= */
+
+.btn-topo{
+  border:none;
+  cursor:pointer;
+
+  padding:14px 22px;
+
+  border-radius:14px;
+
+  font-weight:700;
+  font-size:14px;
+
+  transition:.3s ease;
+
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.btn-topo:hover{
+  transform:
+    translateY(-3px)
+    scale(1.02);
+}
+
+.btn-add{
+  background:
+    linear-gradient(135deg,#ffffff,#e9edf8);
+
+  color:#1e2235;
+
+  box-shadow:
+    0 10px 25px rgba(255,255,255,.15);
+}
+
+.btn-pedido{
+  background:
+    linear-gradient(135deg,#4e73df,#3558c8);
+
+  color:white;
+
+  box-shadow:
+    0 12px 30px rgba(78,115,223,.35);
+}
+
+/* ================= CARDS ================= */
+
+.card{
+  background:
+    linear-gradient(145deg,
+    rgba(47,55,90,.95),
+    rgba(33,39,66,.95));
+
+  border-radius:24px;
+
+  padding:28px;
+
+  margin-bottom:25px;
+
+  border:1px solid rgba(255,255,255,.06);
+
+  box-shadow:
+    0 20px 50px rgba(0,0,0,.35);
+}
+
+.card h3{
+  font-size:22px;
+  margin-bottom:20px;
+  font-weight:700;
+}
+
+/* ================= TABELA ================= */
+
+.tabela{
+  width:100%;
+  border-collapse:collapse;
+  overflow:hidden;
+}
+
+.tabela thead{
+  background:
+    linear-gradient(90deg,#f6c23e,#ffcf52);
+
+  color:#1e2235;
+}
+
+.tabela th{
+  padding:18px 14px;
+  font-size:13px;
+  letter-spacing:1px;
+}
+
+.tabela td{
+  padding:16px 14px;
+  text-align:center;
+}
+
+.tabela tbody tr{
+  transition:.25s ease;
+  border-bottom:1px solid rgba(255,255,255,.04);
+}
+
+.tabela tbody tr:hover{
+  background:rgba(255,255,255,.04);
+  transform:scale(1.003);
+}
+
+.tabela tbody tr:nth-child(even){
+  background:rgba(255,255,255,.02);
+}
+
+/* ================= BOTÕES TABELA ================= */
+
+button{
+  border:none;
+  cursor:pointer;
+}
+
+.btn-edit,
+.btn-delete{
+  width:38px;
+  height:38px;
+
+  border-radius:12px;
+
+  font-size:15px;
+
+  transition:.25s ease;
+}
+
+.btn-edit{
+  background:
+    linear-gradient(135deg,#ffd84d,#f6c23e);
+
+  color:#1e2235;
+}
+
+.btn-delete{
+  background:
+    linear-gradient(135deg,#ff5b5b,#d63031);
+
+  color:white;
+}
+
+.btn-edit:hover,
+.btn-delete:hover{
+  transform:
+    translateY(-2px)
+    scale(1.05);
+}
+
+/* ================= MODAL ================= */
+
+.modal{
+  display:none;
+
+  position:fixed;
+  inset:0;
+
+  background:rgba(0,0,0,.7);
+
+  backdrop-filter:blur(6px);
+
+  z-index:999;
+
+  justify-content:center;
+  align-items:center;
+}
+
+.modal.show{
+  display:flex;
+}
+
+/* ================= MODAL CONTENT ================= */
+
+.modal-content{
+  width:430px;
+  max-width:90%;
+
+  padding:30px;
+
+  border-radius:28px;
+
+  background:
+    linear-gradient(145deg,
+    rgba(47,55,90,.98),
+    rgba(30,37,65,.98));
+
+  border:1px solid rgba(255,255,255,.06);
+
+  box-shadow:
+    0 25px 60px rgba(0,0,0,.5);
+
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+
+  animation:modalShow .25s ease;
+}
+
+@keyframes modalShow{
+  from{
+    opacity:0;
+    transform:translateY(15px) scale(.95);
+  }
+
+  to{
+    opacity:1;
+    transform:translateY(0) scale(1);
+  }
+}
+
+.modal-content h3{
+  font-size:24px;
+  margin-bottom:10px;
+  font-weight:800;
+}
+
+/* ================= INPUTS ================= */
+
+.modal-content input,
+.modal-content select{
+  border:none;
+  outline:none;
+
+  padding:14px 16px;
+
+  border-radius:14px;
+
+  background:#1e2235;
+  color:white;
+
+  font-size:14px;
+
+  transition:.25s ease;
+}
+
+.modal-content input:focus,
+.modal-content select:focus{
+  box-shadow:
+    0 0 0 2px rgba(78,115,223,.5);
+}
+
+/* ================= MODAL BUTTONS ================= */
+
+.modal-buttons{
+  display:flex;
+  gap:12px;
+  margin-top:10px;
+}
+
+.modal-buttons button{
+  flex:1;
+
+  padding:14px;
+
+  border-radius:14px;
+
+  font-weight:700;
+
+  transition:.25s ease;
+}
+
+.modal-buttons button:hover{
+  transform:
+    translateY(-2px)
+    scale(1.02);
+}
+
+.btn-cancel{
+  background:#3d466d;
+  color:white;
+}
+
+.btn-save{
+  background:
+    linear-gradient(135deg,#4e73df,#3558c8);
+
+  color:white;
+
+  box-shadow:
+    0 12px 25px rgba(78,115,223,.35);
+}
+
+/* ================= QUANTIDADE ================= */
+
+.qtd-box{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+}
+
+.btn-qtd{
+  width:32px;
+  height:32px;
+
+  border-radius:10px;
+
+  background:#4e73df;
+  color:white;
+
+  font-weight:700;
+
+  transition:.25s ease;
+}
+
+.btn-qtd:hover{
+  background:#3558c8;
+  transform:scale(1.08);
+}
+
+.qtd-num{
+  min-width:40px;
+  text-align:center;
+  font-weight:700;
+  font-size:15px;
+}
+
+/* ================= RESPONSIVO ================= */
+
+@media(max-width:800px){
+
+  body{
+    padding:20px;
+  }
+
+  .top-bar{
+    flex-direction:column;
+    align-items:flex-start;
+  }
+
+  .acoes-topo{
+    width:100%;
+  }
+
+  .btn-topo{
+    flex:1;
+    justify-content:center;
+  }
+
+  .tabela{
+    font-size:13px;
+  }
+
+  .card{
+    overflow-x:auto;
+  }
+
+}
+
+.tabela{
+  width:100%;
+  border-collapse:separate;
+  border-spacing:0 12px;
+}
+
+.tabela thead{
+  background:transparent;
+}
+
+.tabela th{
+  background:transparent;
+
+  color:#aeb8e8;
+
+  font-size:12px;
+  font-weight:700;
+
+  letter-spacing:1px;
+
+  padding-bottom:8px;
+}
+
+.tabela tbody tr{
+  background:
+    linear-gradient(145deg,
+    rgba(55,65,110,.9),
+    rgba(40,48,82,.9));
+
+  transition:.25s ease;
+
+  box-shadow:
+    0 10px 25px rgba(0,0,0,.25);
+}
+
+.tabela tbody tr:hover{
+  transform:
+    translateY(-3px)
+    scale(1.005);
+
+  background:
+    linear-gradient(145deg,
+    rgba(70,82,138,.95),
+    rgba(45,55,95,.95));
+}
+
+.tabela td{
+  padding:18px 16px;
+}
+
+/* bordas arredondadas */
+
+.tabela td:first-child{
+  border-radius:16px 0 0 16px;
+}
+
+.tabela td:last-child{
+  border-radius:0 16px 16px 0;
+}

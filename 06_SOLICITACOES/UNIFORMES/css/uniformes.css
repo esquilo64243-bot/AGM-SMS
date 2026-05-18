@@ -1,0 +1,643 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
+
+/* ================= RESET ================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Inter", sans-serif;
+}
+
+body {
+  background:
+    radial-gradient(circle at top left, rgba(91, 124, 250, 0.18), transparent 35%),
+    radial-gradient(circle at bottom right, rgba(247, 201, 72, 0.12), transparent 30%),
+    linear-gradient(135deg, #1b2035, #2d355c);
+
+  min-height: 100vh;
+  color: #f1f5ff;
+  padding: 30px;
+}
+
+/* ================= CONTAINER ================= */
+.container {
+  max-width: 1300px;
+  margin: auto;
+}
+
+/* ================= HEADER ================= */
+.top-bar {
+  background: rgba(38, 43, 69, 0.85);
+  backdrop-filter: blur(14px);
+
+  border: 1px solid rgba(255,255,255,0.08);
+
+  border-radius: 24px;
+  padding: 24px 28px;
+
+  margin-bottom: 25px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+
+  box-shadow:
+    0 15px 35px rgba(0,0,0,0.35),
+    inset 0 1px 0 rgba(255,255,255,0.04);
+}
+
+.top-bar h2 {
+  font-size: 28px;
+  font-weight: 700;
+  color: white;
+  letter-spacing: -1px;
+}
+
+/* ================= BOTÕES TOPO ================= */
+.top-bar div {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.btn-topo {
+  padding: 12px 18px;
+  border-radius: 14px;
+  border: none;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+  transition: 0.25s ease;
+
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+}
+
+.btn-topo:hover {
+  transform: translateY(-3px);
+}
+
+.btn-add {
+  background: linear-gradient(135deg, #4e73df, #375ad3);
+  color: white;
+}
+
+.btn-add:hover {
+  box-shadow: 0 10px 25px rgba(78,115,223,0.4);
+}
+
+.btn-pdf {
+  background: linear-gradient(135deg, #f7c948, #fadb5f);
+  color: #1c1f2e;
+}
+
+.btn-pdf:hover {
+  box-shadow: 0 10px 25px rgba(247,201,72,0.35);
+}
+
+.btn-status {
+  background: linear-gradient(135deg, #1cc88a, #14a873);
+  color: white;
+}
+
+.btn-status:hover {
+  box-shadow: 0 10px 25px rgba(28,200,138,0.35);
+}
+
+.btn-clear {
+  background: linear-gradient(135deg, #ff5c5c, #e74a3b);
+  color: white;
+}
+
+.btn-clear:hover {
+  box-shadow: 0 10px 25px rgba(231,74,59,0.35);
+}
+
+/* ================= CARDS ================= */
+.card {
+  background: rgba(38, 43, 69, 0.82);
+  backdrop-filter: blur(12px);
+
+  border-radius: 22px;
+  padding: 24px;
+
+  margin-bottom: 25px;
+
+  border: 1px solid rgba(255,255,255,0.05);
+
+  box-shadow:
+    0 15px 35px rgba(0,0,0,0.28),
+    inset 0 1px 0 rgba(255,255,255,0.03);
+
+  animation: fadeUp 0.5s ease;
+}
+
+.card h3 {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: white;
+}
+
+/* ================= TABELA ================= */
+.tabela-wrapper {
+  overflow-x: auto;
+  border-radius: 18px;
+}
+
+.tabela {
+  width: 100%;
+  border-collapse: collapse;
+  overflow: hidden;
+
+  background: rgba(255,255,255,0.02);
+
+  border-radius: 18px;
+}
+
+/* HEADER */
+.tabela thead {
+  background: linear-gradient(135deg, #f7c948, #fadb5f);
+}
+
+.tabela th {
+  padding: 16px;
+  color: #1c1f2e;
+
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+
+  text-transform: uppercase;
+  text-align: center;
+}
+
+/* LINHAS */
+.tabela td {
+  padding: 16px 14px;
+  text-align: center;
+
+  font-size: 14px;
+  color: #eef2ff;
+
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+
+/* ZEBRA */
+.tabela tbody tr:nth-child(even) {
+  background: rgba(255,255,255,0.02);
+}
+
+/* HOVER */
+.tabela tbody tr {
+  transition: 0.25s ease;
+}
+
+.tabela tbody tr:hover {
+  background: rgba(91,124,250,0.14);
+  transform: scale(1.002);
+}
+
+/* ================= STATUS ================= */
+.status {
+  padding: 6px 12px;
+  border-radius: 999px;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  display: inline-block;
+}
+
+.status.solicitado {
+  background: rgba(247,201,72,0.15);
+  color: #f7c948;
+}
+
+.status.entregue {
+  background: rgba(28,200,138,0.15);
+  color: #1cc88a;
+}
+
+.status.pendente {
+  background: rgba(255,92,92,0.15);
+  color: #ff6b6b;
+}
+
+/* ================= BOTÕES TABELA ================= */
+.tabela button {
+  border: none;
+  border-radius: 10px;
+
+  padding: 8px 10px;
+
+  cursor: pointer;
+  transition: 0.25s ease;
+
+  margin: 0 2px;
+}
+
+.tabela button:hover {
+  transform: translateY(-2px);
+}
+
+.btn-edit {
+  background: rgba(247,201,72,0.15);
+  color: #f7c948;
+}
+
+.btn-edit:hover {
+  background: #f7c948;
+  color: #1c1f2e;
+}
+
+.btn-delete {
+  background: rgba(255,92,92,0.15);
+  color: #ff6b6b;
+}
+
+.btn-delete:hover {
+  background: #ff5c5c;
+  color: white;
+}
+
+/* ================= MODAL ================= */
+.modal {
+  display: none;
+
+  position: fixed;
+  inset: 0;
+
+  background: rgba(0,0,0,0.75);
+  backdrop-filter: blur(6px);
+
+  justify-content: center;
+  align-items: center;
+
+  z-index: 999;
+}
+
+.modal.show {
+  display: flex;
+}
+
+/* CARD MODAL */
+.modal-content {
+  width: 420px;
+  max-width: 92%;
+
+  background: #262b45;
+
+  border-radius: 24px;
+
+  padding: 26px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+
+  border: 1px solid rgba(255,255,255,0.05);
+
+  box-shadow:
+    0 25px 60px rgba(0,0,0,0.45),
+    inset 0 1px 0 rgba(255,255,255,0.03);
+
+  animation: aparecer 0.25s ease;
+}
+
+@keyframes aparecer {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.modal-content h3 {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+/* INPUTS */
+.modal-content input,
+.modal-content select {
+  padding: 14px;
+
+  border-radius: 14px;
+  border: 1px solid transparent;
+
+  background: #1b2035;
+  color: white;
+
+  transition: 0.25s ease;
+}
+
+.modal-content input:focus,
+.modal-content select:focus {
+  outline: none;
+  border-color: #4e73df;
+
+  box-shadow: 0 0 0 4px rgba(78,115,223,0.15);
+}
+
+/* ================= BOTÕES MODAL ================= */
+.modal-buttons {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.modal-buttons button {
+  flex: 1;
+
+  padding: 13px;
+
+  border-radius: 14px;
+  border: none;
+
+  font-weight: 600;
+  cursor: pointer;
+
+  transition: 0.25s ease;
+}
+
+.modal-buttons button:hover {
+  transform: translateY(-2px);
+}
+
+.btn-cancel {
+  background: #3a3f66;
+  color: white;
+}
+
+.btn-cancel:hover {
+  background: #4b527e;
+}
+
+.btn-save {
+  background: linear-gradient(135deg, #4e73df, #375ad3);
+  color: white;
+}
+
+.btn-save:hover {
+  box-shadow: 0 10px 25px rgba(78,115,223,0.35);
+}
+
+.btn-danger {
+  background: linear-gradient(135deg, #ff5c5c, #e74a3b);
+  color: white;
+}
+
+.btn-danger:hover {
+  box-shadow: 0 10px 25px rgba(231,74,59,0.35);
+}
+
+/* ================= STATUS PAGE ================= */
+#tela-status {
+  margin-top: 25px;
+
+  background: rgba(38,43,69,0.82);
+  backdrop-filter: blur(12px);
+
+  border-radius: 22px;
+  padding: 24px;
+
+  border: 1px solid rgba(255,255,255,0.05);
+
+  box-shadow:
+    0 15px 35px rgba(0,0,0,0.28),
+    inset 0 1px 0 rgba(255,255,255,0.03);
+}
+
+#tela-status h2 {
+  margin-bottom: 20px;
+
+  font-size: 24px;
+  font-weight: 700;
+
+  color: white;
+}
+
+/* CARD STATUS */
+.status-card {
+  background: rgba(255,255,255,0.03);
+
+  border: 1px solid rgba(255,255,255,0.05);
+
+  border-radius: 18px;
+
+  padding: 18px;
+  margin-bottom: 15px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 18px;
+
+  transition: 0.25s ease;
+}
+
+.status-card:hover {
+  transform: translateY(-3px);
+  background: rgba(255,255,255,0.05);
+}
+
+.status-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.status-info p {
+  font-size: 14px;
+  color: #e8ecff;
+}
+
+.status-acoes {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.status-acoes select {
+  padding: 10px 12px;
+
+  border-radius: 12px;
+  border: none;
+
+  background: #1b2035;
+  color: white;
+}
+
+.status-acoes button {
+  padding: 10px 16px;
+
+  border: none;
+  border-radius: 12px;
+
+  background: linear-gradient(135deg, #4e73df, #375ad3);
+  color: white;
+
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.status-acoes button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(78,115,223,0.35);
+}
+
+/* ================= SCROLLBAR ================= */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1b2035;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #4e73df;
+  border-radius: 999px;
+}
+
+/* ================= ANIMAÇÃO ================= */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ================= RESPONSIVO ================= */
+@media (max-width: 900px) {
+  .top-bar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .top-bar div {
+    width: 100%;
+  }
+
+  .btn-topo {
+    flex: 1;
+    justify-content: center;
+  }
+
+  .status-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .status-acoes {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .status-acoes button,
+  .status-acoes select {
+    width: 100%;
+  }
+}
+
+@media (max-width: 700px) {
+  body {
+    padding: 18px;
+  }
+
+  .top-bar h2 {
+    font-size: 22px;
+  }
+
+  .card {
+    padding: 18px;
+  }
+
+  .tabela th,
+  .tabela td {
+    padding: 12px 10px;
+    font-size: 12px;
+  }
+
+  .modal-content {
+    padding: 20px;
+  }
+}
+
+.tabela{
+  width:100%;
+  border-collapse:separate;
+  border-spacing:0 12px;
+}
+
+.tabela thead{
+  background:transparent;
+}
+
+.tabela th{
+  background:transparent;
+
+  color:#aeb8e8;
+
+  font-size:12px;
+  font-weight:700;
+
+  letter-spacing:1px;
+
+  padding-bottom:8px;
+}
+
+.tabela tbody tr{
+  background:
+    linear-gradient(145deg,
+    rgba(55,65,110,.9),
+    rgba(40,48,82,.9));
+
+  transition:.25s ease;
+
+  box-shadow:
+    0 10px 25px rgba(0,0,0,.25);
+}
+
+.tabela tbody tr:hover{
+  transform:
+    translateY(-3px)
+    scale(1.005);
+
+  background:
+    linear-gradient(145deg,
+    rgba(70,82,138,.95),
+    rgba(45,55,95,.95));
+}
+
+.tabela td{
+  padding:18px 16px;
+}
+
+/* bordas arredondadas */
+
+.tabela td:first-child{
+  border-radius:16px 0 0 16px;
+}
+
+.tabela td:last-child{
+  border-radius:0 16px 16px 0;
+}

@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Controle de Extintores</title>
+
+    <link rel="stylesheet" href="./css/extintores.css" />
+    <link rel="icon" type="image/png" href="/01_HOME/img/Logo_AGM.png" />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+    <div class="container">
+      <!-- 🔴 HEADER -->
+      <header class="top-bar">
+        <h1>Controle de Extintores</h1>
+
+        <button id="btnNovo" class="btn-primary">+ Cadastrar Extintor</button>
+      </header>
+
+      <!-- 🔎 FILTROS -->
+      <section class="filters">
+        <input type="text" id="filtroNumero" placeholder="N° / Recipiente" />
+        <input type="text" id="filtroClasse" placeholder="Classe" />
+        <input type="text" id="filtroKg" placeholder="KG" />
+        <input type="text" id="filtroLocal" placeholder="Local" />
+        <input type="text" id="filtroSetor" placeholder="Setor" />
+      </section>
+
+      <!-- 📊 DASHBOARD STATUS -->
+      <section class="status-dashboard">
+        <div class="status-card ok" onclick="filtrarStatus('OK')">
+          <span>OK</span>
+          <h2 id="count-ok">0</h2>
+        </div>
+
+        <div class="status-card alerta" onclick="filtrarStatus('Avencer')">
+          <span>A vencer</span>
+          <h2 id="count-alerta">0</h2>
+        </div>
+
+        <div class="status-card vencido" onclick="filtrarStatus('Vencido')">
+          <span>Vencidos</span>
+          <h2 id="count-vencido">0</h2>
+        </div>
+
+        <div class="status-card manut" onclick="filtrarStatus('Em Manutenção')">
+          <span>Manutenção</span>
+          <h2 id="count-manut">0</h2>
+        </div>
+
+        <div
+          class="status-card desp"
+          onclick="filtrarStatus('Despressurizado')"
+        >
+          <span>Despressurizado</span>
+          <h2 id="count-desp">0</h2>
+        </div>
+      </section>
+
+      <!-- 📋 TABELA -->
+      <section class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>N°</th>
+              <th>Recipiente</th>
+              <th>Tipo</th>
+              <th>Classe</th>
+              <th>KG</th>
+              <th>Local</th>
+              <th>Setor</th>
+              <th>Última Recarga</th>
+              <th>Próxima Recarga</th>
+              <th>Status</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+
+          <tbody id="lista-extintores"></tbody>
+        </table>
+      </section>
+
+      <!-- 📄 FOOTER DA TABELA -->
+      <div class="tabela-footer">
+        <div class="tipos-extintor">
+          <strong>Tipos:</strong>
+
+          AP: <span id="count-ap">0</span> | CO2:
+          <span id="count-co2">0</span> | PQS: <span id="count-pqs">0</span>
+        </div>
+        <button onclick="gerarPDF()" id="baixarRelatorio">
+          📄Baixar Relatório
+        </button>
+      </div>
+    </div>
+
+    <!-- 📦 LIBS PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+
+    <!-- 🔧 SCRIPT PRINCIPAL -->
+    <script type="module" src="./js/extintor.js"></script>
+  </body>
+</html>

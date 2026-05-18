@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Solicitações de Uniforme</title>
+    <link rel="stylesheet" href="css/uniformes.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="top-bar">
+        <h2>Solicitações de Uniforme</h2>
+        <div>
+          <button class="btn-topo btn-add" onclick="abrirModal()">
+            + Novo Pedido
+          </button>
+          <button class="btn-topo btn-pdf" onclick="gerarPDF()">📄 PDF</button>
+          <button class="btn-topo btn-status" onclick="abrirStatusUniformes()">
+            Status Uniformes
+          </button>
+        </div>
+      </div>
+
+      <!-- ÁREA DE PEDIDOS -->
+      <div class="card" id="card-pedidos">
+        <h3>Solicitações</h3>
+
+        <table class="tabela" id="tabela-pedidos">
+          <thead>
+            <tr>
+              <th>DATA</th>
+              <th>NOME</th>
+              <th>CARGO</th>
+              <th>EMPRESA</th>
+              <th>ITEM</th>
+              <th>TAMANHO</th>
+              <th>QTD</th>
+              <th>STATUS</th>
+              <th>AÇÕES</th>
+            </tr>
+          </thead>
+          <tbody id="listaPedidos"></tbody>
+        </table>
+      </div>
+
+      <!-- ÁREA DE PEDIDOS EM ESTOQUE -->
+      <div class="card" id="card-estoque">
+        <h3>Uniformes em Estoque</h3>
+
+        <table class="tabela">
+          <thead>
+            <tr>
+              <th>DATA</th>
+              <th>NOME</th>
+              <th>CARGO</th>
+              <th>EMPRESA</th>
+              <th>ITEM</th>
+              <th>TAMANHO</th>
+              <th>QTD</th>
+              <th>STATUS</th>
+            </tr>
+          </thead>
+          <tbody id="listaEstoque"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- MODAL -->
+    <div class="modal" id="modal">
+      <div class="modal-content">
+        <input type="text" id="buscaNome" placeholder="Buscar funcionário..." />
+        <select id="selectFuncionario"></select>
+
+        <input type="text" id="cargo" placeholder="Cargo" disabled />
+        <input type="text" id="empresa" placeholder="Empresa" disabled />
+
+        <input type="text" id="item" placeholder="Item" />
+        <input type="text" id="tamanho" placeholder="Tamanho" />
+        <input type="number" id="unidade" placeholder="Quantidade" />
+
+        <div class="modal-buttons">
+          <button class="btn-cancel" onclick="fecharModal()">Cancelar</button>
+          <button class="btn-save" onclick="salvarPedido()">Salvar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- STATUS -->
+    <div id="tela-status" style="display: none">
+      <button class="btn-topo" onclick="voltarPedidos()">⬅ Voltar</button>
+      <h2>Controle de Uniformes</h2>
+      <div id="lista-status"></div>
+    </div>
+
+    <!-- MODAL CONFIRMAR -->
+    <div id="modalConfirmar" class="modal">
+      <div class="modal-content">
+        <h3>⚠️ Confirmar ação</h3>
+        <p>Tem certeza que deseja apagar TODOS os pedidos?</p>
+
+        <button class="btn-cancel" onclick="fecharModalConfirmar()">
+          Cancelar
+        </button>
+        <button class="btn-danger" onclick="confirmarLimpeza()">
+          Apagar tudo
+        </button>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+    <script type="module" src="js/uniformes.js?v=2"></script>
+  </body>
+</html>

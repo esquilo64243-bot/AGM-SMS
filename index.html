@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Login - Sistema SMS</title>
+    <link rel="stylesheet" href="./login.css" />
+    <link rel="icon" type="image/png" href="01_HOME/img/Logo_AGM.png" />
+  </head>
+
+  <body>
+    <div class="login-container">
+      <div class="login-card">
+        <h1>Sistema SMS</h1>
+        <p class="sub">Acesso restrito</p>
+
+        <input type="text" id="usuario" placeholder="Usuário" />
+        <input type="password" id="senha" placeholder="Senha" />
+
+        <button onclick="fazerLogin()">Entrar</button>
+
+        <p id="erro" class="erro"></p>
+      </div>
+
+      <div class="version">v1.0.0 • Richard Lucas</div>
+    </div>
+
+    <script type="module" src="./login.js"></script>
+  </body>
+</html>

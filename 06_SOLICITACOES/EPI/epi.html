@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Solicitação de EPI</title>
+    <link rel="stylesheet" href="./css/epi.css" />
+  </head>
+  <body>
+    <div class="container">
+      <!-- TOPO -->
+      <div class="top-bar">
+        <h2>Solicitação de EPI</h2>
+
+        <div class="acoes-topo">
+          <button class="btn-topo btn-add" onclick="abrirModalCadastro()">
+            ➕ Novo EPI
+          </button>
+
+          <button class="btn-topo btn-pedido" onclick="abrirModalPedido()">
+            📦 Novo Pedido
+          </button>
+        </div>
+      </div>
+
+      <!-- TABELA PEDIDOS -->
+      <div class="card">
+        <h3>Pedidos</h3>
+
+        <table class="tabela">
+          <thead>
+            <tr>
+              <th>ITEM</th>
+              <th>QTD</th>
+              <th>OBS</th>
+              <th>AÇÕES</th>
+            </tr>
+          </thead>
+          <tbody id="lista"></tbody>
+        </table>
+      </div>
+
+      <!-- CONTROLE EPI -->
+      <div class="card">
+        <h3>Controle de EPIs</h3>
+
+        <table class="tabela">
+          <thead>
+            <tr>
+              <th>NOME</th>
+              <th>QUANTIDADE</th>
+              <th>AÇÕES</th>
+            </tr>
+          </thead>
+          <tbody id="listaTipos"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- MODAL CADASTRO -->
+    <div class="modal" id="modalCadastro">
+      <div class="modal-content">
+        <h3>Novo EPI</h3>
+
+        <input id="nomeEPI" placeholder="Nome do EPI" />
+        <input id="qtdEPI" type="number" placeholder="Quantidade em estoque" />
+
+        <div class="modal-buttons">
+          <button class="btn-cancel" onclick="fecharModal()">Cancelar</button>
+          <button class="btn-save" onclick="salvarTipo()">Salvar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL PEDIDO -->
+    <div class="modal" id="modalPedido">
+      <div class="modal-content">
+        <h3>Novo Pedido</h3>
+
+        <select id="selectEPI"></select>
+        <input id="quantidade" type="number" placeholder="Quantidade" />
+        <input id="obs" placeholder="Observação" />
+
+        <div class="modal-buttons">
+          <button class="btn-cancel" onclick="fecharModal()">Cancelar</button>
+          <button class="btn-save" onclick="salvarPedido()">Salvar</button>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="./js/epi.js"></script>
+  </body>
+</html>
