@@ -10,6 +10,12 @@ from "../../01_HOME/js/firebase.js";
 /* ELEMENTOS */
 /* ============================= */
 
+const dataTreinamento =
+  document.getElementById("dataTreinamento");
+
+const previewDataTreinamento =
+  document.getElementById("previewDataTreinamento");
+
 const tempoDDS =
   document.getElementById("tempoDDS");
 
@@ -182,6 +188,9 @@ function atualizarPreview(){
 
 function atualizarPreviewLista() {
 
+  previewDataTreinamento.textContent =
+    dataTreinamento.value || "-";
+
   previewTreinamento.textContent =
     nomeTreinamento.value || "-";
 
@@ -270,6 +279,11 @@ function atualizarLogos(){
 /* ============================= */
 /* EVENTOS INPUT */
 /* ============================= */
+
+dataTreinamento.addEventListener(
+  "input",
+  atualizarPreviewLista
+);
 
 dataRegistro.addEventListener("input", atualizarPreview);
 localRegistro.addEventListener("input", atualizarPreview);
@@ -391,7 +405,17 @@ if(btnAdicionar){
 
         reader.onload = function(e){
 
-          previewImg.src = e.target.result;
+          previewImg.onload = () => {
+  previewImg.classList.remove("foto-horizontal", "foto-vertical");
+
+  if(previewImg.naturalWidth > previewImg.naturalHeight){
+    previewImg.classList.add("foto-horizontal");
+  } else {
+    previewImg.classList.add("foto-vertical");
+  }
+};
+
+previewImg.src = e.target.result;
 
         };
 

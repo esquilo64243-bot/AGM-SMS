@@ -155,6 +155,12 @@
           </div>
 
           <div class="campo">
+  <label> Data de Realização </label>
+
+  <input type="date" id="dataTreinamento" />
+</div>
+
+          <div class="campo">
             <label> Horas/Aula </label>
 
             <input
@@ -269,117 +275,88 @@
           <!-- PREVIEW REGISTRO -->
           <!-- ====================================== -->
 
-          <div class="folha" id="previewRegistroFotografico">
-            <div class="cabecalho-doc">
-              <div class="topo-logos">
-                <img
-                  src="../assets/logo_AGM.png"
-                  class="logo-doc"
-                  id="logoAGM"
-                />
+          <div class="folha folha-registro" id="previewRegistroFotografico">
+  <div class="registro-topo">
+    <img src="../assets/logo_AGM.png" class="logo-registro" id="logoAGM" />
+    <img src="../assets/logo_SM.webp" class="logo-registro serra-registro" id="logoSerra" />
+  </div>
 
-                <img
-                  src="../assets/logo_SM.webp"
-                  class="logo-doc"
-                  id="logoSerra"
-                />
-              </div>
+  <h1 class="titulo-registro">REGISTRO FOTOGRÁFICO</h1>
 
-              <h1>REGISTRO FOTOGRÁFICO</h1>
-            </div>
+  <div class="dados-registro">
+    <p><strong>Data da Atracação:</strong> <span id="previewData">-</span></p>
+    <p><strong>Hora:</strong> <span id="previewHoraRegistro">-</span></p>
+    <p><strong>Local / Equipamento:</strong> <span id="previewLocal">-</span></p>
+    <p><strong>Elaborado por:</strong> <span id="previewResponsavel">-</span></p>
+    <p><strong>Descrição:</strong> <span id="previewServico">-</span></p>
+  </div>
 
-            <div class="info-doc">
-              <p>
-                <strong>Data:</strong>
+  <div class="setor-registro">
+    <span>Setor:</span>
+    <label>☒ Segurança</label>
+    <label>☐ Meio Ambiente</label>
+    <label>☐ Saúde Ocupacional</label>
+  </div>
 
-                <span id="previewData"> - </span>
-              </p>
-
-              <p>
-                <strong>Local:</strong>
-
-                <span id="previewLocal"> - </span>
-              </p>
-
-              <p>
-                <strong>Responsável:</strong>
-
-                <span id="previewResponsavel"> - </span>
-              </p>
-            </div>
-
-            <div class="servico-doc">
-              <h3>Serviço Executado</h3>
-
-              <p id="previewServico">-</p>
-            </div>
-
-            <div id="previewRegistros"></div>
-          </div>
+  <div id="previewRegistros" class="grade-registro"></div>
+</div>
 
           <!-- ====================================== -->
           <!-- PREVIEW LISTA PRESENÇA -->
           <!-- ====================================== -->
 
-          <div class="folha" id="previewListaPresenca" style="display: none">
-            <div class="cabecalho-doc">
-              <div class="topo-logos">
-                <img
-                  src="../assets/logo_AGM.png"
-                  class="logo-doc"
-                  id="logoAGMLista"
-                />
+          <div class="folha folha-lista" id="previewListaPresenca" style="display: none">
+  <table class="lista-modelo">
+    <tr>
+      <td class="lista-logo">
+        <img src="../assets/logo_AGM.png" id="logoAGMLista" />
+        <img src="../assets/logo_SM.webp" id="logoSerraLista" />
+      </td>
 
-                <img
-                  src="../assets/logo_SM.webp"
-                  class="logo-doc"
-                  id="logoSerraLista"
-                />
-              </div>
+      <td class="lista-titulo">
+        LISTA DE PRESENÇA<br />
+        EM TREINAMENTO
+      </td>
+    </tr>
 
-              <h1>LISTA DE PRESENÇA</h1>
-            </div>
+    <tr>
+      <td colspan="2" class="lista-treinamento">
+        <strong>TREINAMENTO:</strong>
+        <span id="previewTreinamento">-</span>
+      </td>
+    </tr>
 
-            <div class="info-doc">
-              <p>
-                <strong>Treinamento:</strong>
+    <tr>
+      <td colspan="2" class="lista-conteudo">
+        <ul id="previewConteudo"></ul>
+      </td>
+    </tr>
 
-                <span id="previewTreinamento"> - </span>
-              </p>
+    <tr>
+      <td colspan="2" class="lista-info-linha">
+        <table>
+          <tr>
+            <td><strong>Instrutor:</strong> <span id="previewInstrutor">-</span></td>
+            <td><strong>Data de Realização:</strong> <span id="previewDataTreinamento">-</span></td>
+            <td><strong>Carga Horária:</strong> <span id="previewHoras">-</span></td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
 
-              <p>
-                <strong>Instrutor:</strong>
+  <table class="tabela-presenca tabela-lista-modelo">
+    <thead>
+      <tr>
+        <th>Nome:</th>
+        <th>Função</th>
+        <th>Assinatura</th>
+      </tr>
+    </thead>
 
-                <span id="previewInstrutor"> - </span>
-              </p>
-
-              <p>
-                <strong>Horas/Aula:</strong>
-
-                <span id="previewHoras"> - </span>
-              </p>
-            </div>
-
-            <div class="servico-doc">
-              <h3>Conteúdo Programático</h3>
-
-              <ul id="previewConteudo"></ul>
-            </div>
-
-            <table class="tabela-presenca">
-              <thead>
-                <tr>
-                  <th>Nome</th>
-
-                  <th>Função</th>
-
-                  <th>Assinatura</th>
-                </tr>
-              </thead>
-
-              <tbody id="corpoTabelaPresenca"></tbody>
-            </table>
-          </div>
+    <tbody id="corpoTabelaPresenca"></tbody>
+  </table>
+</div>
 
           <!-- ====================================== -->
           <!-- PREVIEW DDS -->
@@ -478,7 +455,6 @@
   <tr><td></td><td></td><td></td></tr>
   <tr><td></td><td></td><td></td></tr>
   <tr><td></td><td></td><td></td></tr>
-
 </tbody>
               </tbody>
             </table>

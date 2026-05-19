@@ -368,15 +368,18 @@ body{
 
 .preview-registro img{
   width:100%;
+  height:220px;
+  object-fit:contain;
+  border:none;
+  border-radius:0;
+}
+
+.preview-registro img.foto-vertical{
   height:260px;
+}
 
-  object-fit:cover;
-
-  border-radius:8px;
-
-  border:1px solid #ccc;
-
-  margin-bottom:10px;
+.preview-registro img.foto-horizontal{
+  height:210px;
 }
 
 .preview-registro p{
@@ -975,4 +978,137 @@ th{
 
 .dds-info div:last-child{
   border-right:none;
+}
+
+/* ============================= */
+/* LISTA DE PRESENÇA - MODELO EMPRESA */
+/* ============================= */
+
+#previewListaPresenca.folha-lista{
+  padding:10mm 17mm !important;
+  font-family:Arial, Helvetica, sans-serif !important;
+}
+
+#previewListaPresenca .lista-modelo{
+  width:100%;
+  border-collapse:collapse;
+  table-layout:fixed;
+  color:#000;
+}
+
+#previewListaPresenca .lista-modelo td{
+  border:1px solid #000;
+}
+
+#previewListaPresenca .lista-logo{
+  width:105px;
+  min-width:105px;
+  height:45px;
+  text-align:center;
+  vertical-align:middle;
+}
+
+#previewListaPresenca .lista-logo img{
+  display:inline-block;
+}
+
+#previewListaPresenca .lista-titulo{
+  padding-right:105px;
+}
+
+#previewListaPresenca .lista-logo img{
+  max-width:78px;
+  max-height:30px;
+  object-fit:contain;
+
+  margin-left:20px;
+}
+
+#previewListaPresenca .lista-titulo{
+  height:45px;
+  text-align:center;
+  vertical-align:middle;
+  font-size:20px;
+  font-weight:700;
+  line-height:1.05;
+}
+
+#previewListaPresenca .lista-treinamento{
+  height:19px;
+  text-align:center;
+  font-size:12px;
+  font-weight:700;
+  padding:2px;
+}
+
+#previewListaPresenca .lista-conteudo{
+  height:200px;
+  padding:6px 36px;
+  vertical-align:top;
+  font-size:12px;
+  line-height:1.15;
+}
+
+#previewListaPresenca .lista-conteudo ul{
+  margin:0;
+  padding-left:18px;
+  line-height:1.15;
+}
+
+#previewListaPresenca .lista-conteudo li{
+  margin:1px 0;
+}
+
+#previewListaPresenca .lista-info-linha{
+  height:30px;
+  padding:0;
+}
+
+#previewListaPresenca .lista-info-linha table{
+  width:100%;
+  height:30px;
+  border-collapse:collapse;
+}
+
+#previewListaPresenca .lista-info-linha td{
+  width:33.33%;
+  border-top:none;
+  border-bottom:none;
+  border-left:none;
+  text-align:center;
+  vertical-align:top;
+  font-size:9px;
+  font-weight:700;
+  padding-top:5px;
+}
+
+#previewListaPresenca .lista-info-linha td:last-child{
+  border-right:none;
+}
+
+#previewListaPresenca .tabela-lista-modelo{
+  margin-top:28px;
+  width:100%;
+  border-collapse:collapse;
+  table-layout:fixed;
+}
+
+#previewListaPresenca .tabela-lista-modelo th,
+#previewListaPresenca .tabela-lista-modelo td{
+  border:1px solid #000;
+  height:18px;
+  padding:2px;
+  font-size:9px;
+  font-weight:400;
+  text-align:center;
+  background:#fff;
+}
+
+#previewListaPresenca .tabela-lista-modelo th:nth-child(1),
+#previewListaPresenca .tabela-lista-modelo td:nth-child(1),
+#previewListaPresenca .tabela-lista-modelo th:nth-child(2),
+#previewListaPresenca .tabela-lista-modelo td:nth-child(2),
+#previewListaPresenca .tabela-lista-modelo th:nth-child(3),
+#previewListaPresenca .tabela-lista-modelo td:nth-child(3){
+  width:33.33%;
 }
