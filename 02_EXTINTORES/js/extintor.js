@@ -184,7 +184,6 @@ function abrirModal(dados = null) {
     <div class="modal">
       <h3>${dados ? "Editar" : "Novo"} Extintor</h3>
 
-      <textarea id="colarLinha" placeholder="Cole a linha da planilha aqui"></textarea>
       <button id="importarLinha">Importar dados</button>
 
       <hr>
@@ -218,70 +217,6 @@ function abrirModal(dados = null) {
   `;
 
   document.body.appendChild(modal);
-
-  // IMPORTAR LINHA DA PLANILHA
-  document.getElementById("importarLinha").onclick = function(){
-
-    const linha = document.getElementById("colarLinha").value.trim();
-
-    if(!linha){
-      alert("Cole a linha da planilha");
-      return;
-    }
-
-    const dadosLinha = linha.split(/\t|\s{2,}/);
-
-    if(dadosLinha.length < 9){
-      alert("Linha inválida");
-      return;
-    }
-
-    document.getElementById("registro").value = dadosLinha[0];
-    document.getElementById("recipiente").value = dadosLinha[1];
-    document.getElementById("local").value = dadosLinha[2];
-    document.getElementById("tipo").value = dadosLinha[3];
-    document.getElementById("classe").value = dadosLinha[4];
-    document.getElementById("kg").value = dadosLinha[5];
-
-    document.getElementById("ultimaRecarga").value = dadosLinha[6];
-
-    if(dadosLinha[8]){
-      document.getElementById("proximaRecarga").value =
-      converterMes(dadosLinha[8]);
-    }
-
-  };
-
-  modal.addEventListener("click", (e) => {
-    if (e.target.classList.contains("modal-bg")) {
-      modal.remove();
-    }
-  });
-
-  document.getElementById("salvar").onclick = async () => {
-
-    const dadosForm = {
-      registro: document.getElementById("registro").value,
-      recipiente: document.getElementById("recipiente").value,
-      tipo: document.getElementById("tipo").value,
-      classe: document.getElementById("classe").value,
-      kg: document.getElementById("kg").value,
-      local: document.getElementById("local").value,
-      setor: document.getElementById("setor").value,
-      statusManual: document.getElementById("statusManual").value,
-      ultimaRecarga: document.getElementById("ultimaRecarga").value,
-      proximaRecarga: document.getElementById("proximaRecarga").value
-    };
-
-    if (dados) {
-      await updateDoc(doc(db, "extintores", dados.id), dadosForm);
-    } else {
-      await addDoc(collection(db, "extintores"), dadosForm);
-    }
-
-    modal.remove();
-    carregar();
-  };
 
 }
 

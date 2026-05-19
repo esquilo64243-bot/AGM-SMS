@@ -277,6 +277,8 @@ color:transparent;
 
   transition:.3s;
 
+  pointer-events: none;
+
 }
 
 .status-card:hover::before{
@@ -554,3 +556,4 @@ td button:hover{
   }
 
 }
+

@@ -185,7 +185,7 @@ body{
 
   display:flex;
   justify-content:center;
-  align-items:flex-start;
+  align-items:center;
 
   padding:40px;
 
@@ -668,8 +668,6 @@ th{
   background:#fff;
   color:#000;
 
-  padding:12mm;
-
   margin:0 auto 20px auto;
 
   box-shadow:0 0 25px rgba(0,0,0,.25);
@@ -677,6 +675,8 @@ th{
   position:relative;
 
   page-break-after:always;
+
+  box-sizing:border-box;
 }
 
 /* ============================= */
@@ -760,4 +760,219 @@ th{
 .tabela-dds td{
   height:55px;
   border:1px solid #3a4266;
+}
+
+/* ====================================== */
+/* FOLHA DDS */
+/* ====================================== */
+
+#previewDDS{
+  padding:12mm;
+  box-sizing:border-box;
+}
+
+.dds-corporativo{
+  width:100%;
+  background:#fff;
+
+  border:1px solid #000;
+
+  font-family:Arial,sans-serif;
+
+  box-sizing:border-box;
+}
+
+/* ====================================== */
+/* DDS */
+/* ====================================== */
+
+#previewDDS{
+  padding:14mm;
+  box-sizing:border-box;
+}
+
+/* ====================================== */
+/* DOCUMENTO */
+/* ====================================== */
+
+.dds-doc{
+  width:100%;
+
+  border-collapse:collapse;
+
+  table-layout:fixed;
+
+  font-family:Arial,sans-serif;
+
+  margin-bottom:0;
+}
+
+.dds-doc td{
+  border:1px solid #000;
+}
+
+/* ====================================== */
+/* HEADER */
+/* ====================================== */
+
+.logo-cell{
+  width:90px;
+
+  height:70px;
+
+  text-align:center;
+  vertical-align:middle;
+}
+
+.logo-cell img{
+  max-width:60px;
+  max-height:45px;
+  object-fit:contain;
+}
+
+.titulo-cell{
+  text-align:center;
+
+  font-size:15px;
+  font-weight:700;
+}
+
+/* ====================================== */
+/* TEMA */
+/* ====================================== */
+
+.tema-cell{
+  text-align:center;
+
+  padding:6px 10px;
+
+  height:55px;
+}
+
+.tema-cell strong{
+  display:block;
+
+  font-size:14px;
+  font-weight:700;
+
+  margin-bottom:4px;
+
+  word-break:break-word;
+}
+
+.tema-cell span{
+  display:block;
+
+  font-size:11px;
+
+  line-height:1.2;
+
+  word-break:break-word;
+}
+
+/* ====================================== */
+/* INFO */
+/* ====================================== */
+
+/* ====================================== */
+/* INFO */
+/* ====================================== */
+
+.info-cell{
+  padding:8px 10px;
+
+  font-size:11px;
+
+  height:38px;
+
+  vertical-align:middle;
+
+  overflow:hidden;
+}
+/* ====================================== */
+/* RESPONSAVEL */
+/* ====================================== */
+
+.responsavel-cell{
+  padding:6px 8px;
+
+  font-size:11px;
+}
+
+/* ====================================== */
+/* TABELA */
+/* ====================================== */
+
+.dds-tabela{
+  width:100%;
+
+  border-collapse:collapse;
+
+  table-layout:fixed;
+}
+
+.dds-tabela th{
+  border:1px solid #000;
+
+  background:#f2f2f2;
+
+  padding:4px;
+
+  font-size:11px;
+
+  text-align:center;
+}
+
+.dds-tabela td{
+  border:1px solid #000;
+
+  height:24px;
+
+  padding:4px;
+
+  font-size:10px;
+}
+
+/* COLUNAS */
+
+.dds-tabela th:nth-child(1),
+.dds-tabela td:nth-child(1){
+  width:40%;
+}
+
+.dds-tabela th:nth-child(2),
+.dds-tabela td:nth-child(2){
+  width:30%;
+}
+
+.dds-tabela th:nth-child(3),
+.dds-tabela td:nth-child(3){
+  width:30%;
+}
+
+/* INFO */
+
+.dds-info{
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+
+  border-bottom:1px solid #000;
+}
+
+.dds-info div{
+  padding:6px 8px;
+
+  font-size:11px;
+
+  min-height:28px;
+
+  display:flex;
+  align-items:center;
+  gap:4px;
+
+  border-right:1px solid #000;
+}
+
+.dds-info div:last-child{
+  border-right:none;
 }

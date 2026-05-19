@@ -243,6 +243,12 @@
           </div>
 
           <div class="campo">
+            <label> Tempo de DDS </label>
+
+            <input type="text" id="tempoDDS" placeholder="Ex: 15 minutos" />
+          </div>
+
+          <div class="campo">
             <label> Conteúdo </label>
 
             <textarea
@@ -380,83 +386,100 @@
           <!-- ====================================== -->
 
           <div class="folha" id="previewDDS" style="display: none">
-            <div class="cabecalho-doc">
-              <div class="topo-logos">
-                <img src="../assets/logo_AGM.png" class="logo-doc" />
+            <table class="dds-doc">
+              <colgroup>
+                <col style="width: 190px" />
+                <col />
+                <col style="width: 120px" />
+              </colgroup>
 
-                <img src="../assets/logo_SM.webp" class="logo-doc" />
-              </div>
+              <!-- HEADER -->
+              <!-- HEADER -->
+              <tr>
+                <td class="logo-cell">
+                  <img src="../assets/logo_SM.webp" />
+                </td>
 
-              <h1>DIÁLOGO DIÁRIO DE SEGURANÇA</h1>
-            </div>
+                <td class="titulo-cell">DDS – Diálogo Diário de Segurança</td>
 
-            <div class="info-doc">
-              <p>
-                <strong>Título:</strong>
+                <td class="logo-cell">
+                  <img src="../assets/logo_AGM.png" />
+                </td>
+              </tr>
 
-                <span id="previewTituloDDS"> - </span>
-              </p>
+              <!-- TITULO -->
+              <tr>
+                <td colspan="3" class="tema-cell">
+                  <strong id="previewTituloDDS">-</strong>
 
-              <p>
-                <strong>Tipo:</strong>
+                  <span id="previewConteudoDDS">-</span>
+                </td>
+              </tr>
 
-                <span id="previewTipoDDS"> - </span>
-              </p>
+              <!-- INFO -->
+              <tr>
+                <td class="info-cell data-cell">
+                  <strong>Data:</strong>
+                  <span id="previewDataDDS">-</span>
+                </td>
 
-              <p>
-                <strong>Data:</strong>
+                <td class="info-cell tipo-cell">
+                  <strong>Tipo:</strong>
+                  <span id="previewTipoDDS">-</span>
+                </td>
 
-                <span id="previewDataDDS"> - </span>
-              </p>
-            </div>
+                <td class="info-cell tempo-cell">
+                  <strong>Tempo:</strong>
+                  <span id="previewTempoDDS">-</span>
+                </td>
+              </tr>
 
-            <div class="servico-doc">
-              <h3>Conteúdo</h3>
+              <!-- RESPONSAVEL -->
+              <tr>
+                <td colspan="3" class="responsavel-cell">
+                  <strong>Responsável:</strong>
+                  ______________________________
+                </td>
+              </tr>
+            </table>
 
-              <p id="previewConteudoDDS">-</p>
-            </div>
-
-            <table class="tabela-presenca">
+            <!-- TABELA PRESENÇA -->
+            <table class="dds-tabela">
               <thead>
                 <tr>
                   <th>Nome</th>
-
                   <th>Função</th>
-
                   <th>Assinatura</th>
                 </tr>
               </thead>
 
               <tbody id="corpoTabelaDDS">
-                <tr>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
+  <tr><td></td><td></td><td></td></tr>
+  <tr><td></td><td></td><td></td></tr>
+  <tr><td></td><td></td><td></td></tr>
+  <tr><td></td><td></td><td></td></tr>
+  <tr><td></td><td></td><td></td></tr>
+  <tr><td></td><td></td><td></td></tr>
+  <tr><td></td><td></td><td></td></tr>
+  <tr><td></td><td></td><td></td></tr>
+  <tr><td></td><td></td><td></td></tr>
+  <tr><td></td><td></td><td></td></tr>
+  <tr><td></td><td></td><td></td></tr>
+  <tr><td></td><td></td><td></td></tr>
+  <tr><td></td><td></td><td></td></tr>
+  <tr><td></td><td></td><td></td></tr>
+  <tr><td></td><td></td><td></td></tr>
+  <tr><td></td><td></td><td></td></tr>
+  <tr><td></td><td></td><td></td></tr>
+  <tr><td></td><td></td><td></td></tr>
+  <tr><td></td><td></td><td></td></tr>
+  <tr><td></td><td></td><td></td></tr>
+  <tr><td></td><td></td><td></td></tr>
+  <tr><td></td><td></td><td></td></tr>
+  <tr><td></td><td></td><td></td></tr>
+  <tr><td></td><td></td><td></td></tr>
 
-                <tr>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-
-                <tr>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-
-                <tr>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-
-                <tr>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
+</tbody>
               </tbody>
             </table>
           </div>

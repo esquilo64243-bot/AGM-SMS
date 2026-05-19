@@ -10,6 +10,12 @@ from "../../01_HOME/js/firebase.js";
 /* ELEMENTOS */
 /* ============================= */
 
+const tempoDDS =
+  document.getElementById("tempoDDS");
+
+const previewTempoDDS =
+  document.getElementById("previewTempoDDS");
+
 const tituloDDS =
   document.getElementById("tituloDDS");
 
@@ -214,7 +220,7 @@ if(linhas.length === 0){
 
 }
 
-// futions dds
+// futions dds preview
 
 function atualizarPreviewDDS(){
 
@@ -227,8 +233,11 @@ function atualizarPreviewDDS(){
   previewDataDDS.textContent =
     dataDDS.value || "-";
 
-  previewConteudoDDS.innerHTML =
-  conteudoDDS.value.replace(/\n/g, "<br>") || "-";
+  previewTempoDDS.textContent =
+    tempoDDS.value || "-";
+
+  previewConteudoDDS.textContent =
+    conteudoDDS.value || "-";
 
 }
 
@@ -312,6 +321,11 @@ dataDDS.addEventListener(
 );
 
 conteudoDDS.addEventListener(
+  "input",
+  atualizarPreviewDDS
+);
+
+tempoDDS.addEventListener(
   "input",
   atualizarPreviewDDS
 );
