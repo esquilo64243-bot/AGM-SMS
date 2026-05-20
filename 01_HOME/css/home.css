@@ -264,6 +264,10 @@ color:transparent;
   background: var(--yellow);
 }
 
+.doc::after {
+  background: var(--green);
+}
+
 /* conteúdo */
 
 .emoji {
