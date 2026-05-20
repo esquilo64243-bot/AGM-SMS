@@ -1623,3 +1623,28 @@ th{
   overflow-wrap:anywhere;
   word-break:break-word;
 }
+
+/* ============================= */
+/* FIXAR DESCRIÇÃO DO REGISTRO */
+/* ============================= */
+
+.preview-registro{
+  display:flex;
+  flex-direction:column;
+  min-height:260px;
+}
+
+.preview-registro h3{
+  flex:0 0 auto;
+}
+
+.preview-registro img{
+  flex:1;
+  max-height:220px;
+  object-fit:contain;
+}
+
+.preview-registro p{
+  margin-top:auto !important;
+  min-height:20px;
+}
