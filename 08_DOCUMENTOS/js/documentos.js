@@ -9,7 +9,11 @@ from "../../01_HOME/js/firebase.js";
 /* ============================= */
 /* ELEMENTOS */
 /* ============================= */
+const tituloRegistro =
+  document.getElementById("tituloRegistro");
 
+const previewTituloRegistro =
+  document.getElementById("previewTituloRegistro");
 
 const horaRegistro =
   document.getElementById("horaRegistro");
@@ -202,6 +206,9 @@ const previewRegistros = document.getElementById("previewRegistros");
 
 function atualizarPreview(){
 
+  previewTituloRegistro.textContent =
+  tituloRegistro.value || "REGISTRO";
+
   previewSetorSeguranca.textContent =
   setorSeguranca.checked
     ? "☒ Segurança"
@@ -358,6 +365,10 @@ function atualizarLogos(){
 /* ============================= */
 /* EVENTOS INPUT */
 /* ============================= */
+tituloRegistro.addEventListener(
+  "input",
+  atualizarPreview
+);
 
 modoTopicos.addEventListener(
   "change",
@@ -691,7 +702,7 @@ btnExportar.addEventListener("click", () => {
 
     filename:
   tipoDocumento.value === "registroFotografico"
-    ? "registro-fotografico.pdf"
+    ? "registro.pdf"
     : tipoDocumento.value === "dds"
     ? "dds.pdf"
     : "lista-presenca.pdf",

@@ -35,7 +35,7 @@
           <label> Tipo de documento </label>
 
           <select id="tipoDocumento">
-            <option value="registroFotografico">Registro Fotográfico</option>
+            <option value="registroFotografico">Registro</option>
 
             <option value="listaPresenca">Lista de Presença</option>
 
@@ -70,6 +70,17 @@
         <!-- ====================================== -->
 
         <div id="camposRegistroFotografico">
+          <div class="campo">
+  <label> Título do Registro </label>
+
+  <input
+    type="text"
+    id="tituloRegistro"
+    placeholder="Ex: REGISTRO DE ATIVIDADE"
+  />
+</div>
+
+
           <div class="campo">
             <label> Data </label>
 
@@ -342,7 +353,9 @@
     <img src="../assets/logo_SM.webp" class="logo-registro serra-registro" id="logoSerra" />
   </div>
 
-  <h1 class="titulo-registro">REGISTRO FOTOGRÁFICO</h1>
+  <h1 class="titulo-registro">
+  <span id="previewTituloRegistro">REGISTRO</span>
+</h1>
 
   <div class="dados-registro">
     <p><strong>Data:</strong> <span id="previewData">-</span></p>
