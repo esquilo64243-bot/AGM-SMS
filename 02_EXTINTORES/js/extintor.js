@@ -18,6 +18,8 @@ import {
 const tableBody = document.getElementById("lista-extintores");
 const btnNovo = document.getElementById("btnNovo");
 
+btnNovo.addEventListener("click", () => abrirModal());
+
 let extintores = [];
 let filtroStatusAtivo = [];
 window.limparFiltrosStatus = function(){
@@ -173,8 +175,6 @@ window.editar = function(id) {
 // =============================
 // 🔹 ABRIR MODAL
 // =============================
-btnNovo.addEventListener("click", () => abrirModal());
-
 function abrirModal(dados = null) {
 
   const modal = document.createElement("div");
@@ -193,30 +193,76 @@ function abrirModal(dados = null) {
 
       <select id="tipo">
         <option value="">Tipo</option>
-        <option value="AP" ${dados?.tipo === "AP" ? "selected" : ""}>AP - Água Pressurizada</option>
-        <option value="CO2" ${dados?.tipo === "CO2" ? "selected" : ""}>CO2 - Dióxido de Carbono</option>
-        <option value="PQS" ${dados?.tipo === "PQS" ? "selected" : ""}>PQS - Pó Químico Seco</option>
+        <option value="AP" ${dados?.tipo === "AP" ? "selected" : ""}>AP</option>
+        <option value="CO2" ${dados?.tipo === "CO2" ? "selected" : ""}>CO2</option>
+        <option value="PQS" ${dados?.tipo === "PQS" ? "selected" : ""}>PQS</option>
       </select>
 
       <input id="classe" placeholder="Classe" value="${dados?.classe || ""}">
       <input id="kg" placeholder="KG" value="${dados?.kg || ""}">
       <input id="local" placeholder="Local" value="${dados?.local || ""}">
-      <input id="setor" placeholder="Setor (Manutenção, Operação, Adm)" value="${dados?.setor || ""}">
+      <input id="setor" placeholder="Setor" value="${dados?.setor || ""}">
 
       <select id="statusManual">
-        <option value="OK" ${dados?.statusManual === "OK" ? "selected" : ""}>OK</option>
-        <option value="Despressurizado" ${dados?.statusManual === "Despressurizado" ? "selected" : ""}>Despressurizado</option>
-        <option value="Em Manutenção" ${dados?.statusManual === "Em Manutenção" ? "selected" : ""}>Em Manutenção</option>
+        <option value="OK">OK</option>
+        <option value="Despressurizado">Despressurizado</option>
+        <option value="Em Manutenção">Em Manutenção</option>
       </select>
 
-      <input id="ultimaRecarga" placeholder="MM/AAAA" maxlength="7" value="${dados?.ultimaRecarga || ""}">
-      <input id="proximaRecarga" placeholder="MM/AAAA" maxlength="7" value="${dados?.proximaRecarga || ""}">
+      <input id="ultimaRecarga" placeholder="MM/AAAA" value="${dados?.ultimaRecarga || ""}">
+      <input id="proximaRecarga" placeholder="MM/AAAA" value="${dados?.proximaRecarga || ""}">
 
       <button id="salvar">Salvar</button>
     </div>
   `;
 
   document.body.appendChild(modal);
+
+  // FECHAR AO CLICAR FORA
+  modal.addEventListener("click", e => {
+    if(e.target === modal){
+      modal.remove();
+    }
+  });
+
+  // BOTÃO FECHAR
+  const btnFechar = document.createElement("button");
+
+  btnFechar.innerText = "✕";
+  btnFechar.className = "btn-fechar-modal";
+
+  modal.querySelector(".modal").appendChild(btnFechar);
+
+  btnFechar.addEventListener("click", () => {
+    modal.remove();
+  });
+
+  // SALVAR
+  document.getElementById("salvar").addEventListener("click", async () => {
+
+    const dadosExtintor = {
+      registro: document.getElementById("registro").value.trim(),
+      recipiente: document.getElementById("recipiente").value.trim(),
+      tipo: document.getElementById("tipo").value,
+      classe: document.getElementById("classe").value.trim(),
+      kg: document.getElementById("kg").value.trim(),
+      local: document.getElementById("local").value.trim(),
+      setor: document.getElementById("setor").value.trim(),
+      statusManual: document.getElementById("statusManual").value,
+      ultimaRecarga: document.getElementById("ultimaRecarga").value.trim(),
+      proximaRecarga: document.getElementById("proximaRecarga").value.trim()
+    };
+
+    if(dados){
+      await updateDoc(doc(db, "extintores", dados.id), dadosExtintor);
+    }else{
+      await addDoc(collection(db, "extintores"), dadosExtintor);
+    }
+
+    modal.remove();
+    carregar();
+
+  });
 
 }
 

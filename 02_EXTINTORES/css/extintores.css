@@ -557,3 +557,113 @@ td button:hover{
 
 }
 
+/* ============================= */
+/* MODAL CADASTRO EXTINTOR */
+/* ============================= */
+
+.modal-bg{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.65);
+  backdrop-filter:blur(6px);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index:9999;
+  padding:20px;
+}
+
+.modal{
+  position:relative;
+  width:100%;
+  max-width:720px;
+  background:var(--card-bg);
+  border:1px solid var(--border);
+  border-radius:24px;
+  padding:28px;
+  box-shadow:var(--shadow);
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+}
+
+.modal h3{
+  grid-column:1 / -1;
+  font-size:24px;
+  margin-bottom:10px;
+}
+
+.modal hr{
+  grid-column:1 / -1;
+  width:100%;
+  border:none;
+  border-top:1px solid var(--border);
+}
+
+.modal input,
+.modal select{
+  background:#2a3354;
+  border:1px solid transparent;
+  color:white;
+  padding:13px 14px;
+  border-radius:12px;
+  font-size:14px;
+}
+
+.modal input:focus,
+.modal select:focus{
+  outline:none;
+  border-color:var(--blue);
+}
+
+.modal button{
+  border:none;
+  border-radius:12px;
+  padding:12px 16px;
+  cursor:pointer;
+  font-weight:700;
+}
+
+#importarLinha{
+  grid-column:1 / -1;
+  background:#35416d;
+  color:white;
+}
+
+#salvar{
+  grid-column:1 / -1;
+  background:linear-gradient(135deg,#1cc88a,#119b68);
+  color:white;
+}
+
+.btn-fechar-modal{
+  position:absolute;
+  top:16px;
+  right:16px;
+
+  width:34px;
+  height:34px;
+
+  border:none;
+  border-radius:12px;
+
+  background:rgba(255,255,255,.06);
+  color:#cfd8ff;
+
+  font-size:20px;
+  font-weight:300;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  cursor:pointer;
+
+  transition:.25s ease;
+}
+
+.btn-fechar-modal:hover{
+  background:rgba(255,92,92,.18);
+  color:#ff7b7b;
+  transform:scale(1.05);
+}
