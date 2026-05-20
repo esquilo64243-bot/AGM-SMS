@@ -713,8 +713,9 @@ btnExportar.addEventListener("click", () => {
     },
 
     pagebreak:{
-      mode:["avoid-all"]
-    }
+  mode:["css", "legacy"],
+  before:[".checklist-final"]
+}
 
   };
 
