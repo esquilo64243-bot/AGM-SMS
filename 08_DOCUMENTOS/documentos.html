@@ -106,19 +106,46 @@
           </div>
         </div>
 
+        <div class="campo">
+  <label> Setor </label>
+
+  <div class="checkbox-group setor-checks">
+
+    <label class="check-item">
+      <input type="checkbox" id="setorSeguranca" checked />
+      Segurança Do Trabalho
+    </label>
+
+    <label class="check-item">
+      <input type="checkbox" id="setorMeioAmbiente" />
+      Meio Ambiente
+    </label>
+
+    <label class="check-item">
+      <input type="checkbox" id="setorSaude" />
+      Saúde Ocupacional
+    </label>
+
+  </div>
+</div>
+
         <!-- ====================================== -->
         <!-- REGISTRO FOTOGRÁFICO -->
         <!-- ====================================== -->
 
-        <div id="areaRegistroFotografico">
-          <div class="registros-header">
-            <h2>📸 Registros</h2>
+       <div id="areaRegistroFotografico">
+  <div class="registros-header">
+    <h2>📸 Registros</h2>
 
-            <button id="btnAdicionar">+ Adicionar</button>
-          </div>
+    <button id="btnAdicionar" type="button">+ Adicionar</button>
 
-          <div id="registrosContainer"></div>
-        </div>
+    <button id="btnAdicionarChecklist" type="button">
+      + Checklist
+    </button>
+  </div>
+
+  <div id="registrosContainer"></div>
+</div>
 
         <!-- ====================================== -->
         <!-- CAMPOS LISTA PRESENÇA -->
@@ -284,7 +311,7 @@
   <h1 class="titulo-registro">REGISTRO FOTOGRÁFICO</h1>
 
   <div class="dados-registro">
-    <p><strong>Data da Atracação:</strong> <span id="previewData">-</span></p>
+    <p><strong>Data:</strong> <span id="previewData">-</span></p>
     <p><strong>Hora:</strong> <span id="previewHoraRegistro">-</span></p>
     <p><strong>Local / Equipamento:</strong> <span id="previewLocal">-</span></p>
     <p><strong>Elaborado por:</strong> <span id="previewResponsavel">-</span></p>
@@ -292,12 +319,22 @@
   </div>
 
   <div class="setor-registro">
-    <span>Setor:</span>
-    <label>☒ Segurança</label>
-    <label>☐ Meio Ambiente</label>
-    <label>☐ Saúde Ocupacional</label>
-  </div>
 
+  <span>Setor:</span>
+
+  <label id="previewSetorSeguranca">
+    ☒ Segurança Do Trabalho
+  </label>
+
+  <label id="previewSetorMA">
+    ☐ Meio Ambiente
+  </label>
+
+  <label id="previewSetorSaude">
+    ☐ Saúde Ocupacional
+  </label>
+
+</div>
   <div id="previewRegistros" class="grade-registro"></div>
 </div>
 

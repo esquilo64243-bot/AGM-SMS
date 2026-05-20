@@ -10,6 +10,27 @@ from "../../01_HOME/js/firebase.js";
 /* ELEMENTOS */
 /* ============================= */
 
+const setorSeguranca =
+  document.getElementById("setorSeguranca");
+
+const setorMeioAmbiente =
+  document.getElementById("setorMeioAmbiente");
+
+const setorSaude =
+  document.getElementById("setorSaude");
+
+const previewSetorSeguranca =
+  document.getElementById("previewSetorSeguranca");
+
+const previewSetorMA =
+  document.getElementById("previewSetorMA");
+
+const previewSetorSaude =
+  document.getElementById("previewSetorSaude");
+
+const btnAdicionarChecklist =
+  document.getElementById("btnAdicionarChecklist");
+
 const dataTreinamento =
   document.getElementById("dataTreinamento");
 
@@ -168,6 +189,21 @@ const previewRegistros = document.getElementById("previewRegistros");
 
 function atualizarPreview(){
 
+  previewSetorSeguranca.textContent =
+  setorSeguranca.checked
+    ? "☒ Segurança"
+    : "☐ Segurança";
+
+previewSetorMA.textContent =
+  setorMeioAmbiente.checked
+    ? "☒ Meio Ambiente"
+    : "☐ Meio Ambiente";
+
+previewSetorSaude.textContent =
+  setorSaude.checked
+    ? "☒ Saúde Ocupacional"
+    : "☐ Saúde Ocupacional";
+
   previewData.textContent =
     dataRegistro.value || "-";
 
@@ -280,6 +316,21 @@ function atualizarLogos(){
 /* EVENTOS INPUT */
 /* ============================= */
 
+setorSeguranca.addEventListener(
+  "change",
+  atualizarPreview
+);
+
+setorMeioAmbiente.addEventListener(
+  "change",
+  atualizarPreview
+);
+
+setorSaude.addEventListener(
+  "change",
+  atualizarPreview
+);
+
 dataTreinamento.addEventListener(
   "input",
   atualizarPreviewLista
@@ -360,6 +411,10 @@ if(btnAdicionar){
     registro.classList.add("registro-item");
 
     registro.innerHTML = `
+      <button type="button" class="btn-remover-item">
+        ✕
+      </button>
+
       <input type="file" accept="image/*" id="foto-${index}">
 
       <textarea
@@ -387,7 +442,13 @@ if(btnAdicionar){
 
     previewRegistros.appendChild(preview);
 
-    /* FOTO */
+    const btnRemoverItem =
+      registro.querySelector(".btn-remover-item");
+
+    btnRemoverItem.addEventListener("click", () => {
+      registro.remove();
+      preview.remove();
+    });
 
     const fotoInput =
       document.getElementById(`foto-${index}`);
@@ -399,33 +460,34 @@ if(btnAdicionar){
 
       const arquivo = event.target.files[0];
 
-      if(arquivo){
+      if(!arquivo) return;
 
-        const reader = new FileReader();
+      const reader = new FileReader();
 
-        reader.onload = function(e){
+      reader.onload = function(e){
 
-          previewImg.onload = () => {
-  previewImg.classList.remove("foto-horizontal", "foto-vertical");
+        previewImg.onload = () => {
 
-  if(previewImg.naturalWidth > previewImg.naturalHeight){
-    previewImg.classList.add("foto-horizontal");
-  } else {
-    previewImg.classList.add("foto-vertical");
-  }
-};
+          previewImg.classList.remove(
+            "foto-horizontal",
+            "foto-vertical"
+          );
 
-previewImg.src = e.target.result;
+          if(previewImg.naturalWidth > previewImg.naturalHeight){
+            previewImg.classList.add("foto-horizontal");
+          } else {
+            previewImg.classList.add("foto-vertical");
+          }
 
         };
 
-        reader.readAsDataURL(arquivo);
+        previewImg.src = e.target.result;
 
-      }
+      };
+
+      reader.readAsDataURL(arquivo);
 
     });
-
-    /* DESCRIÇÃO */
 
     const descricaoInput =
       document.getElementById(`descricao-${index}`);
@@ -437,6 +499,116 @@ previewImg.src = e.target.result;
 
       previewDesc.textContent =
         descricaoInput.value || "-";
+
+    });
+
+  });
+
+}
+
+
+/* ============================= */
+/* ADICIONAR CHECKLIST */
+/* ============================= */
+
+if(btnAdicionarChecklist){
+
+  btnAdicionarChecklist.addEventListener("click", () => {
+
+    const registro =
+      document.createElement("div");
+
+    registro.classList.add("registro-item");
+
+    registro.innerHTML = `
+      <button type="button" class="btn-remover-item">
+        ✕
+      </button>
+
+      <input type="file" accept="image/*" id="foto-checklist">
+
+      <textarea
+        placeholder="Descrição do checklist"
+        id="descricao-checklist"
+      >Checklist de atracação.</textarea>
+    `;
+
+    registrosContainer.appendChild(registro);
+
+    const preview =
+      document.createElement("div");
+
+    preview.classList.add("preview-registro", "checklist-final");
+
+    preview.innerHTML = `
+      <h3>Checklist</h3>
+
+      <img id="preview-img-checklist" />
+
+      <p id="preview-desc-checklist">
+        Checklist de atracação.
+      </p>
+    `;
+
+    previewRegistros.appendChild(preview);
+
+    const btnRemoverItem =
+      registro.querySelector(".btn-remover-item");
+
+    btnRemoverItem.addEventListener("click", () => {
+      registro.remove();
+      preview.remove();
+    });
+
+    const fotoInput =
+      document.getElementById("foto-checklist");
+
+    const previewImg =
+      document.getElementById("preview-img-checklist");
+
+    const descricaoInput =
+      document.getElementById("descricao-checklist");
+
+    const previewDesc =
+      document.getElementById("preview-desc-checklist");
+
+    fotoInput.addEventListener("change", (event) => {
+
+      const arquivo = event.target.files[0];
+
+      if(!arquivo) return;
+
+      const reader = new FileReader();
+
+      reader.onload = function(e){
+
+        previewImg.onload = () => {
+
+          previewImg.classList.remove(
+            "foto-horizontal",
+            "foto-vertical"
+          );
+
+          if(previewImg.naturalWidth > previewImg.naturalHeight){
+            previewImg.classList.add("foto-horizontal");
+          } else {
+            previewImg.classList.add("foto-vertical");
+          }
+
+        };
+
+        previewImg.src = e.target.result;
+
+      };
+
+      reader.readAsDataURL(arquivo);
+
+    });
+
+    descricaoInput.addEventListener("input", () => {
+
+      previewDesc.textContent =
+        descricaoInput.value || "Checklist de atracação.";
 
     });
 
@@ -948,3 +1120,4 @@ window.addEventListener("DOMContentLoaded", () => {
   atualizarLogos();
 
 });
+
