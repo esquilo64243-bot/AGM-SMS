@@ -77,6 +77,12 @@
           </div>
 
           <div class="campo">
+  <label> Hora </label>
+
+  <input type="time" id="horaRegistro" />
+</div>
+
+          <div class="campo">
             <label> Local </label>
 
             <input
@@ -125,7 +131,6 @@
       <input type="checkbox" id="setorSaude" />
       Saúde Ocupacional
     </label>
-
   </div>
 </div>
 
@@ -163,13 +168,42 @@
           </div>
 
           <div class="campo">
-            <label> Conteúdo Programático </label>
+  <label> Tipo de Conteúdo </label>
 
-            <textarea
-              id="conteudoProgramatico"
-              placeholder="Digite os tópicos"
-            ></textarea>
-          </div>
+  <div class="checkbox-group">
+
+    <label class="check-item">
+      <input
+        type="radio"
+        name="tipoConteudo"
+        id="modoTopicos"
+        checked
+      />
+
+      Tópicos
+    </label>
+
+    <label class="check-item">
+      <input
+        type="radio"
+        name="tipoConteudo"
+        id="modoTexto"
+      />
+
+      Texto Corrido
+    </label>
+
+  </div>
+</div>
+
+<div class="campo">
+  <label> Conteúdo Programático </label>
+
+  <textarea
+    id="conteudoProgramatico"
+    placeholder="Digite os tópicos"
+  ></textarea>
+</div>
 
           <div class="campo">
             <label> Instrutor </label>

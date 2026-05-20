@@ -10,6 +10,18 @@ from "../../01_HOME/js/firebase.js";
 /* ELEMENTOS */
 /* ============================= */
 
+const horaRegistro =
+  document.getElementById("horaRegistro");
+
+const previewHoraRegistro =
+  document.getElementById("previewHoraRegistro");
+
+const modoTopicos =
+  document.getElementById("modoTopicos");
+
+const modoTexto =
+  document.getElementById("modoTexto");
+
 const setorSeguranca =
   document.getElementById("setorSeguranca");
 
@@ -207,6 +219,9 @@ previewSetorSaude.textContent =
   previewData.textContent =
     dataRegistro.value || "-";
 
+  previewHoraRegistro.textContent =
+   horaRegistro.value || "-";
+
   previewLocal.textContent =
     localRegistro.value || "-";
 
@@ -236,30 +251,57 @@ function atualizarPreviewLista() {
   previewHoras.textContent =
     horasTreinamento.value || "-";
 
-  const linhas =
-  conteudoProgramatico.value
-    .split("\n")
-    .filter((linha) => linha.trim() !== "");
+  previewConteudo.innerHTML = "";
 
-previewConteudo.innerHTML = "";
+  const texto =
+    conteudoProgramatico.value.trim();
 
-if(linhas.length === 0){
+  if(!texto){
 
-  previewConteudo.innerHTML =
-    "<li>-</li>";
+    previewConteudo.innerHTML =
+      "<li>-</li>";
 
-} else {
+    return;
 
-  linhas.forEach((linha) => {
+  }
 
-    const li =
-      document.createElement("li");
+  /* ============================= */
+  /* MODO TÓPICOS */
+  /* ============================= */
 
-    li.textContent = linha;
+  if(modoTopicos.checked){
 
-    previewConteudo.appendChild(li);
+    const linhas =
+      texto
+        .split("\n")
+        .filter((linha) =>
+          linha.trim() !== ""
+        );
 
-  });
+    linhas.forEach((linha) => {
+
+      const li =
+        document.createElement("li");
+
+      li.textContent = linha;
+
+      previewConteudo.appendChild(li);
+
+    });
+
+  }
+
+  /* ============================= */
+  /* MODO TEXTO */
+  /* ============================= */
+
+  else {
+
+  previewConteudo.innerHTML = `
+    <div class="texto-corrido-preview">
+      ${texto}
+    </div>
+  `;
 
 }
 
@@ -316,6 +358,16 @@ function atualizarLogos(){
 /* EVENTOS INPUT */
 /* ============================= */
 
+modoTopicos.addEventListener(
+  "change",
+  atualizarPreviewLista
+);
+
+modoTexto.addEventListener(
+  "change",
+  atualizarPreviewLista
+);
+
 setorSeguranca.addEventListener(
   "change",
   atualizarPreview
@@ -337,6 +389,10 @@ dataTreinamento.addEventListener(
 );
 
 dataRegistro.addEventListener("input", atualizarPreview);
+horaRegistro.addEventListener(
+  "input",
+  atualizarPreview
+);
 localRegistro.addEventListener("input", atualizarPreview);
 responsavelRegistro.addEventListener("input", atualizarPreview);
 servicoRegistro.addEventListener("input", atualizarPreview);
@@ -1018,6 +1074,9 @@ camposDDS.style.display =
 
   if(tipo === "registroFotografico"){
 
+    document.querySelector(".setor-checks").style.display =
+  "flex";
+
     camposRegistroFotografico.style.display =
       "block";
 
@@ -1043,6 +1102,9 @@ camposDDS.style.display =
   /* ================================= */
 
   else if(tipo === "listaPresenca"){
+
+    document.querySelector(".setor-checks").style.display =
+  "none";
 
     camposRegistroFotografico.style.display =
       "none";
@@ -1075,6 +1137,9 @@ previewDDS.style.display =
   /* ================================= */
 
   else if(tipo === "dds"){
+
+    document.querySelector(".setor-checks").style.display =
+  "none";
 
     camposRegistroFotografico.style.display =
       "none";

@@ -97,15 +97,15 @@ body{
 .checkbox-group{
   display:flex;
   align-items:center;
-  gap:20px;
+  gap:16px;
   flex-wrap:wrap;
 }
 
 .check-item{
   display:flex;
   align-items:center;
-  gap:8px;
-  font-size:14px;
+  gap:6px;
+  margin:0;
 }
 
 .check-item input{
@@ -1580,4 +1580,46 @@ th{
   font-size:9px;
   line-height:1.1;
   min-height:18px;
+}
+
+/* ================================= */
+/* TEXTO CORRIDO */
+/* ================================= */
+
+.texto-corrido-preview{
+
+  font-size:12px;
+
+  line-height:1.5;
+
+  text-align:justify;
+
+  white-space:pre-wrap;
+
+  width:100%;
+
+  padding-left:0;
+
+  margin-left:0;
+
+}
+
+.texto-corrido-preview{
+  display:block;
+  width:100%;
+  max-width:100%;
+  font-size:12px;
+  line-height:1.5;
+  text-align:justify;
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
+  word-break:break-word;
+  box-sizing:border-box;
+}
+
+#previewConteudo{
+  width:100%;
+  max-width:100%;
+  overflow-wrap:anywhere;
+  word-break:break-word;
 }
