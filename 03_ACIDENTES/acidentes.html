@@ -169,6 +169,31 @@
         </form>
       </div>
     </div>
+        <!-- MODAL Detalhes de registro -->
+
+<div id="modalDetalhes" class="modal-overlay">
+  <div class="modal-content modal-small">
+    <h2 class="cat-status">DETALHES DO REGISTRO</h2>
+
+    <div class="detalhes-registro">
+      <p><strong>Nome:</strong> <span id="detalheNome"></span></p>
+      <p><strong>Data:</strong> <span id="detalheData"></span></p>
+      <p><strong>Tipo:</strong> <span id="detalheTipo"></span></p>
+      <p><strong>Local:</strong> <span id="detalheLocal"></span></p>
+      <p><strong>Descrição:</strong> <span id="detalheDescricao"></span></p>
+    </div>
+
+    <div class="modal-buttons">
+      <button type="button" id="voltarDetalhes" class="btn-secondary">
+        Voltar
+      </button>
+
+      <button type="button" id="excluirDetalhes" class="btn-danger">
+        Excluir
+      </button>
+    </div>
+  </div>
+</div>
 
     <script type="module" src="./js/acidentes.js"></script>
   </body>

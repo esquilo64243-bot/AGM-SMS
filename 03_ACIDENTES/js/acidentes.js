@@ -3,7 +3,9 @@ import { db } from "../../01_HOME/js/firebase.js";
 import {
 collection,
 addDoc,
-getDocs
+getDocs,
+deleteDoc,
+doc
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 let acidentes = [];
@@ -127,6 +129,16 @@ header.parentElement.classList.toggle('open');
 
 }
 
+function formatarDataBR(data){
+
+if(!data) return "-";
+
+const partes = data.split("-");
+
+return `${partes[2]}/${partes[1]}/${partes[0]}`;
+
+}
+
 
 // =============================
 // FIREBASE
@@ -156,7 +168,7 @@ id: doc.id,
 ano: dataObj.getFullYear(),
 mes: mes,
 nome: data.nome,
-data: data.data,
+data: formatarDataBR(data.data),
 tipo: data.tipo,
 local: data.local,
 descricao: data.descricao,
@@ -178,11 +190,13 @@ atualizarGraficoAnos();
 
 function renderizarHistorico(){
 
-const container = document.querySelector(".arquivos");
+const container = document.getElementById("listaAnos");
 
 let html = "";
 
-const anos = [filtroAno];
+const anos =
+[...new Set(acidentes.map(a=>a.ano))]
+.sort((a,b)=>b-a);
 
 anos.forEach(ano=>{
 
@@ -238,19 +252,22 @@ configurarAcordeao();
 
 window.verAcidente = function(id){
 
-const acidente = acidentes.find(a => a.id === id);
+const acidente =
+acidentes.find(a => a.id === id);
 
 if(!acidente) return;
 
-alert(`ACIDENTE REGISTRADO
+acidenteSelecionado = id;
 
-Nome: ${acidente.nome}
-Data: ${acidente.data}
-Tipo: ${acidente.tipo}
-Local: ${acidente.local}
+document.getElementById("detalheNome").innerText = acidente.nome;
+document.getElementById("detalheData").innerText = acidente.data;
+document.getElementById("detalheTipo").innerText = acidente.tipo;
+document.getElementById("detalheLocal").innerText = acidente.local;
+document.getElementById("detalheDescricao").innerText = acidente.descricao;
 
-Descrição:
-${acidente.descricao}`);
+document
+.getElementById("modalDetalhes")
+.classList.add("show");
 
 }
 
@@ -271,6 +288,7 @@ atualizarGrafico();
 // =============================
 // MODAL
 // =============================
+let acidenteSelecionado = null;
 
 document.addEventListener("DOMContentLoaded",()=>{
 
@@ -284,9 +302,60 @@ const loading = document.getElementById("loadingCAT");
 const sucesso = document.getElementById("sucessoCAT");
 const ok = document.getElementById("okCAT");
 const status = document.getElementById("statusRegistro");
+const modalDetalhes =
+document.getElementById("modalDetalhes");
+
+const voltarDetalhes =
+document.getElementById("voltarDetalhes");
+
+const excluirDetalhes =
+document.getElementById("excluirDetalhes");
 
 const btnGrafico = document.getElementById("btnGrafico");
 const painelGrafico = document.getElementById("painelGrafico");
+
+voltarDetalhes.onclick = ()=>{
+
+modalDetalhes.classList.remove("show");
+
+};
+
+excluirDetalhes.onclick = async ()=>{
+
+if(!acidenteSelecionado){
+  alert("Nenhum registro selecionado.");
+  return;
+}
+
+const confirmar =
+confirm("Tem certeza que deseja excluir este registro?");
+
+if(!confirmar) return;
+
+try{
+
+await deleteDoc(
+doc(db,"acidentes",acidenteSelecionado)
+);
+
+acidenteSelecionado = null;
+
+modalDetalhes.classList.remove("show");
+
+await carregarAcidentes();
+
+alert("Registro excluído com sucesso.");
+
+}
+catch(e){
+
+console.error(e);
+
+alert("Erro ao excluir acidente");
+
+}
+
+};
 
 
 btnNovo.onclick=()=>{
@@ -315,6 +384,15 @@ const data=document.getElementById("dataAcidente").value;
 const tipo=document.getElementById("tipoAcidente").value;
 const local=document.getElementById("localAcidente").value;
 const descricao=document.getElementById("descricaoAcidente").value;
+
+if(!nome || !data || !tipo || !local || !descricao){
+
+  loading.style.display="none";
+
+  alert("Preencha todos os campos antes de registrar.");
+
+  return;
+}
 
 try{
 
@@ -355,7 +433,7 @@ btnGrafico.onclick = ()=>{
 
 painelGrafico.classList.toggle("show");
 
-painelGrafico.innerHTML = `
+painelGrafico.innerHTML ||= `
 <div onclick="mudarGrafico('bar')" class="opcao">Barras</div>
 <div onclick="mudarGrafico('line')" class="opcao">Linha</div>
 <div onclick="mudarGrafico('pie')" class="opcao">Pizza</div>
@@ -380,7 +458,7 @@ btnMes.onclick = ()=>{
 
 painelMes.classList.toggle("show");
 
-painelMes.innerHTML = `
+painelMes.innerHTML ||= `
 <label><input type="checkbox" value="Janeiro"> Janeiro</label>
 <label><input type="checkbox" value="Fevereiro"> Fevereiro</label>
 <label><input type="checkbox" value="Março"> Março</label>
@@ -407,7 +485,7 @@ btnTipo.onclick = ()=>{
 
 painelTipo.classList.toggle("show");
 
-painelTipo.innerHTML = `
+painelTipo.innerHTML ||= `
 <div onclick="selecionarTipo('Todos')">Todos</div>
 <div onclick="selecionarTipo('Dano Material')">Dano Material</div>
 <div onclick="selecionarTipo('Sem Afastamento')">Sem Afastamento</div>
