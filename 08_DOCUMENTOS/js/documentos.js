@@ -10,6 +10,7 @@ from "../../01_HOME/js/firebase.js";
 /* ELEMENTOS */
 /* ============================= */
 
+
 const horaRegistro =
   document.getElementById("horaRegistro");
 
@@ -217,7 +218,7 @@ previewSetorSaude.textContent =
     : "☐ Saúde Ocupacional";
 
   previewData.textContent =
-    dataRegistro.value || "-";
+  formatarDataBR(dataRegistro.value) || "-";
 
   previewHoraRegistro.textContent =
    horaRegistro.value || "-";
@@ -240,7 +241,7 @@ previewSetorSaude.textContent =
 function atualizarPreviewLista() {
 
   previewDataTreinamento.textContent =
-    dataTreinamento.value || "-";
+  formatarDataBR(dataTreinamento.value) || "-";
 
   previewTreinamento.textContent =
     nomeTreinamento.value || "-";
@@ -318,7 +319,7 @@ function atualizarPreviewDDS(){
     tipoDDS.value || "-";
 
   previewDataDDS.textContent =
-    dataDDS.value || "-";
+  formatarDataBR(dataDDS.value);
 
   previewTempoDDS.textContent =
     tempoDDS.value || "-";
@@ -1170,6 +1171,15 @@ previewDDS.style.display =
 
   }
 
+}
+
+// Data //
+function formatarDataBR(data){
+  if(!data) return "";
+
+  const [ano, mes, dia] = data.split("-");
+
+  return `${dia}/${mes}/${ano}`;
 }
 
 window.addEventListener("DOMContentLoaded", () => {
