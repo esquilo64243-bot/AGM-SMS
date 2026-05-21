@@ -339,6 +339,10 @@ body{
 
   transition:.25s;
 
+  height:52px;
+
+  width:100%;
+
 }
 
 .filtros input:focus,
