@@ -338,52 +338,66 @@ async function abrirGerenciarTreinamentos() {
     collection(db, "treinamentos")
   );
 
+  const treinamentosOrdenados = [];
+
   snapshot.forEach((docSnap) => {
 
-    const treino = docSnap.data();
+    treinamentosOrdenados.push({
+      id: docSnap.id,
+      ...docSnap.data(),
+    });
 
-    const div = document.createElement("div");
-
-    div.classList.add("treino-gerenciar");
-
-    div.innerHTML = `
-      <div>
-        <strong>${treino.nome}</strong>
-        <p>${treino.validade} meses</p>
-      </div>
-
-      <button class="btn-delete-treino">
-        🗑️
-      </button>
-    `;
-
-    const btnDelete =
-      div.querySelector(".btn-delete-treino");
-
-    btnDelete.onclick = async () => {
-
-      const confirmar = confirm(
-        "Deseja excluir este treinamento?"
-      );
-
-      if (!confirmar) return;
-
-      await deleteDoc(
-        doc(db, "treinamentos", docSnap.id)
-      );
-
-      abrirGerenciarTreinamentos();
-      carregarTreinamentos();
-    };
-
-    listaTreinosCadastro.appendChild(div);
   });
+
+  treinamentosOrdenados
+    .sort((a, b) =>
+      a.nome.localeCompare(b.nome, "pt-BR")
+    )
+
+    .forEach((treino) => {
+
+      const div = document.createElement("div");
+
+      div.classList.add("treino-gerenciar");
+
+      div.innerHTML = `
+        <div>
+          <strong>${treino.nome}</strong>
+          <p>${treino.validade} meses</p>
+        </div>
+
+        <button class="btn-delete-treino">
+          🗑️
+        </button>
+      `;
+
+      const btnDelete =
+        div.querySelector(".btn-delete-treino");
+
+      btnDelete.onclick = async () => {
+
+        const confirmar = confirm(
+          "Deseja excluir este treinamento?"
+        );
+
+        if (!confirmar) return;
+
+        await deleteDoc(
+          doc(db, "treinamentos", treino.id)
+        );
+
+        abrirGerenciarTreinamentos();
+        carregarTreinamentos();
+      };
+
+      listaTreinosCadastro.appendChild(div);
+
+    });
 
   modalGerenciarTreinos.classList.add("show");
 }
 
-btnGerenciarTreinos.onclick =
-  abrirGerenciarTreinamentos;
+btnGerenciarTreinos.onclick = abrirGerenciarTreinamentos;
 
 fecharGerenciarTreinos.onclick = () => {
   modalGerenciarTreinos.classList.remove("show");
