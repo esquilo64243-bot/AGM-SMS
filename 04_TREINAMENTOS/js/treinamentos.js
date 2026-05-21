@@ -483,26 +483,54 @@ cancelarTreino.onclick = () => modalTreino.classList.remove("show");
 // FUncionarios em massa
 
 function renderizarFuncionariosMassa() {
+
+  // salva os já marcados
+  const selecionados = [
+    ...listaFuncionariosMassa.querySelectorAll("input:checked")
+  ].map(input => input.value);
+
   listaFuncionariosMassa.innerHTML = "";
 
   const busca = buscaFuncionarioMassa.value.toLowerCase();
 
   funcionarios
-    .filter((f) => f.nome.toLowerCase().includes(busca))
-    .sort((a, b) => a.nome.localeCompare(b.nome, "pt-BR"))
+    .filter((f) =>
+      f.nome.toLowerCase().includes(busca)
+    )
+
+    .sort((a, b) =>
+      a.nome.localeCompare(b.nome, "pt-BR")
+    )
+
     .forEach((f) => {
+
+      const marcado =
+        selecionados.includes(f.id)
+          ? "checked"
+          : "";
+
       const label = document.createElement("label");
+
       label.classList.add("funcionario-check");
 
       label.innerHTML = `
-        <input type="checkbox" value="${f.id}" />
+        <input
+          type="checkbox"
+          value="${f.id}"
+          ${marcado}
+        />
+
         <div>
           <strong>${f.nome}</strong>
-          <small>${f.cargo} - ${f.empresa}</small>
+
+          <small>
+            ${f.cargo} - ${f.empresa}
+          </small>
         </div>
       `;
 
       listaFuncionariosMassa.appendChild(label);
+
     });
 }
 
@@ -564,6 +592,7 @@ salvarTreinoMassa.onclick = async () => {
 
   carregarFuncionarios();
 };
+
 // EVENTOS
 buscaInput.addEventListener("input", renderizar);
 filtroFuncao.addEventListener("change", renderizar);
