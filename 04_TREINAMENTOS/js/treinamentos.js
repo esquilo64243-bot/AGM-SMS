@@ -11,6 +11,7 @@ const buscaFuncionarioMassa = document.getElementById("buscaFuncionarioMassa");
 const listaFuncionariosMassa = document.getElementById("listaFuncionariosMassa");
 const cancelarTreinoMassa = document.getElementById("cancelarTreinoMassa");
 const salvarTreinoMassa = document.getElementById("salvarTreinoMassa");
+let funcionariosSelecionadosMassa = new Set();
 
 const buscaInput = document.getElementById("busca");
 const filtroFuncao = document.getElementById("filtroFuncao");
@@ -483,54 +484,41 @@ cancelarTreino.onclick = () => modalTreino.classList.remove("show");
 // FUncionarios em massa
 
 function renderizarFuncionariosMassa() {
-
-  // salva os já marcados
-  const selecionados = [
-    ...listaFuncionariosMassa.querySelectorAll("input:checked")
-  ].map(input => input.value);
-
   listaFuncionariosMassa.innerHTML = "";
 
   const busca = buscaFuncionarioMassa.value.toLowerCase();
 
   funcionarios
-    .filter((f) =>
-      f.nome.toLowerCase().includes(busca)
-    )
-
-    .sort((a, b) =>
-      a.nome.localeCompare(b.nome, "pt-BR")
-    )
-
+    .filter((f) => f.nome.toLowerCase().includes(busca))
+    .sort((a, b) => a.nome.localeCompare(b.nome, "pt-BR"))
     .forEach((f) => {
-
-      const marcado =
-        selecionados.includes(f.id)
-          ? "checked"
-          : "";
-
       const label = document.createElement("label");
-
       label.classList.add("funcionario-check");
 
+      const marcado = funcionariosSelecionadosMassa.has(f.id)
+        ? "checked"
+        : "";
+
       label.innerHTML = `
-        <input
-          type="checkbox"
-          value="${f.id}"
-          ${marcado}
-        />
+        <input type="checkbox" value="${f.id}" ${marcado} />
 
         <div>
           <strong>${f.nome}</strong>
-
-          <small>
-            ${f.cargo} - ${f.empresa}
-          </small>
+          <small>${f.cargo} - ${f.empresa}</small>
         </div>
       `;
 
-      listaFuncionariosMassa.appendChild(label);
+      const checkbox = label.querySelector("input");
 
+      checkbox.onchange = () => {
+        if (checkbox.checked) {
+          funcionariosSelecionadosMassa.add(f.id);
+        } else {
+          funcionariosSelecionadosMassa.delete(f.id);
+        }
+      };
+
+      listaFuncionariosMassa.appendChild(label);
     });
 }
 
@@ -549,9 +537,7 @@ salvarTreinoMassa.onclick = async () => {
   const treinoId = selectTreinamentoMassa.value;
   const realizacao = dataRealizacaoMassa.value;
 
-  const selecionados = [
-    ...listaFuncionariosMassa.querySelectorAll("input:checked"),
-  ].map((input) => input.value);
+const selecionados = [...funcionariosSelecionadosMassa];
 
   if (!treinoId || !realizacao || selecionados.length === 0) {
     return alert("Selecione o treinamento, a data e pelo menos um funcionário.");
@@ -585,12 +571,16 @@ salvarTreinoMassa.onclick = async () => {
 
   await Promise.all(promessas);
 
-  modalTreinoMassa.classList.remove("show");
-  selectTreinamentoMassa.value = "";
-  dataRealizacaoMassa.value = "";
-  buscaFuncionarioMassa.value = "";
+modalTreinoMassa.classList.remove("show");
 
-  carregarFuncionarios();
+selectTreinamentoMassa.value = "";
+dataRealizacaoMassa.value = "";
+buscaFuncionarioMassa.value = "";
+
+// limpa os selecionados
+funcionariosSelecionadosMassa.clear();
+
+carregarFuncionarios();
 };
 
 // EVENTOS
