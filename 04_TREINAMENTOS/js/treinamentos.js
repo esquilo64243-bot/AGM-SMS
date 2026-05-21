@@ -14,6 +14,7 @@ const salvarTreinoMassa = document.getElementById("salvarTreinoMassa");
 let funcionariosSelecionadosMassa = new Set();
 
 const buscaInput = document.getElementById("busca");
+const filtroTreinamento = document.getElementById("filtroTreinamento");
 const filtroFuncao = document.getElementById("filtroFuncao");
 const filtroEmpresa = document.getElementById("filtroEmpresa");
 
@@ -109,22 +110,26 @@ function renderizar() {
   const busca = buscaInput.value.toLowerCase();
   const funcaoFiltro = filtroFuncao.value;
   const empresaFiltro = filtroEmpresa.value;
+  const treinamentoFiltro = filtroTreinamento.value;
 
   funcionarios
     .filter((f) => {
       const matchBusca = (f.nome || "").toLowerCase().includes(busca);
       const matchFuncao = !funcaoFiltro || f.cargo === funcaoFiltro;
       const matchEmpresa = !empresaFiltro || f.empresa === empresaFiltro;
+      const matchTreinamento =
+  !treinamentoFiltro ||
+  f.treinamentos.some((t) => t.nome === treinamentoFiltro);
 
       if (!filtroAtual) {
-        return matchBusca && matchFuncao && matchEmpresa;
+        return matchBusca && matchFuncao && matchEmpresa && matchTreinamento;
       }
 
       const temStatus = f.treinamentos.some(
         (t) => verificarStatus(t.vencimento) === filtroAtual
       );
 
-      return matchBusca && matchFuncao && matchEmpresa && temStatus;
+      return matchBusca && matchFuncao && matchEmpresa && matchTreinamento;
     })
 
     .sort((a, b) => a.nome.localeCompare(b.nome, "pt-BR"))
@@ -248,6 +253,7 @@ function renderizar() {
 
 // 🔽 FILTROS
 function preencherFiltros() {
+  filtroTreinamento.innerHTML = `<option value="">Todos Treinamentos</option>`;
   filtroFuncao.innerHTML = `<option value="">Todas Funções</option>`;
   filtroEmpresa.innerHTML = `<option value="">Todas Empresas</option>`;
 
@@ -262,6 +268,26 @@ function preencherFiltros() {
     .forEach((e) => {
       filtroEmpresa.innerHTML += `<option value="${e}">${e}</option>`;
     });
+
+  const treinamentosUnicos = new Set();
+
+funcionarios.forEach((f) => {
+  f.treinamentos.forEach((t) => {
+    if (t.nome) {
+      treinamentosUnicos.add(t.nome);
+    }
+  });
+});
+
+[...treinamentosUnicos]
+  .sort((a, b) => a.localeCompare(b, "pt-BR"))
+  .forEach((nome) => {
+    filtroTreinamento.innerHTML += `
+      <option value="${nome}">
+        ${nome}
+      </option>
+    `;
+  });
 }
 
 const modalCadastroTreino = document.getElementById("modalCadastroTreino");
@@ -585,6 +611,7 @@ carregarFuncionarios();
 
 // EVENTOS
 buscaInput.addEventListener("input", renderizar);
+filtroTreinamento.addEventListener("change", renderizar);
 filtroFuncao.addEventListener("change", renderizar);
 filtroEmpresa.addEventListener("change", renderizar);
 
