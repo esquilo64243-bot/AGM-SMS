@@ -32,6 +32,10 @@
       + Novo Treinamento
     </button>
 
+    <button id="btnTreinoMassa" class="btn-secondary">
+   Treinamento em Massa
+</button>
+
     <button id="btnGerenciarTreinos" class="btn-secondary">
       ⚙️ Gerenciar
     </button>
@@ -82,7 +86,7 @@
       </section>
     </div>
 
-    <!-- MODAL TREINAMENTO -->
+  <!-- MODAL TREINAMENTO INDIVIDUAL -->
 <div id="modalTreino" class="modal">
   <div class="modal-content modal-grande">
     <h2>Adicionar Treinamento</h2>
@@ -99,10 +103,9 @@
     </div>
   </div>
 </div>
-      </div>
-    </div>
 
-    <div id="modalCadastroTreino" class="modal">
+<!-- MODAL CADASTRAR TREINAMENTO -->
+<div id="modalCadastroTreino" class="modal">
   <div class="modal-content modal-grande">
     <h2>Cadastrar Treinamento</h2>
 
@@ -116,22 +119,45 @@
   </div>
 </div>
 
+<!-- MODAL GERENCIAR TREINOS -->
 <div id="modalGerenciarTreinos" class="modal">
   <div class="modal-content modal-grande">
-
     <h2>Treinamentos Cadastrados</h2>
 
     <div id="listaTreinosCadastro"></div>
 
     <div class="modal-buttons">
-      <button id="fecharGerenciarTreinos">
-        Fechar
-      </button>
+      <button id="fecharGerenciarTreinos">Fechar</button>
     </div>
-
   </div>
 </div>
 
+<!-- MODAL TREINAMENTO EM MASSA -->
+<div id="modalTreinoMassa" class="modal">
+  <div class="modal-content modal-grande modal-massa">
+    <h2>Adicionar Treinamento em Massa</h2>
+
+    <select id="selectTreinamentoMassa">
+      <option value="">Selecione um treinamento</option>
+    </select>
+
+    <input type="date" id="dataRealizacaoMassa" />
+
+    <input
+      type="text"
+      id="buscaFuncionarioMassa"
+      placeholder="Buscar funcionário..."
+    />
+
+    <div id="listaFuncionariosMassa" class="lista-funcionarios-massa"></div>
+
+    <div class="modal-buttons">
+      <button id="cancelarTreinoMassa">Cancelar</button>
+      <button id="salvarTreinoMassa">Salvar para Selecionados</button>
+    </div>
+  </div>
+</div>
+</div>
     <!-- FIREBASE -->
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";

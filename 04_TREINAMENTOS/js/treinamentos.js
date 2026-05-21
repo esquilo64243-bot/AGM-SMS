@@ -3,6 +3,15 @@ import {
   deleteDoc
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
+const btnTreinoMassa = document.getElementById("btnTreinoMassa");
+const modalTreinoMassa = document.getElementById("modalTreinoMassa");
+const selectTreinamentoMassa = document.getElementById("selectTreinamentoMassa");
+const dataRealizacaoMassa = document.getElementById("dataRealizacaoMassa");
+const buscaFuncionarioMassa = document.getElementById("buscaFuncionarioMassa");
+const listaFuncionariosMassa = document.getElementById("listaFuncionariosMassa");
+const cancelarTreinoMassa = document.getElementById("cancelarTreinoMassa");
+const salvarTreinoMassa = document.getElementById("salvarTreinoMassa");
+
 const buscaInput = document.getElementById("busca");
 const filtroFuncao = document.getElementById("filtroFuncao");
 const filtroEmpresa = document.getElementById("filtroEmpresa");
@@ -283,7 +292,10 @@ async function carregarTreinamentos() {
   listaTreinamentos = [];
 
   const select = document.getElementById("selectTreinamento");
+  const selectMassa = document.getElementById("selectTreinamentoMassa");
+
   select.innerHTML = `<option value="">Selecione um treinamento</option>`;
+  selectMassa.innerHTML = `<option value="">Selecione um treinamento</option>`;
 
   snapshot.forEach((docSnap) => {
     const data = docSnap.data();
@@ -293,11 +305,14 @@ async function carregarTreinamentos() {
       ...data,
     });
 
-    select.innerHTML += `
+    const option = `
       <option value="${docSnap.id}">
         ${data.nome} (${data.validade} meses)
       </option>
     `;
+
+    select.innerHTML += option;
+    selectMassa.innerHTML += option;
   });
 }
 
@@ -451,6 +466,90 @@ salvarCadastroTreino.onclick = async () => {
 // ❌ CANCELAR
 cancelarTreino.onclick = () => modalTreino.classList.remove("show");
 
+// FUncionarios em massa
+
+function renderizarFuncionariosMassa() {
+  listaFuncionariosMassa.innerHTML = "";
+
+  const busca = buscaFuncionarioMassa.value.toLowerCase();
+
+  funcionarios
+    .filter((f) => f.nome.toLowerCase().includes(busca))
+    .sort((a, b) => a.nome.localeCompare(b.nome, "pt-BR"))
+    .forEach((f) => {
+      const label = document.createElement("label");
+      label.classList.add("funcionario-check");
+
+      label.innerHTML = `
+        <input type="checkbox" value="${f.id}" />
+        <div>
+          <strong>${f.nome}</strong>
+          <small>${f.cargo} - ${f.empresa}</small>
+        </div>
+      `;
+
+      listaFuncionariosMassa.appendChild(label);
+    });
+}
+
+btnTreinoMassa.onclick = () => {
+  renderizarFuncionariosMassa();
+  modalTreinoMassa.classList.add("show");
+};
+
+cancelarTreinoMassa.onclick = () => {
+  modalTreinoMassa.classList.remove("show");
+};
+
+buscaFuncionarioMassa.addEventListener("input", renderizarFuncionariosMassa);
+
+salvarTreinoMassa.onclick = async () => {
+  const treinoId = selectTreinamentoMassa.value;
+  const realizacao = dataRealizacaoMassa.value;
+
+  const selecionados = [
+    ...listaFuncionariosMassa.querySelectorAll("input:checked"),
+  ].map((input) => input.value);
+
+  if (!treinoId || !realizacao || selecionados.length === 0) {
+    return alert("Selecione o treinamento, a data e pelo menos um funcionário.");
+  }
+
+  const treino = listaTreinamentos.find((t) => t.id === treinoId);
+
+  const dataReal = new Date(realizacao + "T00:00:00");
+  const vencimento = new Date(dataReal);
+  vencimento.setMonth(vencimento.getMonth() + Number(treino.validade));
+
+  const novoTreino = {
+    nome: treino.nome,
+    realizacao,
+    vencimento: vencimento.toISOString().split("T")[0],
+  };
+
+  const promessas = selecionados.map(async (id) => {
+    const funcionario = funcionarios.find((f) => f.id === id);
+
+    funcionario.treinamentos = funcionario.treinamentos.filter(
+      (t) => t.nome !== novoTreino.nome
+    );
+
+    funcionario.treinamentos.push(novoTreino);
+
+    return updateDoc(doc(db, "funcionarios", funcionario.id), {
+      treinamentos: funcionario.treinamentos,
+    });
+  });
+
+  await Promise.all(promessas);
+
+  modalTreinoMassa.classList.remove("show");
+  selectTreinamentoMassa.value = "";
+  dataRealizacaoMassa.value = "";
+  buscaFuncionarioMassa.value = "";
+
+  carregarFuncionarios();
+};
 // EVENTOS
 buscaInput.addEventListener("input", renderizar);
 filtroFuncao.addEventListener("change", renderizar);
