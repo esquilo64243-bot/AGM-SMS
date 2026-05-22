@@ -515,7 +515,17 @@ function renderizarFuncionariosMassa() {
   const busca = buscaFuncionarioMassa.value.toLowerCase();
 
   funcionarios
-    .filter((f) => f.nome.toLowerCase().includes(busca))
+    .filter((f) => {
+
+  const texto = busca.toLowerCase();
+
+  return (
+    (f.nome || "").toLowerCase().includes(texto) ||
+    (f.empresa || "").toLowerCase().includes(texto) ||
+    (f.cargo || "").toLowerCase().includes(texto)
+  );
+
+})
     .sort((a, b) => a.nome.localeCompare(b.nome, "pt-BR"))
     .forEach((f) => {
       const label = document.createElement("label");
