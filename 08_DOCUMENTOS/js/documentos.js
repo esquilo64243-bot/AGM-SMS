@@ -1,189 +1,131 @@
 import {
   collection,
-  getDocs
+  getDocs,
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-import { db }
-from "../../01_HOME/js/firebase.js";
+import { db } from "../../01_HOME/js/firebase.js";
 
 /* ============================= */
 /* ELEMENTOS */
 /* ============================= */
-const tituloRegistro =
-  document.getElementById("tituloRegistro");
+const tituloRegistro = document.getElementById("tituloRegistro");
 
-const previewTituloRegistro =
-  document.getElementById("previewTituloRegistro");
+const previewTituloRegistro = document.getElementById("previewTituloRegistro");
 
-const horaRegistro =
-  document.getElementById("horaRegistro");
+const horaRegistro = document.getElementById("horaRegistro");
 
-const previewHoraRegistro =
-  document.getElementById("previewHoraRegistro");
+const previewHoraRegistro = document.getElementById("previewHoraRegistro");
 
-const modoTopicos =
-  document.getElementById("modoTopicos");
+const modoTopicos = document.getElementById("modoTopicos");
 
-const modoTexto =
-  document.getElementById("modoTexto");
+const modoTexto = document.getElementById("modoTexto");
 
-const setorSeguranca =
-  document.getElementById("setorSeguranca");
+const setorSeguranca = document.getElementById("setorSeguranca");
 
-const setorMeioAmbiente =
-  document.getElementById("setorMeioAmbiente");
+const setorMeioAmbiente = document.getElementById("setorMeioAmbiente");
 
-const setorSaude =
-  document.getElementById("setorSaude");
+const setorSaude = document.getElementById("setorSaude");
 
-const previewSetorSeguranca =
-  document.getElementById("previewSetorSeguranca");
+const previewSetorSeguranca = document.getElementById("previewSetorSeguranca");
 
-const previewSetorMA =
-  document.getElementById("previewSetorMA");
+const previewSetorMA = document.getElementById("previewSetorMA");
 
-const previewSetorSaude =
-  document.getElementById("previewSetorSaude");
+const previewSetorSaude = document.getElementById("previewSetorSaude");
 
-const btnAdicionarChecklist =
-  document.getElementById("btnAdicionarChecklist");
+const btnAdicionarChecklist = document.getElementById("btnAdicionarChecklist");
 
-const dataTreinamento =
-  document.getElementById("dataTreinamento");
+const dataTreinamento = document.getElementById("dataTreinamento");
 
-const previewDataTreinamento =
-  document.getElementById("previewDataTreinamento");
+const previewDataTreinamento = document.getElementById(
+  "previewDataTreinamento",
+);
 
-const tempoDDS =
-  document.getElementById("tempoDDS");
+const tempoDDS = document.getElementById("tempoDDS");
 
-const previewTempoDDS =
-  document.getElementById("previewTempoDDS");
+const previewTempoDDS = document.getElementById("previewTempoDDS");
 
-const tituloDDS =
-  document.getElementById("tituloDDS");
+const tituloDDS = document.getElementById("tituloDDS");
 
-const tipoDDS =
-  document.getElementById("tipoDDS");
+const tipoDDS = document.getElementById("tipoDDS");
 
-const dataDDS =
-  document.getElementById("dataDDS");
+const dataDDS = document.getElementById("dataDDS");
 
-const conteudoDDS =
-  document.getElementById("conteudoDDS");
+const conteudoDDS = document.getElementById("conteudoDDS");
 
-const previewTituloDDS =
-  document.getElementById("previewTituloDDS");
+const previewTituloDDS = document.getElementById("previewTituloDDS");
 
-const previewTipoDDS =
-  document.getElementById("previewTipoDDS");
+const previewTipoDDS = document.getElementById("previewTipoDDS");
 
-const previewDataDDS =
-  document.getElementById("previewDataDDS");
+const previewDataDDS = document.getElementById("previewDataDDS");
 
-const previewConteudoDDS =
-  document.getElementById("previewConteudoDDS");
+const previewConteudoDDS = document.getElementById("previewConteudoDDS");
 
-const camposDDS =
-  document.getElementById("camposDDS");
+const camposDDS = document.getElementById("camposDDS");
 
-const previewDDS =
-  document.getElementById("previewDDS");
+const previewDDS = document.getElementById("previewDDS");
 
-const selecionarTodos =
-  document.getElementById("selecionarTodos");
+const selecionarTodos = document.getElementById("selecionarTodos");
 
-const gerarListaVazia =
-  document.getElementById("gerarListaVazia");
+const gerarListaVazia = document.getElementById("gerarListaVazia");
 
-const nomeTreinamento =
-  document.getElementById("nomeTreinamento");
+const nomeTreinamento = document.getElementById("nomeTreinamento");
 
-const conteudoProgramatico =
-  document.getElementById("conteudoProgramatico");
+const conteudoProgramatico = document.getElementById("conteudoProgramatico");
 
-const instrutorTreinamento =
-  document.getElementById("instrutorTreinamento");
+const instrutorTreinamento = document.getElementById("instrutorTreinamento");
 
-const horasTreinamento =
-  document.getElementById("horasTreinamento");
+const horasTreinamento = document.getElementById("horasTreinamento");
 
-const previewTreinamento =
-  document.getElementById("previewTreinamento");
+const previewTreinamento = document.getElementById("previewTreinamento");
 
-const previewInstrutor =
-  document.getElementById("previewInstrutor");
+const previewInstrutor = document.getElementById("previewInstrutor");
 
-const previewHoras =
-  document.getElementById("previewHoras");
+const previewHoras = document.getElementById("previewHoras");
 
-const previewConteudo =
-  document.getElementById("previewConteudo");
+const previewConteudo = document.getElementById("previewConteudo");
 
-const tipoDocumento =
-  document.getElementById("tipoDocumento");
+const tipoDocumento = document.getElementById("tipoDocumento");
 
-const areaRegistroFotografico =
-  document.getElementById(
-    "areaRegistroFotografico"
-  );
+const areaRegistroFotografico = document.getElementById(
+  "areaRegistroFotografico",
+);
 
-const areaListaPresenca =
-  document.getElementById(
-    "areaListaPresenca"
-  );
+const areaListaPresenca = document.getElementById("areaListaPresenca");
 
-  const camposRegistroFotografico =
-  document.getElementById(
-    "camposRegistroFotografico"
-  );
+const camposRegistroFotografico = document.getElementById(
+  "camposRegistroFotografico",
+);
 
-const camposListaPresenca =
-  document.getElementById(
-    "camposListaPresenca"
-  );
+const camposListaPresenca = document.getElementById("camposListaPresenca");
 
-const previewRegistroFotografico =
-  document.getElementById(
-    "previewRegistroFotografico"
-  );
+const previewRegistroFotografico = document.getElementById(
+  "previewRegistroFotografico",
+);
 
-const previewListaPresenca =
-  document.getElementById(
-    "previewListaPresenca"
-  );
+const previewListaPresenca = document.getElementById("previewListaPresenca");
 
 let funcionarios = [];
 let mapaFuncionarios = {};
 
 let selecionados = [];
 
-const empresaTreinamento =
-  document.getElementById("empresaTreinamento");
+const empresaTreinamento = document.getElementById("empresaTreinamento");
 
-const buscaColaborador =
-  document.getElementById("buscaColaborador");
+const buscaColaborador = document.getElementById("buscaColaborador");
 
-const listaColaboradores =
-  document.getElementById("listaColaboradores");
+const listaColaboradores = document.getElementById("listaColaboradores");
 
-const checkAGM =
-  document.getElementById("checkAGM");
+const checkAGM = document.getElementById("checkAGM");
 
-const checkSerra =
-  document.getElementById("checkSerra");
+const checkSerra = document.getElementById("checkSerra");
 
-const logoAGM =
-  document.getElementById("logoAGM");
+const logoAGM = document.getElementById("logoAGM");
 
-const logoSerra =
-  document.getElementById("logoSerra");
+const logoSerra = document.getElementById("logoSerra");
 
-const logoAGMLista =
-  document.getElementById("logoAGMLista");
+const logoAGMLista = document.getElementById("logoAGMLista");
 
-const logoSerraLista =
-  document.getElementById("logoSerraLista");
+const logoSerraLista = document.getElementById("logoSerraLista");
 
 const dataRegistro = document.getElementById("dataRegistro");
 const localRegistro = document.getElementById("localRegistro");
@@ -204,41 +146,30 @@ const previewRegistros = document.getElementById("previewRegistros");
 /* ATUALIZA PREVIEW */
 /* ============================= */
 
-function atualizarPreview(){
+function atualizarPreview() {
+  previewTituloRegistro.textContent = tituloRegistro.value || "REGISTRO";
 
-  previewTituloRegistro.textContent =
-  tituloRegistro.value || "REGISTRO";
+  previewSetorSeguranca.textContent = setorSeguranca.checked
+    ? "☒ Segurança do Trabalho"
+    : "☐ Segurança do Trabalho";
 
-  previewSetorSeguranca.textContent =
-  setorSeguranca.checked
-    ? "☒ Segurança"
-    : "☐ Segurança";
-
-previewSetorMA.textContent =
-  setorMeioAmbiente.checked
+  previewSetorMA.textContent = setorMeioAmbiente.checked
     ? "☒ Meio Ambiente"
     : "☐ Meio Ambiente";
 
-previewSetorSaude.textContent =
-  setorSaude.checked
+  previewSetorSaude.textContent = setorSaude.checked
     ? "☒ Saúde Ocupacional"
     : "☐ Saúde Ocupacional";
 
-  previewData.textContent =
-  formatarDataBR(dataRegistro.value) || "-";
+  previewData.textContent = formatarDataBR(dataRegistro.value) || "-";
 
-  previewHoraRegistro.textContent =
-   horaRegistro.value || "-";
+  previewHoraRegistro.textContent = horaRegistro.value || "-";
 
-  previewLocal.textContent =
-    localRegistro.value || "-";
+  previewLocal.textContent = localRegistro.value || "-";
 
-  previewResponsavel.textContent =
-    responsavelRegistro.value || "-";
+  previewResponsavel.textContent = responsavelRegistro.value || "-";
 
-  previewServico.textContent =
-    servicoRegistro.value || "-";
-
+  previewServico.textContent = servicoRegistro.value || "-";
 }
 
 /* ============================= */
@@ -246,235 +177,132 @@ previewSetorSaude.textContent =
 /* ============================= */
 
 function atualizarPreviewLista() {
-
   previewDataTreinamento.textContent =
-  formatarDataBR(dataTreinamento.value) || "-";
+    formatarDataBR(dataTreinamento.value) || "-";
 
-  previewTreinamento.textContent =
-    nomeTreinamento.value || "-";
+  previewTreinamento.textContent = nomeTreinamento.value || "-";
 
-  previewInstrutor.textContent =
-    instrutorTreinamento.value || "-";
+  previewInstrutor.textContent = instrutorTreinamento.value || "-";
 
-  previewHoras.textContent =
-    horasTreinamento.value || "-";
+  previewHoras.textContent = horasTreinamento.value || "-";
 
   previewConteudo.innerHTML = "";
 
-  const texto =
-    conteudoProgramatico.value.trim();
+  const texto = conteudoProgramatico.value.trim();
 
-  if(!texto){
-
-    previewConteudo.innerHTML =
-      "<li>-</li>";
+  if (!texto) {
+    previewConteudo.innerHTML = "<li>-</li>";
 
     return;
-
   }
 
   /* ============================= */
   /* MODO TÓPICOS */
   /* ============================= */
 
-  if(modoTopicos.checked){
-
-    const linhas =
-      texto
-        .split("\n")
-        .filter((linha) =>
-          linha.trim() !== ""
-        );
+  if (modoTopicos.checked) {
+    const linhas = texto.split("\n").filter((linha) => linha.trim() !== "");
 
     linhas.forEach((linha) => {
-
-      const li =
-        document.createElement("li");
+      const li = document.createElement("li");
 
       li.textContent = linha;
 
       previewConteudo.appendChild(li);
-
     });
-
-  }
+  } else {
 
   /* ============================= */
   /* MODO TEXTO */
   /* ============================= */
-
-  else {
-
-  previewConteudo.innerHTML = `
+    previewConteudo.innerHTML = `
     <div class="texto-corrido-preview">
       ${texto}
     </div>
   `;
-
-}
-
+  }
 }
 
 // futions dds preview
 
-function atualizarPreviewDDS(){
+function atualizarPreviewDDS() {
+  previewTituloDDS.textContent = tituloDDS.value || "-";
 
-  previewTituloDDS.textContent =
-    tituloDDS.value || "-";
+  previewTipoDDS.textContent = tipoDDS.value || "-";
 
-  previewTipoDDS.textContent =
-    tipoDDS.value || "-";
+  previewDataDDS.textContent = formatarDataBR(dataDDS.value);
 
-  previewDataDDS.textContent =
-  formatarDataBR(dataDDS.value);
+  previewTempoDDS.textContent = tempoDDS.value || "-";
 
-  previewTempoDDS.textContent =
-    tempoDDS.value || "-";
-
-  previewConteudoDDS.textContent =
-    conteudoDDS.value || "-";
-
+  previewConteudoDDS.textContent = conteudoDDS.value || "-";
 }
 
 /* EMPRESAS */
-function atualizarLogos(){
+function atualizarLogos() {
+  const mostrarAGM = checkAGM.checked ? "block" : "none";
 
-  const mostrarAGM =
-    checkAGM.checked
-      ? "block"
-      : "none";
+  const mostrarSerra = checkSerra.checked ? "block" : "none";
 
-  const mostrarSerra =
-    checkSerra.checked
-      ? "block"
-      : "none";
+  logoAGM.style.display = mostrarAGM;
 
-  logoAGM.style.display =
-    mostrarAGM;
+  logoSerra.style.display = mostrarSerra;
 
-  logoSerra.style.display =
-    mostrarSerra;
+  logoAGMLista.style.display = mostrarAGM;
 
-  logoAGMLista.style.display =
-    mostrarAGM;
-
-  logoSerraLista.style.display =
-    mostrarSerra;
-
+  logoSerraLista.style.display = mostrarSerra;
 }
 /* ============================= */
 /* EVENTOS INPUT */
 /* ============================= */
-tituloRegistro.addEventListener(
-  "input",
-  atualizarPreview
-);
+tituloRegistro.addEventListener("input", atualizarPreview);
 
-modoTopicos.addEventListener(
-  "change",
-  atualizarPreviewLista
-);
+modoTopicos.addEventListener("change", atualizarPreviewLista);
 
-modoTexto.addEventListener(
-  "change",
-  atualizarPreviewLista
-);
+modoTexto.addEventListener("change", atualizarPreviewLista);
 
-setorSeguranca.addEventListener(
-  "change",
-  atualizarPreview
-);
+setorSeguranca.addEventListener("change", atualizarPreview);
 
-setorMeioAmbiente.addEventListener(
-  "change",
-  atualizarPreview
-);
+setorMeioAmbiente.addEventListener("change", atualizarPreview);
 
-setorSaude.addEventListener(
-  "change",
-  atualizarPreview
-);
+setorSaude.addEventListener("change", atualizarPreview);
 
-dataTreinamento.addEventListener(
-  "input",
-  atualizarPreviewLista
-);
+dataTreinamento.addEventListener("input", atualizarPreviewLista);
 
 dataRegistro.addEventListener("input", atualizarPreview);
-horaRegistro.addEventListener(
-  "input",
-  atualizarPreview
-);
+horaRegistro.addEventListener("input", atualizarPreview);
 localRegistro.addEventListener("input", atualizarPreview);
 responsavelRegistro.addEventListener("input", atualizarPreview);
 servicoRegistro.addEventListener("input", atualizarPreview);
-nomeTreinamento.addEventListener(
-  "input",
-  atualizarPreviewLista
-);
+nomeTreinamento.addEventListener("input", atualizarPreviewLista);
 
-conteudoProgramatico.addEventListener(
-  "input",
-  atualizarPreviewLista
-);
+conteudoProgramatico.addEventListener("input", atualizarPreviewLista);
 
-instrutorTreinamento.addEventListener(
-  "input",
-  atualizarPreviewLista
-);
+instrutorTreinamento.addEventListener("input", atualizarPreviewLista);
 
-horasTreinamento.addEventListener(
-  "input",
-  atualizarPreviewLista
-);
+horasTreinamento.addEventListener("input", atualizarPreviewLista);
 
-checkAGM.addEventListener(
-  "change",
-  atualizarLogos
-);
+checkAGM.addEventListener("change", atualizarLogos);
 
-checkSerra.addEventListener(
-  "change",
-  atualizarLogos
-);
+checkSerra.addEventListener("change", atualizarLogos);
 
-tituloDDS.addEventListener(
-  "input",
-  atualizarPreviewDDS
-);
+tituloDDS.addEventListener("input", atualizarPreviewDDS);
 
-tipoDDS.addEventListener(
-  "change",
-  atualizarPreviewDDS
-);
+tipoDDS.addEventListener("change", atualizarPreviewDDS);
 
-dataDDS.addEventListener(
-  "input",
-  atualizarPreviewDDS
-);
+dataDDS.addEventListener("input", atualizarPreviewDDS);
 
-conteudoDDS.addEventListener(
-  "input",
-  atualizarPreviewDDS
-);
+conteudoDDS.addEventListener("input", atualizarPreviewDDS);
 
-tempoDDS.addEventListener(
-  "input",
-  atualizarPreviewDDS
-);
+tempoDDS.addEventListener("input", atualizarPreviewDDS);
 /* ============================= */
 /* ADICIONAR REGISTRO */
 /* ============================= */
 
-if(btnAdicionar){
-
+if (btnAdicionar) {
   btnAdicionar.addEventListener("click", () => {
+    const index = document.querySelectorAll(".registro-item").length;
 
-    const index =
-      document.querySelectorAll(".registro-item").length;
-
-    const registro =
-      document.createElement("div");
+    const registro = document.createElement("div");
 
     registro.classList.add("registro-item");
 
@@ -493,8 +321,7 @@ if(btnAdicionar){
 
     registrosContainer.appendChild(registro);
 
-    const preview =
-      document.createElement("div");
+    const preview = document.createElement("div");
 
     preview.classList.add("preview-registro");
 
@@ -510,81 +337,58 @@ if(btnAdicionar){
 
     previewRegistros.appendChild(preview);
 
-    const btnRemoverItem =
-      registro.querySelector(".btn-remover-item");
+    const btnRemoverItem = registro.querySelector(".btn-remover-item");
 
     btnRemoverItem.addEventListener("click", () => {
       registro.remove();
       preview.remove();
     });
 
-    const fotoInput =
-      document.getElementById(`foto-${index}`);
+    const fotoInput = document.getElementById(`foto-${index}`);
 
-    const previewImg =
-      document.getElementById(`preview-img-${index}`);
+    const previewImg = document.getElementById(`preview-img-${index}`);
 
     fotoInput.addEventListener("change", (event) => {
-
       const arquivo = event.target.files[0];
 
-      if(!arquivo) return;
+      if (!arquivo) return;
 
       const reader = new FileReader();
 
-      reader.onload = function(e){
-
+      reader.onload = function (e) {
         previewImg.onload = () => {
+          previewImg.classList.remove("foto-horizontal", "foto-vertical");
 
-          previewImg.classList.remove(
-            "foto-horizontal",
-            "foto-vertical"
-          );
-
-          if(previewImg.naturalWidth > previewImg.naturalHeight){
+          if (previewImg.naturalWidth > previewImg.naturalHeight) {
             previewImg.classList.add("foto-horizontal");
           } else {
             previewImg.classList.add("foto-vertical");
           }
-
         };
 
         previewImg.src = e.target.result;
-
       };
 
       reader.readAsDataURL(arquivo);
-
     });
 
-    const descricaoInput =
-      document.getElementById(`descricao-${index}`);
+    const descricaoInput = document.getElementById(`descricao-${index}`);
 
-    const previewDesc =
-      document.getElementById(`preview-desc-${index}`);
+    const previewDesc = document.getElementById(`preview-desc-${index}`);
 
     descricaoInput.addEventListener("input", () => {
-
-      previewDesc.textContent =
-        descricaoInput.value || "-";
-
+      previewDesc.textContent = descricaoInput.value || "-";
     });
-
   });
-
 }
-
 
 /* ============================= */
 /* ADICIONAR CHECKLIST */
 /* ============================= */
 
-if(btnAdicionarChecklist){
-
+if (btnAdicionarChecklist) {
   btnAdicionarChecklist.addEventListener("click", () => {
-
-    const registro =
-      document.createElement("div");
+    const registro = document.createElement("div");
 
     registro.classList.add("registro-item");
 
@@ -603,8 +407,7 @@ if(btnAdicionarChecklist){
 
     registrosContainer.appendChild(registro);
 
-    const preview =
-      document.createElement("div");
+    const preview = document.createElement("div");
 
     preview.classList.add("preview-registro", "checklist-final");
 
@@ -620,248 +423,166 @@ if(btnAdicionarChecklist){
 
     previewRegistros.appendChild(preview);
 
-    const btnRemoverItem =
-      registro.querySelector(".btn-remover-item");
+    const btnRemoverItem = registro.querySelector(".btn-remover-item");
 
     btnRemoverItem.addEventListener("click", () => {
       registro.remove();
       preview.remove();
     });
 
-    const fotoInput =
-      document.getElementById("foto-checklist");
+    const fotoInput = document.getElementById("foto-checklist");
 
-    const previewImg =
-      document.getElementById("preview-img-checklist");
+    const previewImg = document.getElementById("preview-img-checklist");
 
-    const descricaoInput =
-      document.getElementById("descricao-checklist");
+    const descricaoInput = document.getElementById("descricao-checklist");
 
-    const previewDesc =
-      document.getElementById("preview-desc-checklist");
+    const previewDesc = document.getElementById("preview-desc-checklist");
 
     fotoInput.addEventListener("change", (event) => {
-
       const arquivo = event.target.files[0];
 
-      if(!arquivo) return;
+      if (!arquivo) return;
 
       const reader = new FileReader();
 
-      reader.onload = function(e){
-
+      reader.onload = function (e) {
         previewImg.onload = () => {
+          previewImg.classList.remove("foto-horizontal", "foto-vertical");
 
-          previewImg.classList.remove(
-            "foto-horizontal",
-            "foto-vertical"
-          );
-
-          if(previewImg.naturalWidth > previewImg.naturalHeight){
+          if (previewImg.naturalWidth > previewImg.naturalHeight) {
             previewImg.classList.add("foto-horizontal");
           } else {
             previewImg.classList.add("foto-vertical");
           }
-
         };
 
         previewImg.src = e.target.result;
-
       };
 
       reader.readAsDataURL(arquivo);
-
     });
 
     descricaoInput.addEventListener("input", () => {
-
       previewDesc.textContent =
         descricaoInput.value || "Checklist de atracação.";
-
     });
-
   });
-
 }
 
 /* ============================= */
 /* EXPORTAR PDF */
 /* ============================= */
 
-const btnExportar =
-  document.getElementById("btnExportar");
+const btnExportar = document.getElementById("btnExportar");
 
 btnExportar.addEventListener("click", () => {
-
-  const elemento =
-    document.getElementById("documentoPreview");
+  const elemento = document.getElementById("documentoPreview");
 
   const options = {
-
-    margin:0,
+    margin: 0,
 
     filename:
-  tipoDocumento.value === "registroFotografico"
-    ? "registro.pdf"
-    : tipoDocumento.value === "dds"
-    ? "dds.pdf"
-    : "lista-presenca.pdf",
+      tipoDocumento.value === "registroFotografico"
+        ? "registro.pdf"
+        : tipoDocumento.value === "dds"
+          ? "dds.pdf"
+          : "lista-presenca.pdf",
 
-    image:{
-      type:"jpeg",
-      quality:1
+    image: {
+      type: "jpeg",
+      quality: 1,
     },
 
-    html2canvas:{
-      scale:2,
-      useCORS:true,
-      scrollY:0
+    html2canvas: {
+      scale: 2,
+      useCORS: true,
+      scrollY: 0,
     },
 
-    jsPDF:{
-      unit:"mm",
-      format:"a4",
-      orientation:"portrait"
+    jsPDF: {
+      unit: "mm",
+      format: "a4",
+      orientation: "portrait",
     },
 
-    pagebreak:{
-  mode:["css", "legacy"],
-  before:[".checklist-final"]
-}
-
+    pagebreak: {
+      mode: ["css", "legacy"],
+      before: [".checklist-final"],
+    },
   };
 
-  html2pdf()
-    .set(options)
-    .from(elemento)
-    .save();
-
+  html2pdf().set(options).from(elemento).save();
 });
 
 /*colaboradores*/
 
 async function carregarFuncionarios() {
-
-  const snapshot =
-    await getDocs(collection(db, "funcionarios"));
+  const snapshot = await getDocs(collection(db, "funcionarios"));
 
   funcionarios = [];
 
   mapaFuncionarios = {};
 
   snapshot.forEach((docSnap) => {
-
     const data = docSnap.data();
 
     const f = {
-
       id: docSnap.id,
 
-      nome:
-        data.nome || "Sem nome",
+      nome: data.nome || "Sem nome",
 
-      cargo:
-        data.cargoAtual || "Sem cargo",
+      cargo: data.cargoAtual || "Sem cargo",
 
-      empresa:
-        data.empresa || "Sem empresa",
-
+      empresa: data.empresa || "Sem empresa",
     };
 
     funcionarios.push(f);
 
     mapaFuncionarios[f.id] = f;
-
   });
 
-  funcionarios.sort((a, b) =>
-    a.nome.localeCompare(b.nome)
-  );
+  funcionarios.sort((a, b) => a.nome.localeCompare(b.nome));
 
   renderizarColaboradores();
-
 }
 
 //selecionar Todos
-selecionarTodos.addEventListener(
-  "change",
-  () => {
+selecionarTodos.addEventListener("change", () => {
+  const empresaSelecionada = empresaTreinamento.value.toLowerCase().trim();
 
-    const empresaSelecionada =
-      empresaTreinamento.value
-        .toLowerCase()
-        .trim();
+  const funcionariosEmpresa = funcionarios.filter((f) => {
+    return (f.empresa || "").toLowerCase().trim() === empresaSelecionada;
+  });
 
-    const funcionariosEmpresa =
-      funcionarios.filter((f) => {
+  if (selecionarTodos.checked) {
+    funcionariosEmpresa.forEach((f) => {
+      if (!selecionados.includes(f.id)) {
+        selecionados.push(f.id);
+      }
+    });
+  } else {
+    selecionados = selecionados.filter((id) => {
+      const funcionario = mapaFuncionarios[id];
 
-        return (
-          (f.empresa || "")
-            .toLowerCase()
-            .trim()
-          === empresaSelecionada
-        );
-
-      });
-
-    if(selecionarTodos.checked){
-
-      funcionariosEmpresa.forEach((f) => {
-
-        if(
-          !selecionados.includes(f.id)
-        ){
-
-          selecionados.push(f.id);
-
-        }
-
-      });
-
-    } else {
-
-      selecionados =
-        selecionados.filter((id) => {
-
-          const funcionario =
-            mapaFuncionarios[id];
-
-          return (
-            funcionario?.empresa
-              .toLowerCase()
-              .trim()
-            !== empresaSelecionada
-          );
-
-        });
-
-    }
-
-    renderizarColaboradores();
-
-    atualizarTabelaPresenca();
-
+      return funcionario?.empresa.toLowerCase().trim() !== empresaSelecionada;
+    });
   }
-);
+
+  renderizarColaboradores();
+
+  atualizarTabelaPresenca();
+});
 
 // lista Vazia
-gerarListaVazia.addEventListener(
-  "click",
-  () => {
+gerarListaVazia.addEventListener("click", () => {
+  const corpoTabela = document.getElementById("corpoTabelaPresenca");
 
-    const corpoTabela =
-      document.getElementById(
-        "corpoTabelaPresenca"
-      );
+  corpoTabela.innerHTML = "";
 
-    corpoTabela.innerHTML = "";
+  for (let i = 0; i < 15; i++) {
+    const tr = document.createElement("tr");
 
-    for(let i = 0; i < 15; i++){
-
-      const tr =
-        document.createElement("tr");
-
-      tr.innerHTML = `
+    tr.innerHTML = `
       
         <td style="height:35px;"></td>
 
@@ -871,33 +592,23 @@ gerarListaVazia.addEventListener(
 
       `;
 
-      corpoTabela.appendChild(tr);
-
-    }
-
+    corpoTabela.appendChild(tr);
   }
-);
+});
 
 // atualizar tabela de PRESENÇA
 
 function atualizarTabelaPresenca() {
-
-  const corpoTabela =
-    document.getElementById(
-      "corpoTabelaPresenca"
-    );
+  const corpoTabela = document.getElementById("corpoTabelaPresenca");
 
   corpoTabela.innerHTML = "";
 
-  const funcionariosOrdenados =
-    funcionarios.filter((f) =>
-      selecionados.includes(f.id)
-    );
+  const funcionariosOrdenados = funcionarios.filter((f) =>
+    selecionados.includes(f.id),
+  );
 
   funcionariosOrdenados.forEach((funcionario) => {
-
-    const tr =
-      document.createElement("tr");
+    const tr = document.createElement("tr");
 
     tr.innerHTML = `
     
@@ -910,52 +621,28 @@ function atualizarTabelaPresenca() {
     `;
 
     corpoTabela.appendChild(tr);
-
   });
-
 }
 
 function renderizarColaboradores() {
+  const empresaSelecionada = empresaTreinamento.value.toLowerCase().trim();
 
-  const empresaSelecionada =
-    empresaTreinamento.value
-      .toLowerCase()
-      .trim();
-
-  const busca =
-    buscaColaborador.value
-      .toLowerCase()
-      .trim();
+  const busca = buscaColaborador.value.toLowerCase().trim();
 
   listaColaboradores.innerHTML = "";
 
-  const filtrados =
-    funcionarios.filter((f) => {
+  const filtrados = funcionarios.filter((f) => {
+    const nome = (f.nome || "").toLowerCase().trim();
 
-      const nome =
-        (f.nome || "")
-          .toLowerCase()
-          .trim();
+    const empresa = (f.empresa || "").toLowerCase().trim();
 
-      const empresa =
-        (f.empresa || "")
-          .toLowerCase()
-          .trim();
-
-      return (
-        empresa === empresaSelecionada &&
-        nome.includes(busca)
-      );
-
-    });
+    return empresa === empresaSelecionada && nome.includes(busca);
+  });
 
   filtrados.forEach((f) => {
+    const marcado = selecionados.includes(f.id);
 
-    const marcado =
-      selecionados.includes(f.id);
-
-    const div =
-      document.createElement("div");
+    const div = document.createElement("div");
 
     div.classList.add("colaborador-item");
 
@@ -984,50 +671,25 @@ function renderizarColaboradores() {
 
     listaColaboradores.appendChild(div);
 
-    const checkbox =
-      div.querySelector("input");
+    const checkbox = div.querySelector("input");
 
-    checkbox.addEventListener(
-      "change",
-      () => {
-
-        if(checkbox.checked){
-
-          if(
-            !selecionados.includes(f.id)
-          ){
-
-            selecionados.push(f.id);
-
-          }
-
-        } else {
-
-          selecionados =
-            selecionados.filter(
-              (id) => id !== f.id
-            );
-
+    checkbox.addEventListener("change", () => {
+      if (checkbox.checked) {
+        if (!selecionados.includes(f.id)) {
+          selecionados.push(f.id);
         }
-
-        atualizarTabelaPresenca();
-
+      } else {
+        selecionados = selecionados.filter((id) => id !== f.id);
       }
-    );
 
+      atualizarTabelaPresenca();
+    });
   });
-
 }
 
-empresaTreinamento.addEventListener(
-  "change",
-  renderizarColaboradores
-);
+empresaTreinamento.addEventListener("change", renderizarColaboradores);
 
-buscaColaborador.addEventListener(
-  "input",
-  renderizarColaboradores
-);
+buscaColaborador.addEventListener("input", renderizarColaboradores);
 
 console.log(camposDDS);
 console.log(previewDDS);
@@ -1040,153 +702,98 @@ console.log(camposListaPresenca);
 console.log(areaListaPresenca);
 console.log(previewListaPresenca);
 
-function trocarDocumento(){
-
-  const tipo =
-    tipoDocumento.value;
+function trocarDocumento() {
+  const tipo = tipoDocumento.value;
 
   /* ================================= */
   /* ESCONDER TUDO PRIMEIRO */
   /* ================================= */
-camposDDS.style.display =
-  "none";
+  camposDDS.style.display = "none";
 
-  camposRegistroFotografico.style.display =
-    "none";
+  camposRegistroFotografico.style.display = "none";
 
-  areaRegistroFotografico.style.display =
-    "none";
+  areaRegistroFotografico.style.display = "none";
 
-  previewRegistroFotografico.style.display =
-    "none";
+  previewRegistroFotografico.style.display = "none";
 
+  camposListaPresenca.style.display = "none";
 
+  areaListaPresenca.style.display = "none";
 
-  camposListaPresenca.style.display =
-    "none";
+  previewListaPresenca.style.display = "none";
 
-  areaListaPresenca.style.display =
-    "none";
+  camposDDS.style.display = "none";
 
-  previewListaPresenca.style.display =
-    "none";
-
-
-
-  camposDDS.style.display =
-    "none";
-
-  previewDDS.style.display =
-    "none";
-
-
+  previewDDS.style.display = "none";
 
   /* ================================= */
   /* REGISTRO FOTOGRÁFICO */
   /* ================================= */
 
-  if(tipo === "registroFotografico"){
+  if (tipo === "registroFotografico") {
+    document.querySelector(".setor-checks").style.display = "flex";
 
-    document.querySelector(".setor-checks").style.display =
-  "flex";
+    camposRegistroFotografico.style.display = "block";
 
-    camposRegistroFotografico.style.display =
-      "block";
+    areaRegistroFotografico.style.display = "block";
 
-    areaRegistroFotografico.style.display =
-      "block";
+    previewRegistroFotografico.style.display = "block";
 
-    previewRegistroFotografico.style.display =
-      "block";
+    camposListaPresenca.style.display = "none";
 
-    camposListaPresenca.style.display =
-      "none";
+    areaListaPresenca.style.display = "none";
 
-    areaListaPresenca.style.display =
-      "none";
-
-    previewListaPresenca.style.display =
-      "none";
-
-  }
+    previewListaPresenca.style.display = "none";
+  } else if (tipo === "listaPresenca") {
 
   /* ================================= */
   /* LISTA DE PRESENÇA */
   /* ================================= */
+    document.querySelector(".setor-checks").style.display = "none";
 
-  else if(tipo === "listaPresenca"){
+    camposRegistroFotografico.style.display = "none";
 
-    document.querySelector(".setor-checks").style.display =
-  "none";
+    areaRegistroFotografico.style.display = "none";
 
-    camposRegistroFotografico.style.display =
-      "none";
+    previewRegistroFotografico.style.display = "none";
 
-    areaRegistroFotografico.style.display =
-      "none";
+    camposListaPresenca.style.display = "block";
 
-    previewRegistroFotografico.style.display =
-      "none";
+    areaListaPresenca.style.display = "block";
 
-    camposListaPresenca.style.display =
-      "block";
+    previewListaPresenca.style.display = "block";
 
-    areaListaPresenca.style.display =
-      "block";
+    camposDDS.style.display = "none";
 
-    previewListaPresenca.style.display =
-      "block";
-
-    camposDDS.style.display =
-  "none";
-
-previewDDS.style.display =
-  "none";
-
-  }
+    previewDDS.style.display = "none";
+  } else if (tipo === "dds") {
 
   /* ================================= */
   /* DDS */
   /* ================================= */
+    document.querySelector(".setor-checks").style.display = "none";
 
-  else if(tipo === "dds"){
+    camposRegistroFotografico.style.display = "none";
 
-    document.querySelector(".setor-checks").style.display =
-  "none";
+    areaRegistroFotografico.style.display = "none";
 
-    camposRegistroFotografico.style.display =
-      "none";
+    previewRegistroFotografico.style.display = "none";
 
-    areaRegistroFotografico.style.display =
-      "none";
+    camposListaPresenca.style.display = "none";
 
-    previewRegistroFotografico.style.display =
-      "none";
+    areaListaPresenca.style.display = "none";
 
+    previewListaPresenca.style.display = "none";
 
+    camposDDS.style.display = "block";
 
-    camposListaPresenca.style.display =
-      "none";
-
-    areaListaPresenca.style.display =
-      "none";
-
-    previewListaPresenca.style.display =
-      "none";
-
-    camposDDS.style.display =
-      "block";
-
-    previewDDS.style.display =
-      "block";
-
+    previewDDS.style.display = "block";
   }
-
 }
 
 // Data //
-function formatarDataBR(data){
-  if(!data) return "";
+function formatarDataBR(data) {
+  if (!data) return "";
 
   const [ano, mes, dia] = data.split("-");
 
@@ -1194,17 +801,11 @@ function formatarDataBR(data){
 }
 
 window.addEventListener("DOMContentLoaded", () => {
-
-  tipoDocumento.addEventListener(
-    "change",
-    trocarDocumento
-  );
+  tipoDocumento.addEventListener("change", trocarDocumento);
 
   trocarDocumento();
 
   carregarFuncionarios();
 
   atualizarLogos();
-
 });
-
