@@ -18,7 +18,9 @@
           <p>Checklists recebidos dos operadores</p>
         </div>
 
-        <a href="../index.html" class="btn-voltar">Voltar</a>
+        <a href="../../09_CheckList/checklist.html" class="btn-voltar"
+          >Voltar</a
+        >
       </header>
 
       <section class="resumo">
@@ -38,8 +40,68 @@
         </div>
       </section>
 
+      <div class="titulo-dashboard">
+        <span>ANÁLISE OPERACIONAL</span>
+        <h2>Dashboard de Não Conformidades</h2>
+        <p>Recorrência de falhas registradas nos checklists</p>
+      </div>
+
+      <section class="dashboard-nc">
+  <div id="alertaOperacional" class="dashboard-alerta"></div>
+
+  <div class="dash-card alerta">
+    <small>⚠️ NC mais recorrente</small>
+    <strong id="itemMaisRecorrente">-</strong>
+    <span id="qtdItemMaisRecorrente">0 ocorrências</span>
+  </div>
+
+  <div class="dash-card maquina">
+    <small>🚜 Equipamento crítico</small>
+    <strong id="equipamentoMaisNC">-</strong>
+    <span id="qtdEquipamentoMaisNC">0 ocorrências</span>
+  </div>
+
+  <div class="dash-card periodo">
+    <small>📅 Período analisado</small>
+    <div class="filtro-periodo">
+      <button class="btn-periodo ativo" data-periodo="mes">Este mês</button>
+      <button class="btn-periodo" data-periodo="3meses">3 meses</button>
+      <button class="btn-periodo" data-periodo="total">Histórico</button>
+    </div>
+  </div>
+
+  <div class="dash-ranking">
+    <div class="ranking-header">
+      <div>
+        <small>📊 Ranking</small>
+        <h3>Top recorrências de NC</h3>
+      </div>
+    </div>
+
+    <div id="rankingNC"></div>
+  </div>
+</section>
+
+          <div class="filtro-periodo">
+            <button class="btn-periodo ativo" data-periodo="mes">
+              Este mês
+            </button>
+            <button class="btn-periodo" data-periodo="3meses">3 meses</button>
+            <button class="btn-periodo" data-periodo="total">Histórico</button>
+          </div>
+
+          <div id="alertaOperacional"></div>
+
+          <div id="rankingNC"></div>
+        </div>
+      </section>
+
       <section class="filtros">
-        <input type="text" id="buscar" placeholder="Buscar por operador, modelo ou data..." />
+        <input
+          type="text"
+          id="buscar"
+          placeholder="Buscar por operador, modelo ou data..."
+        />
 
         <select id="filtroStatus">
           <option value="">Todos</option>
@@ -55,6 +117,20 @@
       <div class="modal-content">
         <button id="fecharModal" class="fechar">×</button>
         <div id="conteudoModal"></div>
+      </div>
+    </div>
+
+    <div id="modalExcluir" class="modal">
+      <div class="modal-confirmacao">
+        <h2>Confirmar exclusão</h2>
+        <p>Tem certeza que deseja excluir este checklist?</p>
+
+        <div class="acoes-confirmacao">
+          <button id="cancelarExclusao" class="btn-cancelar">Cancelar</button>
+          <button id="confirmarExclusao" class="btn-confirmar-exclusao">
+            Excluir
+          </button>
+        </div>
       </div>
     </div>
 
