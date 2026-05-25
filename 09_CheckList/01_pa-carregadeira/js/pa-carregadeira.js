@@ -356,7 +356,7 @@ function gerarDocumentoChecklist(checklist) {
         <div class="doc-codigo">
           <p>Código: 001</p>
           <p>Revisão: 00</p>
-          <p>Pag. 1/2</p>
+          <p>Pag. 1/1</p>
         </div>
       </div>
 
@@ -428,11 +428,58 @@ function gerarDocumentoChecklist(checklist) {
         <span>SEM CONDIÇÕES DE OPERAR ( &nbsp;&nbsp; )</span>
       </div>
 
-      <button class="btn-imprimir" onclick="window.print()">Imprimir PDF</button>
-    </div>
-  `;
+      <button class="btn-imprimir" id="btnGerarPDF">
+  Gerar PDF
+</button>
+</div>
+`;
 }
 
+document.addEventListener("click", async (event) => {
+  if (event.target.id !== "btnGerarPDF") return;
+
+  const elemento = document.querySelector(".documento-checklist");
+  const botao = document.getElementById("btnGerarPDF");
+
+  try {
+    botao.style.display = "none";
+    document.body.classList.add("pdf-exportando");
+
+    const canvas = await html2canvas(elemento, {
+      scale: 2,
+      useCORS: true,
+      backgroundColor: "#ffffff",
+    });
+
+    const imgData = canvas.toDataURL("image/jpeg", 1);
+    const { jsPDF } = window.jspdf;
+
+    const pdf = new jsPDF("portrait", "mm", "a4");
+
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
+
+    const margin = 2;
+
+    const imgWidth = pageWidth - margin * 2;
+    const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+    const finalHeight = pageHeight - margin * 2;
+    const finalWidth = pageWidth - margin * 2;
+
+    const x = (pageWidth - finalWidth) / 2;
+    const y = margin;
+
+    pdf.addImage(imgData, "JPEG", x, y, finalWidth, finalHeight);
+    pdf.save("checklist-pa-carregadeira.pdf");
+  } catch (erro) {
+    console.error("Erro ao gerar PDF:", erro);
+    alert("Erro ao gerar PDF. Veja o console.");
+  } finally {
+  document.body.classList.remove("pdf-exportando");
+  botao.style.display = "";
+}
+});
 //Eventos liners
 
 function formatarData(data) {

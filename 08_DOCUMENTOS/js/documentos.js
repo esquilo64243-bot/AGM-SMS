@@ -506,9 +506,8 @@ btnExportar.addEventListener("click", () => {
     },
 
     pagebreak: {
-      mode: ["css", "legacy"],
-      before: [".checklist-final"],
-    },
+  mode: ["avoid-all", "css", "legacy"],
+},
   };
 
   html2pdf().set(options).from(elemento).save();

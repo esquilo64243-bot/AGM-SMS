@@ -229,16 +229,25 @@ body {
 }
 
 .documento-checklist {
+  width: 190mm;
+  min-height: 277mm;
+
   background: #fff;
   color: #000;
+
   font-family: Arial, sans-serif;
-  font-size: 12px;
+  font-size: 8px;
+
+  margin: 0 auto;
+  padding: 4mm;
+
+  overflow: hidden;
 }
 
 .doc-topo {
   display: grid;
   grid-template-columns: 190px 1fr 190px;
-  border: 1px solid #000;
+  border: 0.6px solid #000;
 }
 
 .doc-logo,
@@ -284,7 +293,7 @@ body {
 .tabela-check td,
 .assinaturas td,
 .assinaturas th {
-  border: 1px solid #000;
+  border: 0.6px solid #000;
   padding: 4px;
 }
 
@@ -302,6 +311,8 @@ body {
 .grupo {
   background: #d9d9d9;
   text-align: left;
+  border-top: 1.2px solid #000 !important;
+  border-bottom: 1.2px solid #000 !important;
 }
 
 .legenda,
@@ -327,43 +338,6 @@ body {
   color: white;
   font-weight: 700;
   cursor: pointer;
-}
-
-@media print {
-  body * {
-    visibility: hidden;
-  }
-
-  .modal,
-  .modal * {
-    visibility: visible;
-  }
-
-  .modal {
-    position: static;
-    display: block !important;
-    background: white;
-    padding: 0;
-  }
-
-  .modal-content {
-    max-width: none;
-    width: 100%;
-    max-height: none;
-    overflow: visible;
-    border-radius: 0;
-    padding: 0;
-  }
-
-  .fechar,
-  .btn-imprimir {
-    display: none;
-  }
-
-  @page {
-    size: A4 portrait;
-    margin: 8mm;
-  }
 }
 
 .mini {
@@ -756,4 +730,79 @@ body {
   .dashboard-nc {
     grid-template-columns: 1fr;
   }
+}
+/* ================================= */
+/* AJUSTE PDF A4 */
+/* ================================= */
+
+.tabela-dados td,
+.tabela-check th,
+.tabela-check td,
+.assinaturas td,
+.assinaturas th {
+  padding: 2px 4px;
+}
+
+.tabela-check td {
+  height: 20px;
+}
+
+.tabela-check th {
+  font-size: 10px;
+}
+
+.tabela-check td {
+  font-size: 9px;
+}
+
+.doc-topo {
+  grid-template-columns: 140px 1fr 140px;
+}
+
+.doc-logo img {
+  max-width: 100px;
+}
+
+.doc-titulo h1 {
+  font-size: 20px;
+}
+
+.doc-titulo h2 {
+  font-size: 15px;
+}
+
+.doc-codigo p {
+  font-size: 10px;
+  padding: 2px;
+}
+
+.legenda,
+.alerta-doc {
+  font-size: 9px;
+  margin-top: 4px;
+}
+
+.condicoes-print {
+  margin-top: 12px;
+  font-size: 10px;
+}
+
+.assinaturas td,
+.assinaturas th {
+  height: 22px;
+}
+
+.btn-imprimir {
+  display: inline-block;
+}
+
+.documento-checklist {
+  overflow: hidden;
+}
+
+.pdf-exportando .documento-checklist {
+  width: 198mm;
+  max-width: 198mm;
+  min-height: 285mm;
+  font-size: 6.6px;
 }
