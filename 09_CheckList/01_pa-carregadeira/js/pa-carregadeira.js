@@ -345,7 +345,7 @@ function gerarDocumentoChecklist(checklist) {
     <div class="documento-checklist">
       <div class="doc-topo">
         <div class="doc-logo">
-          <img src="../../../01_HOME/img/Logo_AGM.png" />
+          <img src="../../../assets/logo_AGM.png" />
         </div>
 
         <div class="doc-titulo">
