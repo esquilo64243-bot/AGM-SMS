@@ -129,7 +129,7 @@ function renderizar() {
         (t) => verificarStatus(t.vencimento) === filtroAtual
       );
 
-      return matchBusca && matchFuncao && matchEmpresa && matchTreinamento;
+      return matchBusca && matchFuncao && matchEmpresa && matchTreinamento && temStatus;
     })
 
     .sort((a, b) => a.nome.localeCompare(b.nome, "pt-BR"))
@@ -218,10 +218,17 @@ function renderizar() {
             );
 
             await updateDoc(doc(db, "funcionarios", f.id), {
-              treinamentos: f.treinamentos,
-            });
+  treinamentos: f.treinamentos,
+});
 
-            carregarFuncionarios();
+// remove só o card excluído, sem recarregar tudo
+el.remove();
+
+// atualiza os indicadores
+atualizarIndicadores();
+
+// se não sobrou nenhum treinamento, mantém o funcionário aberto
+div.classList.add("open");
           };
 
           treinos.appendChild(el);
