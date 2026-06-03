@@ -8,6 +8,7 @@ const modalTreinoMassa = document.getElementById("modalTreinoMassa");
 const selectTreinamentoMassa = document.getElementById("selectTreinamentoMassa");
 const dataRealizacaoMassa = document.getElementById("dataRealizacaoMassa");
 const buscaFuncionarioMassa = document.getElementById("buscaFuncionarioMassa");
+const contadorSelecionados = document.getElementById("contadorSelecionados");
 const listaFuncionariosMassa = document.getElementById("listaFuncionariosMassa");
 const cancelarTreinoMassa = document.getElementById("cancelarTreinoMassa");
 const salvarTreinoMassa = document.getElementById("salvarTreinoMassa");
@@ -516,6 +517,13 @@ cancelarTreino.onclick = () => modalTreino.classList.remove("show");
 
 // FUncionarios em massa
 
+function atualizarContadorSelecionados() {
+  const total = funcionariosSelecionadosMassa.size;
+
+  contadorSelecionados.textContent =
+    `Selecionados: ${total} colaborador${total !== 1 ? "es" : ""}`;
+}
+
 function renderizarFuncionariosMassa() {
   listaFuncionariosMassa.innerHTML = "";
 
@@ -559,6 +567,8 @@ function renderizarFuncionariosMassa() {
         } else {
           funcionariosSelecionadosMassa.delete(f.id);
         }
+
+        atualizarContadorSelecionados();
       };
 
       listaFuncionariosMassa.appendChild(label);
@@ -567,6 +577,7 @@ function renderizarFuncionariosMassa() {
 
 btnTreinoMassa.onclick = () => {
   renderizarFuncionariosMassa();
+  atualizarContadorSelecionados();
   modalTreinoMassa.classList.add("show");
 };
 
@@ -622,6 +633,7 @@ buscaFuncionarioMassa.value = "";
 
 // limpa os selecionados
 funcionariosSelecionadosMassa.clear();
+atualizarContadorSelecionados();
 
 carregarFuncionarios();
 };
