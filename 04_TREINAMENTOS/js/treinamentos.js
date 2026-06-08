@@ -477,6 +477,55 @@ fecharGerenciarTreinos.onclick = () => {
   modalGerenciarTreinos.classList.remove("show");
 };
 
+function abrirConfirmacaoTreinoEmDia(novoTreino) {
+  const modal = document.createElement("div");
+
+  modal.classList.add("modal", "show");
+
+  modal.innerHTML = `
+    <div class="modal-content">
+      <h2>Treinamento já em dia</h2>
+
+      <p class="certificado-info">
+        Esse trabalhador já possui esse treinamento em dia.
+        Deseja substituir mesmo assim?
+      </p>
+
+      <div class="modal-buttons">
+        <button id="cancelarSubstituirTreino">Cancelar</button>
+        <button id="confirmarSubstituirTreino">Continuar</button>
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(modal);
+
+  modal.querySelector("#cancelarSubstituirTreino").onclick = () => {
+    modal.remove();
+  };
+
+  modal.querySelector("#confirmarSubstituirTreino").onclick = async () => {
+    funcionarioSelecionado.treinamentos =
+      funcionarioSelecionado.treinamentos.filter(
+        (t) => t.nome !== novoTreino.nome
+      );
+
+    funcionarioSelecionado.treinamentos.push(novoTreino);
+
+    await updateDoc(doc(db, "funcionarios", funcionarioSelecionado.id), {
+      treinamentos: funcionarioSelecionado.treinamentos,
+    });
+
+    modal.remove();
+    modalTreino.classList.remove("show");
+
+    document.getElementById("selectTreinamento").value = "";
+    dataRealizacao.value = "";
+
+    carregarFuncionarios();
+  };
+}
+
 // 💾 SALVAR TREINAMENTO
 salvarTreino.onclick = async () => {
   const treinoId = document.getElementById("selectTreinamento").value;
@@ -499,15 +548,18 @@ salvarTreino.onclick = async () => {
     vencimento: vencimento.toISOString().split("T")[0],
   };
 
-  const jaExiste = funcionarioSelecionado.treinamentos.some(
-  t =>
-    t.nome === novoTreino.nome &&
-    verificarStatus(t.vencimento) !== "vencido"
+const treinoExistente = funcionarioSelecionado.treinamentos.find(
+  (t) => t.nome === novoTreino.nome
 );
 
-  if (jaExiste) {
-    return alert("Esse treinamento já existe para esse funcionário!");
+if (treinoExistente) {
+  const statusExistente = verificarStatus(treinoExistente.vencimento);
+
+  if (statusExistente === "em-dia") {
+    abrirConfirmacaoTreinoEmDia(novoTreino);
+    return;
   }
+}
 
   funcionarioSelecionado.treinamentos =
   funcionarioSelecionado.treinamentos.filter(
