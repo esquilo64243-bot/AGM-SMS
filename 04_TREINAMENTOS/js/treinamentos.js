@@ -19,6 +19,15 @@ const filtroTreinamento = document.getElementById("filtroTreinamento");
 const filtroFuncao = document.getElementById("filtroFuncao");
 const filtroEmpresa = document.getElementById("filtroEmpresa");
 
+const modalCertificado = document.getElementById("modalCertificado");
+const certificadoInfo = document.getElementById("certificadoInfo");
+const linkCertificado = document.getElementById("linkCertificado");
+const cancelarCertificado = document.getElementById("cancelarCertificado");
+const salvarCertificado = document.getElementById("salvarCertificado");
+
+let funcionarioCertificado = null;
+let treinamentoCertificado = null;
+
 const modalTreino = document.getElementById("modalTreino");
 const salvarTreino = document.getElementById("salvarTreino");
 const cancelarTreino = document.getElementById("cancelarTreino");
@@ -179,29 +188,59 @@ function renderizar() {
             : null;
 
           el.innerHTML = `
-            <div class="treino-topo">
-              <strong>${t.nome}</strong>
-              <button class="btn-delete">🗑️</button>
-            </div>
+  <div class="treino-topo">
+    <strong>${t.nome}</strong>
 
-            Realizado:
-            ${
-              realizado
-                ? realizado.toLocaleDateString("pt-BR")
-                : "Sem data"
-            }
-            <br>
+    <div class="treino-acoes">
+      <button class="btn-certificado" title="Ver certificado">📄</button>
+      <button class="btn-edit-certificado" title="Editar link">✏️</button>
+      <button class="btn-delete">🗑️</button>
+    </div>
+  </div>
 
-            Vence:
-            ${
-              venc
-                ? venc.toLocaleDateString("pt-BR")
-                : "Sem vencimento"
-            }
-          `;
+  Realizado:
+  ${
+    realizado
+      ? realizado.toLocaleDateString("pt-BR")
+      : "Sem data"
+  }
+  <br>
+
+  Vence:
+  ${
+    venc
+      ? venc.toLocaleDateString("pt-BR")
+      : "Sem vencimento"
+  }
+`;
 
           // ❌ EXCLUIR
           const btnDelete = el.querySelector(".btn-delete");
+
+          const btnCertificado = el.querySelector(".btn-certificado");
+const btnEditCertificado = el.querySelector(".btn-edit-certificado");
+
+function abrirModalCertificado() {
+  funcionarioCertificado = f;
+  treinamentoCertificado = t;
+
+  certificadoInfo.innerText = `${f.nome} - ${t.nome}`;
+  linkCertificado.value = t.certificadoUrl || "";
+
+  modalCertificado.classList.add("show");
+}
+
+btnCertificado.onclick = () => {
+  if (t.certificadoUrl) {
+    window.open(t.certificadoUrl, "_blank");
+  } else {
+    abrirModalCertificado();
+  }
+};
+
+btnEditCertificado.onclick = () => {
+  abrirModalCertificado();
+};
 
           btnDelete.onclick = async () => {
             const confirmar = confirm(
@@ -514,6 +553,32 @@ salvarCadastroTreino.onclick = async () => {
 
 // ❌ CANCELAR
 cancelarTreino.onclick = () => modalTreino.classList.remove("show");
+
+cancelarCertificado.onclick = () => {
+  modalCertificado.classList.remove("show");
+};
+
+salvarCertificado.onclick = async () => {
+
+  const link = linkCertificado.value.trim();
+
+  if (!link) {
+    return alert("Cole o link do certificado.");
+  }
+
+  treinamentoCertificado.certificadoUrl = link;
+
+  await updateDoc(
+    doc(db, "funcionarios", funcionarioCertificado.id),
+    {
+      treinamentos: funcionarioCertificado.treinamentos,
+    }
+  );
+
+  modalCertificado.classList.remove("show");
+
+  carregarFuncionarios();
+};
 
 // FUncionarios em massa
 
