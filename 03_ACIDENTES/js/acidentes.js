@@ -17,64 +17,112 @@ let filtroMes = [];
 let tipoGraficoAtual = "bar";
 let chart = null;
 
+function fecharPaineis() {
+  document.querySelectorAll(".painel").forEach((painel) => {
+    painel.classList.remove("show");
+  });
+}
+
 
 // =============================
 // GRAFICO
 // =============================
 
 function inicializarGrafico(labels = [], dados = []) {
-
-const canvas = document.getElementById("graficoAcidentes");
-if (!canvas) return;
+  const canvas = document.getElementById("graficoAcidentes");
+  if (!canvas) return;
 
 const ctx = canvas.getContext("2d");
 
 if (chart) {
-chart.destroy();
+  chart.destroy();
 }
 
-chart = new Chart(ctx, {
+const dadosIniciais =
+  tipoGraficoAtual === "line"
+    ? dados.map(() => null)
+    : dados.map(() => 0);
 
-type: tipoGraficoAtual,
+  chart = new Chart(ctx, {
+    type: tipoGraficoAtual,
 
-data: {
-labels: labels,
-datasets: [{
-label: "Total de Acidentes",
-data: dados,
+    data: {
+      labels,
+      datasets: [{
+        label: "Total de Acidentes",
+        data: dadosIniciais,
 
-backgroundColor: tipoGraficoAtual === "pie"
-? [
-"#4e73df","#1cc88a","#36b9cc",
-"#f6c23e","#e74a3b","#858796",
-"#5a5c69","#20c997","#6610f2",
-"#fd7e14","#6f42c1","#17a2b8"
-]
-: "rgba(78,115,223,0.4)",
+        backgroundColor: tipoGraficoAtual === "pie"
+          ? [
+              "#4e73df", "#1cc88a", "#36b9cc",
+              "#f6c23e", "#e74a3b", "#858796",
+              "#5a5c69", "#20c997", "#6610f2",
+              "#fd7e14", "#6f42c1", "#17a2b8"
+            ]
+          : "rgba(78,115,223,0.45)",
 
-borderColor: "#36b9cc",
-borderWidth: tipoGraficoAtual === "line" ? 3 : 1,
-tension: tipoGraficoAtual === "line" ? 0.4 : 0,
-fill: tipoGraficoAtual !== "line"
-}]
-},
+        borderColor: tipoGraficoAtual === "pie" ? "#1d2642" : "#36b9cc",
+        borderWidth: tipoGraficoAtual === "line" ? 4 : 2,
+        tension: tipoGraficoAtual === "line" ? 0.45 : 0,
+        fill: tipoGraficoAtual === "bar",
+        pointRadius: tipoGraficoAtual === "line" ? 6 : 0,
+        pointHoverRadius: tipoGraficoAtual === "line" ? 8 : 0
+      }]
+    },
 
-options: {
-responsive: true,
-maintainAspectRatio: false,
-plugins:{
-legend:{
-display:true,
-labels:{color:"#fff"}
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+
+      animation: {
+        duration: 1600,
+        easing: "easeOutCubic"
+      },
+
+      plugins: {
+        legend: {
+          display: true,
+          labels: {
+            color: "#fff"
+          }
+        }
+      },
+
+      scales: tipoGraficoAtual === "pie"
+        ? {}
+        : {
+            y: {
+              beginAtZero: true,
+              ticks: { color: "#aeb7d0" },
+              grid: { color: "rgba(255,255,255,.06)" }
+            },
+            x: {
+              ticks: { color: "#aeb7d0" },
+              grid: { color: "rgba(255,255,255,.04)" }
+            }
+          }
+    }
+  });
+    if (tipoGraficoAtual === "line") {
+    let i = 0;
+
+    const intervalo = setInterval(() => {
+      chart.data.datasets[0].data[i] = dados[i];
+      chart.update();
+
+      i++;
+
+      if (i >= dados.length) {
+        clearInterval(intervalo);
+      }
+    }, 300);
+  } else {
+    setTimeout(() => {
+      chart.data.datasets[0].data = dados;
+      chart.update();
+    }, 100);
+  }
 }
-}
-}
-
-});
-
-}
-
-
 // =============================
 // ATUALIZAR GRAFICO
 // =============================
@@ -150,11 +198,10 @@ const querySnapshot = await getDocs(collection(db,"acidentes"));
 
 acidentes = [];
 
-querySnapshot.forEach((doc)=>{
+querySnapshot.forEach((documento) => {
+  const dados = documento.data();
 
-const data = doc.data();
-
-const dataObj = data.data ? new Date(data.data) : new Date();
+  const dataObj = dados.data ? new Date(dados.data + "T00:00:00") : new Date();
 
 const meses=[
 "Janeiro","Fevereiro","Março","Abril","Maio","Junho",
@@ -164,15 +211,15 @@ const meses=[
 const mes = meses[dataObj.getMonth()];
 
 acidentes.push({
-id: doc.id,
-ano: dataObj.getFullYear(),
-mes: mes,
-nome: data.nome,
-data: formatarDataBR(data.data),
-tipo: data.tipo,
-local: data.local,
-descricao: data.descricao,
-quantidade: 1
+  id: documento.id,
+  ano: dataObj.getFullYear(),
+  mes: mes,
+  nome: dados.nome,
+  data: formatarDataBR(dados.data),
+  tipo: dados.tipo,
+  local: dados.local,
+  descricao: dados.descricao,
+  quantidade: 1
 });
 
 });
@@ -206,7 +253,15 @@ html += `<div class="ano">
 
 const acidentesAno = acidentes.filter(a=>a.ano == ano);
 
-const meses = [...new Set(acidentesAno.map(a=>a.mes))];
+const ordemMeses = [
+  "Janeiro", "Fevereiro", "Março", "Abril",
+  "Maio", "Junho", "Julho", "Agosto",
+  "Setembro", "Outubro", "Novembro", "Dezembro"
+];
+
+const meses = ordemMeses.filter((mes) =>
+  acidentesAno.some((a) => a.mes === mes)
+);
 
 meses.forEach(mes=>{
 
@@ -397,11 +452,11 @@ if(!nome || !data || !tipo || !local || !descricao){
 try{
 
 await addDoc(collection(db,"acidentes"),{
-nome,
-data,
-tipo,
-local,
-descricao
+  nome,
+  data,
+  tipo,
+  local,
+  descricao
 });
 
 await carregarAcidentes();
@@ -429,16 +484,19 @@ modal.classList.remove("show");
 
 
 // painel de troca de gráfico
-btnGrafico.onclick = ()=>{
+btnGrafico.onclick = (e) => {
+  e.stopPropagation();
 
-painelGrafico.classList.toggle("show");
+  const estavaAberto = painelGrafico.classList.contains("show");
+  fecharPaineis();
 
-painelGrafico.innerHTML ||= `
-<div onclick="mudarGrafico('bar')" class="opcao">Barras</div>
-<div onclick="mudarGrafico('line')" class="opcao">Linha</div>
-<div onclick="mudarGrafico('pie')" class="opcao">Pizza</div>
-`;
+  painelGrafico.innerHTML = `
+    <div onclick="mudarGrafico('bar')">Barras</div>
+    <div onclick="mudarGrafico('line')">Linha</div>
+    <div onclick="mudarGrafico('pie')">Pizza</div>
+  `;
 
+  if (!estavaAberto) painelGrafico.classList.add("show");
 };
 
 const btnMes = document.getElementById("btnMes");
@@ -446,33 +504,48 @@ const painelMes = document.getElementById("painelMes");
 
 painelMes.addEventListener("change", () => {
 
-const checkboxes = painelMes.querySelectorAll("input:checked");
+  const todos = document.getElementById("mesTodos");
+  const checkboxes = painelMes.querySelectorAll(
+    "input[type='checkbox']:not(#mesTodos):checked"
+  );
 
-filtroMes = Array.from(checkboxes).map(c => c.value);
+  if (todos.checked) {
+    painelMes
+      .querySelectorAll("input[type='checkbox']:not(#mesTodos)")
+      .forEach(cb => cb.checked = false);
 
-atualizarGrafico();
+    filtroMes = [];
+  } else {
+    filtroMes = Array.from(checkboxes).map(cb => cb.value);
+  }
 
+  atualizarGrafico();
 });
 
-btnMes.onclick = ()=>{
+btnMes.onclick = (e) => {
+  e.stopPropagation();
 
-painelMes.classList.toggle("show");
+  const estavaAberto = painelMes.classList.contains("show");
+  fecharPaineis();
 
-painelMes.innerHTML ||= `
-<label><input type="checkbox" value="Janeiro"> Janeiro</label>
-<label><input type="checkbox" value="Fevereiro"> Fevereiro</label>
-<label><input type="checkbox" value="Março"> Março</label>
-<label><input type="checkbox" value="Abril"> Abril</label>
-<label><input type="checkbox" value="Maio"> Maio</label>
-<label><input type="checkbox" value="Junho"> Junho</label>
-<label><input type="checkbox" value="Julho"> Julho</label>
-<label><input type="checkbox" value="Agosto"> Agosto</label>
-<label><input type="checkbox" value="Setembro"> Setembro</label>
-<label><input type="checkbox" value="Outubro"> Outubro</label>
-<label><input type="checkbox" value="Novembro"> Novembro</label>
-<label><input type="checkbox" value="Dezembro"> Dezembro</label>
-`;
+  painelMes.innerHTML = `
+    <label><input type="checkbox" id="mesTodos" checked> Todos</label>
 
+    <label><input type="checkbox" value="Janeiro"> Janeiro</label>
+    <label><input type="checkbox" value="Fevereiro"> Fevereiro</label>
+    <label><input type="checkbox" value="Março"> Março</label>
+    <label><input type="checkbox" value="Abril"> Abril</label>
+    <label><input type="checkbox" value="Maio"> Maio</label>
+    <label><input type="checkbox" value="Junho"> Junho</label>
+    <label><input type="checkbox" value="Julho"> Julho</label>
+    <label><input type="checkbox" value="Agosto"> Agosto</label>
+    <label><input type="checkbox" value="Setembro"> Setembro</label>
+    <label><input type="checkbox" value="Outubro"> Outubro</label>
+    <label><input type="checkbox" value="Novembro"> Novembro</label>
+    <label><input type="checkbox" value="Dezembro"> Dezembro</label>
+  `;
+
+  if (!estavaAberto) painelMes.classList.add("show");
 };
 
 
@@ -481,18 +554,47 @@ carregarAcidentes();
 const btnTipo = document.getElementById("btnTipo");
 const painelTipo = document.getElementById("painelTipo");
 
-btnTipo.onclick = ()=>{
+const btnAno = document.getElementById("btnAno");
+const painelAno = document.getElementById("painelAno");
 
-painelTipo.classList.toggle("show");
+btnAno.onclick = (e) => {
+  e.stopPropagation();
 
-painelTipo.innerHTML ||= `
-<div onclick="selecionarTipo('Todos')">Todos</div>
-<div onclick="selecionarTipo('Dano Material')">Dano Material</div>
-<div onclick="selecionarTipo('Sem Afastamento')">Sem Afastamento</div>
-<div onclick="selecionarTipo('Com Afastamento')">Com Afastamento</div>
-`;
+  const estavaAberto = painelAno.classList.contains("show");
+  fecharPaineis();
 
+  if (!estavaAberto) {
+    painelAno.classList.add("show");
+  }
+
+  const anos = [...new Set(acidentes.map((a) => a.ano))].sort((a, b) => b - a);
+
+  painelAno.innerHTML = anos
+    .map((ano) => `<div onclick="selecionarAno(${ano})">${ano}</div>`)
+    .join("");
 };
+
+btnTipo.onclick = (e) => {
+  e.stopPropagation();
+
+  const estavaAberto = painelTipo.classList.contains("show");
+  fecharPaineis();
+
+  painelTipo.innerHTML = `
+    <div onclick="selecionarTipo('Todos')">Todos</div>
+    <div onclick="selecionarTipo('Dano Material')">Dano Material</div>
+    <div onclick="selecionarTipo('Sem Afastamento')">Sem Afastamento</div>
+    <div onclick="selecionarTipo('Com Afastamento')">Com Afastamento</div>
+  `;
+
+  if (!estavaAberto) painelTipo.classList.add("show");
+};
+
+document.addEventListener("click", (e) => {
+  if (!e.target.closest(".filtro-item")) {
+    fecharPaineis();
+  }
+});
 });
 
 window.selecionarTipo = function(tipo){
@@ -544,3 +646,12 @@ responsive:true
 }
 
 document.getElementById("anoAtual").innerText = new Date().getFullYear();
+
+window.selecionarAno = function (ano) {
+  filtroAno = ano;
+
+  document.getElementById("anoAtual").innerText = ano;
+  document.getElementById("painelAno").classList.remove("show");
+
+  atualizarGrafico();
+};

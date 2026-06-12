@@ -783,20 +783,28 @@ body{
 
 }
 
-.ano .meses{
-  display:none;
+.ano .meses {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height .35s ease, opacity .25s ease;
 }
 
-.ano.open .meses{
-  display:block;
+.ano.open .meses {
+  max-height: 1200px;
+  opacity: 1;
 }
 
-.mes .cats{
-  display:none;
+.mes .cats {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height .35s ease, opacity .25s ease;
 }
 
-.mes.open .cats{
-  display:flex;
+.mes.open .cats {
+  max-height: 800px;
+  opacity: 1;
 }
 
 .btn-danger{
@@ -868,4 +876,198 @@ body{
 
 .detalhes-registro strong{
   color:#8eb2ff;
+}
+
+#painelMes {
+  min-width: 260px;
+  padding: 8px;
+}
+
+#painelMes label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  white-space: nowrap;
+}
+
+#painelMes input {
+  accent-color: var(--blue);
+}
+
+.grafico-wrapper {
+  height: 430px;
+}
+
+.grafico-wrapper canvas {
+  height: 340px !important;
+}
+
+/* ============================= */
+/* RESPONSIVO EXTRA - TABLET */
+/* ============================= */
+
+@media (max-width: 1024px) {
+  body {
+    padding: 22px;
+  }
+
+  .container {
+    max-width: 100%;
+  }
+
+  .main-content {
+    grid-template-columns: 1fr;
+  }
+
+  .arquivos,
+  .dashboard {
+    width: 100%;
+  }
+
+  .filtros-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .filtro-item,
+  .btn-filter {
+    width: 100%;
+  }
+
+  .painel {
+    width: 100%;
+    min-width: 100%;
+  }
+
+  .grafico-wrapper {
+    height: 390px;
+    padding: 20px;
+  }
+
+  .grafico-wrapper canvas {
+    height: 300px !important;
+  }
+}
+
+/* ============================= */
+/* RESPONSIVO EXTRA - CELULAR */
+/* ============================= */
+
+@media (max-width: 600px) {
+  body {
+    padding: 12px;
+  }
+
+  .top-bar {
+    padding: 20px;
+    border-radius: 18px;
+  }
+
+  .top-bar h1 {
+    font-size: 24px;
+  }
+
+  .main-content {
+    gap: 18px;
+  }
+
+  .arquivos,
+  .dashboard {
+    padding: 16px;
+    border-radius: 18px;
+  }
+
+  .filtros-container {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .btn-filter {
+    padding: 13px 14px;
+    text-align: left;
+  }
+
+  .painel {
+    position: static;
+    margin-top: 8px;
+    width: 100%;
+    max-height: 260px;
+    overflow-y: auto;
+  }
+
+  #painelMes {
+    min-width: 100%;
+  }
+
+  .grafico-wrapper {
+    height: 340px;
+    padding: 14px;
+    border-radius: 18px;
+  }
+
+  .grafico-wrapper canvas {
+    height: 250px !important;
+  }
+
+  .grafico-titulo {
+    font-size: 15px;
+    margin-bottom: 14px;
+  }
+
+  .ano-header,
+  .mes-header,
+  .cat-item {
+    font-size: 13px;
+    padding: 12px;
+  }
+
+  .modal-overlay {
+    align-items: flex-start;
+    padding: 14px;
+    overflow-y: auto;
+  }
+
+  .modal-content,
+  .modal-small {
+    width: 100%;
+    max-width: 100%;
+    margin-top: 20px;
+    padding: 18px;
+    border-radius: 18px;
+  }
+
+  .cat-status {
+    font-size: 18px;
+  }
+
+  .detalhes-registro p {
+    font-size: 13px;
+    word-break: break-word;
+  }
+}
+
+/* ============================= */
+/* CELULAR BEM PEQUENO */
+/* ============================= */
+
+@media (max-width: 380px) {
+  .top-bar h1 {
+    font-size: 21px;
+  }
+
+  .btn-primary,
+  .btn-secondary,
+  .btn-danger {
+    font-size: 13px;
+    padding: 11px 12px;
+  }
+
+  .grafico-wrapper {
+    height: 310px;
+  }
+
+  .grafico-wrapper canvas {
+    height: 220px !important;
+  }
 }
