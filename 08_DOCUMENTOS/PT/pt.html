@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PT - Permissão de Trabalho</title>
+
+    <link rel="stylesheet" href="./css/pt.css" />
+
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"
+      defer
+    ></script>
+  </head>
+
+  <body>
+    <div class="container">
+      <aside class="sidebar">
+        <div class="topo-sidebar">
+          <h1>📝 PT</h1>
+          <p>Permissão de Trabalho</p>
+        </div>
+
+        <div class="campo">
+          <label>Tipo de documento</label>
+
+          <select id="tipoDocumento">
+            <option value="pt">PT - Permissão de Trabalho</option>
+            <option value="registroFotografico">Registro</option>
+            <option value="listaPresenca">Lista de Presença</option>
+            <option value="dds">DDS</option>
+          </select>
+          <label>Empresas</label>
+
+          <div class="checkbox-group">
+            <label class="check-item">
+              <input type="checkbox" id="checkAGM" checked />
+              AGM
+            </label>
+
+            <label class="check-item">
+              <input type="checkbox" id="checkSerra" checked />
+              Serra Morena
+            </label>
+          </div>
+        </div>
+
+        <div class="campo">
+          <label>Número da PT</label>
+          <input type="text" id="numeroPT" placeholder="Ex: PT-001/2026" />
+        </div>
+
+        <div class="campo">
+          <label>Data</label>
+          <input type="date" id="dataPT" />
+        </div>
+
+        <div class="campo">
+          <label>Horário de Início</label>
+          <input type="time" id="horaInicioPT" />
+        </div>
+
+        <div class="campo">
+          <label>Horário de Término</label>
+          <input type="time" id="horaFimPT" />
+        </div>
+
+        <div class="campo">
+          <label>Local da Atividade</label>
+          <input type="text" id="localPT" placeholder="Digite o local" />
+        </div>
+
+        <div class="campo">
+          <label>Setor</label>
+          <input type="text" id="setorPT" placeholder="Digite o setor" />
+        </div>
+
+        <div class="campo">
+          <label>Responsável pela Atividade</label>
+          <input
+            type="text"
+            id="responsavelPT"
+            placeholder="Nome do responsável"
+          />
+        </div>
+
+        <div class="campo">
+          <label>Atividade a ser executada</label>
+          <textarea
+            id="atividadePT"
+            placeholder="Descreva a atividade"
+          ></textarea>
+        </div>
+
+        <div class="campo">
+          <label>Tipos de Trabalho</label>
+
+          <div class="checkbox-group coluna">
+            <label class="check-item">
+              <input type="checkbox" class="risco-check" value="altura" />
+              Trabalho em Altura
+            </label>
+
+            <label class="check-item">
+              <input type="checkbox" class="risco-check" value="solda" />
+              Solda / Corte a Quente
+            </label>
+
+            <label class="check-item">
+              <input
+                type="checkbox"
+                class="risco-check"
+                value="espacoConfinado"
+              />
+              Espaço Confinado
+            </label>
+
+            <label class="check-item">
+              <input type="checkbox" class="risco-check" value="eletricidade" />
+              Eletricidade
+            </label>
+
+            <label class="check-item">
+              <input
+                type="checkbox"
+                class="risco-check"
+                value="movimentacaoCarga"
+              />
+              Movimentação de Carga
+            </label>
+
+            <label class="check-item">
+              <input
+                type="checkbox"
+                class="risco-check"
+                value="produtoQuimico"
+              />
+              Produto Químico
+            </label>
+
+            <label class="check-item">
+              <input type="checkbox" class="risco-check" value="escavacao" />
+              Escavação
+            </label>
+
+            <label class="check-item">
+              <input type="checkbox" class="risco-check" value="bloqueio" />
+              Bloqueio e Etiquetagem
+            </label>
+          </div>
+        </div>
+
+        <div class="campo">
+          <label>Texto de Riscos / Medidas Preventivas</label>
+          <textarea
+            id="textoRiscosPT"
+            placeholder="O texto será gerado conforme os riscos selecionados..."
+          ></textarea>
+        </div>
+
+        <div class="botoes-sidebar">
+          <button type="button" id="btnGerarTexto">Gerar texto</button>
+          <button type="button" id="btnOutraVersao">Outra versão</button>
+        </div>
+
+        <div class="campo">
+          <label>EPIs Obrigatórios</label>
+          <input type="text" id="buscarEPI" placeholder="Digite um EPI..." />
+
+          <div id="listaSugestoesEPI"></div>
+
+          <div id="episSelecionados"></div>
+
+          <input type="hidden" id="episPT" />
+        </div>
+
+        <div class="campo">
+          <label>Observações</label>
+          <textarea
+            id="observacoesPT"
+            placeholder="Observações adicionais"
+          ></textarea>
+        </div>
+
+        <a href="../documentos.html" class="btn-voltar"
+          >← Voltar para documentos</a
+        >
+      </aside>
+
+      <main class="preview-area">
+        <div id="documentoPreview">
+          <div class="folha folha-pt" id="previewPT">
+            <div class="pt-topo">
+              <img
+                src="../../assets/logo_AGM.png"
+                class="logo-pt"
+                id="logoAGM"
+              />
+              <div class="pt-titulo">
+                <h1>PERMISSÃO DE TRABALHO</h1>
+                <p>PT - Segurança do Trabalho</p>
+              </div>
+              <img
+                src="../../assets/logo_SM.webp"
+                class="logo-pt"
+                id="logoSerra"
+              />
+            </div>
+
+            <table class="tabela-info">
+              <tr>
+                <td>
+                  <strong>Nº PT:</strong> <span id="previewNumeroPT">-</span>
+                </td>
+                <td>
+                  <strong>Data:</strong> <span id="previewDataPT">-</span>
+                </td>
+              </tr>
+
+              <tr>
+                <td>
+                  <strong>Início:</strong>
+                  <span id="previewHoraInicioPT">-</span>
+                </td>
+                <td>
+                  <strong>Término:</strong> <span id="previewHoraFimPT">-</span>
+                </td>
+              </tr>
+
+              <tr>
+                <td>
+                  <strong>Local:</strong> <span id="previewLocalPT">-</span>
+                </td>
+                <td>
+                  <strong>Setor:</strong> <span id="previewSetorPT">-</span>
+                </td>
+              </tr>
+
+              <tr>
+                <td colspan="2">
+                  <strong>Responsável:</strong>
+                  <span id="previewResponsavelPT">-</span>
+                </td>
+              </tr>
+            </table>
+
+            <section class="bloco-pt">
+              <h2>1. Atividade a ser executada</h2>
+              <p id="previewAtividadePT">-</p>
+            </section>
+
+            <section class="bloco-pt">
+              <h2>2. Tipos de trabalho selecionados</h2>
+              <ul id="previewTiposTrabalho">
+                <li>-</li>
+              </ul>
+            </section>
+
+            <section class="bloco-pt">
+              <h2>3. Riscos e medidas preventivas</h2>
+              <p id="previewTextoRiscosPT">-</p>
+            </section>
+
+            <section class="bloco-pt">
+              <h2>4. EPIs obrigatórios</h2>
+              <p id="previewEpisPT">-</p>
+            </section>
+
+            <section class="bloco-pt">
+              <h2>5. Observações</h2>
+              <p id="previewObservacoesPT">-</p>
+            </section>
+
+            <section class="bloco-pt">
+              <h2>6. Liberação da atividade</h2>
+
+              <table class="tabela-assinaturas">
+                <tr>
+                  <th>Responsável pela Atividade</th>
+                  <th>Segurança do Trabalho</th>
+                  <th>Executante</th>
+                </tr>
+
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+              </table>
+            </section>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <div class="rodape-doc">
+      Documento emitido automaticamente pelo sistema AGM
+    </div>
+
+    <button class="btn-pdf" id="btnExportar">Exportar PDF</button>
+
+    <script type="module" src="./js/pt.js"></script>
+  </body>
+</html>

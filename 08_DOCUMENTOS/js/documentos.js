@@ -704,6 +704,11 @@ console.log(previewListaPresenca);
 function trocarDocumento() {
   const tipo = tipoDocumento.value;
 
+    if (tipo === "pt") {
+    window.location.href = "./PT/pt.html";
+    return;
+  }
+
   /* ================================= */
   /* ESCONDER TUDO PRIMEIRO */
   /* ================================= */
@@ -800,6 +805,13 @@ function formatarDataBR(data) {
 }
 
 window.addEventListener("DOMContentLoaded", () => {
+  const parametros = new URLSearchParams(window.location.search);
+  const tipoUrl = parametros.get("tipo");
+
+  if (tipoUrl) {
+    tipoDocumento.value = tipoUrl;
+  }
+
   tipoDocumento.addEventListener("change", trocarDocumento);
 
   trocarDocumento();
