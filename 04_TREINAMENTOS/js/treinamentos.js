@@ -14,6 +14,15 @@ const cancelarTreinoMassa = document.getElementById("cancelarTreinoMassa");
 const salvarTreinoMassa = document.getElementById("salvarTreinoMassa");
 let funcionariosSelecionadosMassa = new Set();
 
+const modalConfirmarMassa = document.getElementById("modalConfirmarMassa");
+const resumoMassa = document.getElementById("resumoMassa");
+const btnVerColaboradores = document.getElementById("btnVerColaboradores");
+const listaColaboradoresEmDia = document.getElementById("listaColaboradoresEmDia");
+const cancelarConfirmarMassa = document.getElementById("cancelarConfirmarMassa");
+const continuarConfirmarMassa = document.getElementById("continuarConfirmarMassa");
+
+let dadosTreinoMassaPendente = null;
+
 const buscaInput = document.getElementById("busca");
 const filtroTreinamento = document.getElementById("filtroTreinamento");
 const filtroFuncao = document.getElementById("filtroFuncao");
@@ -707,8 +716,7 @@ buscaFuncionarioMassa.addEventListener("input", renderizarFuncionariosMassa);
 salvarTreinoMassa.onclick = async () => {
   const treinoId = selectTreinamentoMassa.value;
   const realizacao = dataRealizacaoMassa.value;
-
-const selecionados = [...funcionariosSelecionadosMassa];
+  const selecionados = [...funcionariosSelecionadosMassa];
 
   if (!treinoId || !realizacao || selecionados.length === 0) {
     return alert("Selecione o treinamento, a data e pelo menos um funcionário.");
@@ -726,14 +734,146 @@ const selecionados = [...funcionariosSelecionadosMassa];
     vencimento: vencimento.toISOString().split("T")[0],
   };
 
-  const promessas = selecionados.map(async (id) => {
-    const funcionario = funcionarios.find((f) => f.id === id);
+  const funcionariosSelecionados = selecionados
+    .map((id) => funcionarios.find((f) => f.id === id))
+    .filter(Boolean);
 
-    funcionario.treinamentos = funcionario.treinamentos.filter(
-      (t) => t.nome !== novoTreino.nome
+  const emDia = [];
+  const aVencer = [];
+  const vencidos = [];
+  const novos = [];
+
+  funcionariosSelecionados.forEach((funcionario) => {
+    const existente = funcionario.treinamentos.find(
+      (t) => t.nome === novoTreino.nome
     );
 
-    funcionario.treinamentos.push(novoTreino);
+    if (!existente) {
+      novos.push(funcionario);
+      return;
+    }
+
+    const status = verificarStatus(existente.vencimento);
+
+    if (status === "em-dia") emDia.push(funcionario);
+    if (status === "a-vencer") aVencer.push(funcionario);
+    if (status === "vencido") vencidos.push(funcionario);
+  });
+
+  dadosTreinoMassaPendente = {
+    novoTreino,
+    funcionariosSelecionados,
+    emDia,
+    aVencer,
+    vencidos,
+    novos,
+  };
+
+  if (emDia.length > 0) {
+    abrirConfirmacaoMassa();
+    return;
+  }
+
+  await executarTreinoMassa(false);
+};
+
+function abrirConfirmacaoMassa() {
+  const dados = dadosTreinoMassaPendente;
+
+  resumoMassa.innerHTML = `
+    <div class="resumo-grid">
+      <div class="resumo-item verde">
+        <strong>${dados.emDia.length}</strong>
+        <span>Já em dia</span>
+      </div>
+
+      <div class="resumo-item amarelo">
+        <strong>${dados.aVencer.length}</strong>
+        <span>A vencer</span>
+      </div>
+
+      <div class="resumo-item vermelho">
+        <strong>${dados.vencidos.length}</strong>
+        <span>Vencidos</span>
+      </div>
+
+      <div class="resumo-item azul">
+        <strong>${dados.novos.length}</strong>
+        <span>Novos</span>
+      </div>
+    </div>
+
+    <p class="texto-confirmacao">
+      Existem colaboradores que já possuem esse treinamento em dia.
+      Deseja substituir mesmo assim?
+    </p>
+
+    <p class="texto-info">
+      Os treinamentos vencidos, a vencer e novos serão atualizados automaticamente.
+    </p>
+  `;
+
+  listaColaboradoresEmDia.innerHTML = dados.emDia
+    .sort((a, b) => a.nome.localeCompare(b.nome, "pt-BR"))
+    .map((f) => `
+      <div class="colaborador-em-dia">
+        <strong>${f.nome}</strong>
+        <small>${f.cargo} - ${f.empresa}</small>
+      </div>
+    `)
+    .join("");
+
+  listaColaboradoresEmDia.classList.remove("show");
+  btnVerColaboradores.innerText = "Ver colaboradores";
+
+  modalConfirmarMassa.classList.add("show");
+}
+
+btnVerColaboradores.onclick = () => {
+  listaColaboradoresEmDia.classList.toggle("show");
+
+  btnVerColaboradores.innerText =
+    listaColaboradoresEmDia.classList.contains("show")
+      ? "Ocultar colaboradores"
+      : "Ver colaboradores";
+};
+
+cancelarConfirmarMassa.onclick = () => {
+  modalConfirmarMassa.classList.remove("show");
+  dadosTreinoMassaPendente = null;
+};
+
+continuarConfirmarMassa.onclick = async () => {
+  await executarTreinoMassa(true);
+};
+
+async function executarTreinoMassa(substituirEmDia) {
+  const dados = dadosTreinoMassaPendente;
+
+  if (!dados) return;
+
+  const funcionariosParaAtualizar = dados.funcionariosSelecionados.filter((funcionario) => {
+    const existente = funcionario.treinamentos.find(
+      (t) => t.nome === dados.novoTreino.nome
+    );
+
+    if (!existente) return true;
+
+    const status = verificarStatus(existente.vencimento);
+
+    if (status === "em-dia" && !substituirEmDia) {
+      return false;
+    }
+
+    return true;
+  });
+
+  const promessas = funcionariosParaAtualizar.map(async (funcionario) => {
+    funcionario.treinamentos = funcionario.treinamentos.filter(
+      (t) => t.nome !== dados.novoTreino.nome
+    );
+
+    funcionario.treinamentos.push(dados.novoTreino);
 
     return updateDoc(doc(db, "funcionarios", funcionario.id), {
       treinamentos: funcionario.treinamentos,
@@ -742,18 +882,20 @@ const selecionados = [...funcionariosSelecionadosMassa];
 
   await Promise.all(promessas);
 
-modalTreinoMassa.classList.remove("show");
+  modalConfirmarMassa.classList.remove("show");
+  modalTreinoMassa.classList.remove("show");
 
-selectTreinamentoMassa.value = "";
-dataRealizacaoMassa.value = "";
-buscaFuncionarioMassa.value = "";
+  selectTreinamentoMassa.value = "";
+  dataRealizacaoMassa.value = "";
+  buscaFuncionarioMassa.value = "";
 
-// limpa os selecionados
-funcionariosSelecionadosMassa.clear();
-atualizarContadorSelecionados();
+  funcionariosSelecionadosMassa.clear();
+  atualizarContadorSelecionados();
 
-carregarFuncionarios();
-};
+  dadosTreinoMassaPendente = null;
+
+  carregarFuncionarios();
+}
 
 // EVENTOS
 buscaInput.addEventListener("input", renderizar);
