@@ -43,6 +43,14 @@
       <div class="card">
         <h3>Controle de EPIs</h3>
 
+        <div class="filtro-box">
+  <input
+    id="pesquisaEPI"
+    type="text"
+    placeholder="Pesquisar EPI em estoque..."
+  />
+</div>
+
         <table class="tabela">
           <thead>
             <tr>
@@ -86,6 +94,24 @@
         </div>
       </div>
     </div>
+
+    <!-- Modal edição -->
+
+    <!-- MODAL EDITAR QUANTIDADE -->
+<div class="modal" id="modalQtd">
+  <div class="modal-content">
+    <h3>Alterar estoque</h3>
+
+    <p id="nomeQtdModal" class="modal-info"></p>
+
+    <input id="novaQtdEPI" type="number" min="0" placeholder="Nova quantidade" />
+
+    <div class="modal-buttons">
+      <button class="btn-cancel" onclick="fecharModal()">Cancelar</button>
+      <button class="btn-save" onclick="salvarQtdModal()">Salvar</button>
+    </div>
+  </div>
+</div>
 
     <script type="module" src="./js/epi.js"></script>
   </body>

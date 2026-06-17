@@ -475,3 +475,59 @@ button{
 .tabela td:last-child{
   border-radius:0 16px 16px 0;
 }
+
+/* ================= FILTRO ESTOQUE ================= */
+
+.filtro-box {
+  margin-bottom: 20px;
+}
+
+.filtro-box input {
+  width: 100%;
+  padding: 15px 18px;
+
+  border: none;
+  outline: none;
+
+  border-radius: 16px;
+
+  background: #1e2235;
+  color: white;
+
+  font-size: 14px;
+
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.06);
+
+  transition: .25s ease;
+}
+
+.filtro-box input::placeholder {
+  color: #aeb8e8;
+}
+
+.filtro-box input:focus {
+  box-shadow:
+    0 0 0 2px rgba(246,194,62,.45),
+    0 10px 25px rgba(0,0,0,.25);
+}
+
+/* ================= MODAL QTD ================= */
+
+.modal-info {
+  font-size: 14px;
+  color: #cbd5ff;
+  margin-bottom: 4px;
+}
+
+.qtd-num {
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: rgba(255,255,255,.06);
+  transition: .25s ease;
+}
+
+.qtd-num:hover {
+  background: rgba(246,194,62,.18);
+  color: #f6c23e;
+}

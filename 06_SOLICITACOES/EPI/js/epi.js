@@ -12,6 +12,12 @@ const inputNome = document.getElementById("nomeEPI");
 const selectEPI = document.getElementById("selectEPI");
 const inputQtd = document.getElementById("quantidade");
 const inputObs = document.getElementById("obs");
+const modalQtd = document.getElementById("modalQtd");
+const pesquisaEPI = document.getElementById("pesquisaEPI");
+const novaQtdEPI = document.getElementById("novaQtdEPI");
+const nomeQtdModal = document.getElementById("nomeQtdModal");
+
+let qtdEditIndex = null;
 
 // ================= MODAIS =================
 function abrirModalCadastro() {
@@ -29,6 +35,9 @@ function abrirModalPedido() {
 function fecharModal() {
   modalCadastro.classList.remove("show");
   modalPedido.classList.remove("show");
+  modalQtd.classList.remove("show");
+
+  qtdEditIndex = null;
 }
 
 // ================= CADASTRO EPI =================
@@ -138,7 +147,15 @@ function renderTipos() {
   const listaTipos = document.getElementById("listaTipos");
   listaTipos.innerHTML = "";
 
-  tipos.forEach((epi, i) => {
+  const termo = pesquisaEPI.value.toLowerCase().trim();
+
+  const tiposFiltrados = tipos.filter((epi) =>
+    epi.nome.toLowerCase().includes(termo),
+  );
+
+  tiposFiltrados.forEach((epi) => {
+    const i = tipos.findIndex((t) => t.id === epi.id);
+
     const tr = document.createElement("tr");
 
     tr.innerHTML = `
@@ -192,29 +209,28 @@ function diminuirQtd(i) {
 }
 
 function editarQtd(i) {
-  const atual = tipos[i].quantidade || 0;
+  qtdEditIndex = i;
 
-  const novo = prompt("Digite a nova quantidade:", atual);
+  nomeQtdModal.textContent = `EPI: ${tipos[i].nome}`;
+  novaQtdEPI.value = tipos[i].quantidade || 0;
 
-  if (novo === null) return;
+  modalQtd.classList.add("show");
+}
+function salvarQtdModal() {
+  const valor = Number(novaQtdEPI.value);
 
-  const valor = Number(novo);
+  if (qtdEditIndex === null) return;
 
   if (isNaN(valor) || valor < 0) {
-    alert("Valor inválido");
+    alert("Digite uma quantidade válida.");
     return;
   }
 
-  tipos[i].quantidade = valor;
+  tipos[qtdEditIndex].quantidade = valor;
 
   salvarTipos();
+  fecharModal();
 }
-
-function salvarTipos() {
-  localStorage.setItem("tiposEPI", JSON.stringify(tipos));
-  renderTipos();
-}
-
 // ================= EDITAR =================
 function editar(i) {
   const p = pedidos[i];
@@ -253,10 +269,9 @@ function init() {
   render();
   renderTipos();
 }
-
+pesquisaEPI.addEventListener("input", renderTipos);
 init();
 
-// ================= GLOBAL =================
 // ================= GLOBAL =================
 window.abrirModalCadastro = abrirModalCadastro;
 window.abrirModalPedido = abrirModalPedido;
@@ -269,3 +284,4 @@ window.aumentarQtd = aumentarQtd;
 window.diminuirQtd = diminuirQtd;
 window.editarQtd = editarQtd;
 window.excluir = excluir;
+window.salvarQtdModal = salvarQtdModal;
