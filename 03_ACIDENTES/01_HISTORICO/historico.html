@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Histórico de Acidentes</title>
+
+  <link rel="icon" type="image/png" href="/01_HOME/img/Logo_AGM.png" />
+  <link rel="stylesheet" href="./historico.css" />
+</head>
+
+<body>
+  <div class="container">
+    <header class="top-bar">
+      <div>
+        <span class="page-badge">ACIDENTES</span>
+        <h1>Histórico de Registros</h1>
+        <p>Consulte, visualize e gerencie os acidentes cadastrados.</p>
+      </div>
+
+      <div class="header-actions">
+        <a href="../acidentes.html" class="btn-secondary">Dashboard</a>
+        <a href="../02_REGISTRO/registro.html" class="btn-primary">+ Novo Registro</a>
+      </div>
+    </header>
+
+    <section class="filtros">
+      <input type="text" id="buscaHistorico" placeholder="Buscar por nome, local, área ou descrição..." />
+
+      <select id="filtroAno">
+        <option value="Todos">Todos os anos</option>
+      </select>
+
+      <select id="filtroTipo">
+        <option value="Todos">Todos os tipos</option>
+        <option value="Dano Material">Dano Material</option>
+        <option value="Sem Afastamento">Sem Afastamento</option>
+        <option value="Com Afastamento">Com Afastamento</option>
+        <option value="Fatalidade">Fatalidade</option>
+      </select>
+    </section>
+
+    <main id="listaHistorico" class="historico-lista"></main>
+  </div>
+
+  <div id="modalDetalhes" class="modal-overlay">
+    <div class="modal-content">
+      <h2>Detalhes do Registro</h2>
+
+      <div class="detalhes-grid">
+        <p><strong>Nome:</strong> <span id="detalheNome"></span></p>
+        <p><strong>Data:</strong> <span id="detalheData"></span></p>
+        <p><strong>Tipo:</strong> <span id="detalheTipo"></span></p>
+        <p><strong>Local:</strong> <span id="detalheLocal"></span></p>
+        <p><strong>Área:</strong> <span id="detalheArea"></span></p>
+        <p><strong>Parte atingida:</strong> <span id="detalheCorpo"></span></p>
+        <p><strong>Agente causador:</strong> <span id="detalheAgente"></span></p>
+        <p class="full"><strong>Descrição:</strong> <span id="detalheDescricao"></span></p>
+      </div>
+
+      <div class="modal-buttons">
+        <button id="fecharDetalhes" class="btn-secondary">Fechar</button>
+        <button id="excluirRegistro" class="btn-danger">Excluir</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="./historico.js"></script>
+</body>
+</html>
