@@ -7,6 +7,7 @@ import {
 
 let acidentes = [];
 let graficoMeses = null;
+let graficoTurnos = null;
 
 const meses = [
   "Jan", "Fev", "Mar", "Abr", "Mai", "Jun",
@@ -25,7 +26,8 @@ async function carregarAcidentes() {
       id: documento.id,
       nome: dados.nome || "",
       data: dados.data || "",
-      tipo: dados.tipo || "",
+      tipo: String(dados.tipo || "").trim(),
+      turno: dados.turno || "Não informado",
       local: dados.local || "",
       descricao: dados.descricao || "",
       area: dados.area || "Não informado",
@@ -35,17 +37,51 @@ async function carregarAcidentes() {
     });
   });
 
-  atualizarKPIs();
+    atualizarKPIs();
   atualizarUltimoAcidente();
   montarGraficoMeses();
   montarBarras("area", "listaAreas");
   montarBarras("agente", "listaAgentes");
   montarListaCorpo();
-  montarPrevencao();
+  montarUltimosRegistros();
+  montarHistoricoSidebar();
+  montarGraficoTurnos();
+}
+
+function montarHistoricoSidebar() {
+  const container = document.getElementById("historicoSidebar");
+
+  console.log("container sidebar:", container);
+
+  if (!container) return;
+
+  const ultimos = [...acidentes]
+    .filter(a => a.data)
+    .sort((a, b) => new Date(b.data) - new Date(a.data))
+    .slice(0, 6);
+
+  if (ultimos.length === 0) {
+    container.innerHTML = `<p class="sidebar-vazio">Sem registros.</p>`;
+    return;
+  }
+
+  container.innerHTML = ultimos.map((a) => {
+    return `
+      <a href="./01_HISTORICO/historico.html" class="historico-sidebar-item ${classeTipo(a.tipo)}">
+        <strong>${a.nome}</strong>
+        <span>${formatarDataBR(a.data)}</span>
+        <small>${a.tipo}</small>
+      </a>
+    `;
+  }).join("");
 }
 
 function atualizarKPIs() {
   const total = acidentes.length;
+
+  const danosMateriais = acidentes.filter(
+  a => a.tipo === "Dano Material"
+).length;
 
   const comAfastamento = acidentes.filter(
     a => a.tipo === "Com Afastamento"
@@ -74,7 +110,7 @@ function atualizarKPIs() {
   document.getElementById("percFatalidade").innerText = calcularPerc(fatalidades);
 
   document.getElementById("taxaFrequencia").innerText = total === 0 ? "0,00" : "2,14";
-  document.getElementById("taxaGravidade").innerText = fatalidades === 0 ? "0" : "543";
+  document.getElementById("danoMaterial").innerText = danosMateriais;
 }
 
 function atualizarUltimoAcidente() {
@@ -232,7 +268,7 @@ function montarListaCorpo() {
 
   const ordenado = Object.entries(agrupado)
     .sort((a, b) => b[1] - a[1])
-    .slice(0, 8);
+    .slice(0, 5);
 
   container.innerHTML = ordenado.map(([nome, qtd]) => {
     const perc = ((qtd / total) * 100).toFixed(0);
@@ -246,34 +282,107 @@ function montarListaCorpo() {
   }).join("");
 }
 
-function montarPrevencao() {
-  const container = document.getElementById("listaPrevencao");
+function montarGraficoTurnos() {
+  const ctx = document.getElementById("graficoTurnos");
+  if (!ctx) return;
+
+  const agrupado = {};
+
+  acidentes.forEach((a) => {
+    const turno = a.turno || "Não informado";
+    agrupado[turno] = (agrupado[turno] || 0) + 1;
+  });
+
+  const labels = Object.keys(agrupado);
+  const dados = Object.values(agrupado);
+
+  if (graficoTurnos) {
+    graficoTurnos.destroy();
+  }
+
+  graficoTurnos = new Chart(ctx, {
+    type: "doughnut",
+    data: {
+      labels,
+      datasets: [{
+        data: dados,
+        backgroundColor: [
+          "#36b9cc",
+          "#1cc88a",
+          "#f6c23e",
+          "#ff5c5c"
+        ],
+        borderColor: "rgba(255,255,255,0.08)",
+        borderWidth: 2,
+        hoverOffset: 8
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      cutout: "62%",
+      plugins: {
+        legend: {
+          position: "bottom",
+          labels: {
+            color: "#dce5ff",
+            font: {
+              size: 11,
+              weight: "700"
+            },
+            padding: 12
+          }
+        }
+      }
+    }
+  });
+}
+
+function montarUltimosRegistros() {
+  const container = document.getElementById("listaUltimosRegistros");
   if (!container) return;
 
-  const totalComAfastamento = acidentes.filter(
-    a => a.tipo === "Com Afastamento"
-  ).length;
+  const ultimos = [...acidentes]
+    .filter(a => a.data)
+    .sort((a, b) => new Date(b.data) - new Date(a.data))
+    .slice(0, 5);
 
-  const totalSemAfastamento = acidentes.filter(
-    a => a.tipo === "Sem Afastamento"
-  ).length;
-
-  const oportunidades = [];
-
-  if (totalComAfastamento > 0) {
-    oportunidades.push("Reforçar investigação e plano de ação dos acidentes com afastamento.");
+  if (ultimos.length === 0) {
+    container.innerHTML = `<p class="texto-vazio">Nenhum registro encontrado.</p>`;
+    return;
   }
 
-  if (totalSemAfastamento > totalComAfastamento) {
-    oportunidades.push("Analisar recorrências de acidentes sem afastamento antes que evoluam.");
-  }
+  container.innerHTML = ultimos.map((a) => {
+    return `
+      <div class="ultimo-registro ${classeTipo(a.tipo)}">
+        <div>
+          <strong>${a.nome}</strong>
+          <span>${formatarDataBR(a.data)} • ${a.area}</span>
+        </div>
 
-  oportunidades.push("Acompanhar áreas com maior concentração de ocorrências.");
-  oportunidades.push("Reforçar DDS e treinamentos conforme agentes causadores.");
-
-  container.innerHTML = oportunidades.map(item => {
-    return `<div class="prevencao-item">${item}</div>`;
+        <small>${a.tipo}</small>
+      </div>
+    `;
   }).join("");
+}
+
+function normalizarTexto(texto) {
+  return String(texto || "")
+    .trim()
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
+}
+
+function classeTipo(tipo) {
+  const tipoNormalizado = normalizarTexto(tipo);
+
+  if (tipoNormalizado === "com afastamento") return "com-afastamento";
+  if (tipoNormalizado === "sem afastamento") return "sem-afastamento";
+  if (tipoNormalizado === "dano material") return "dano-material";
+  if (tipoNormalizado === "fatalidade") return "fatalidade";
+
+  return "";
 }
 
 function formatarDataBR(data) {

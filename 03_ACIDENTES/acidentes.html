@@ -1,113 +1,128 @@
 <!doctype html>
 <html lang="pt-BR">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>Indicadores de Acidentes</title>
+    <title>Indicadores de Acidentes</title>
 
-  <link rel="icon" type="image/png" href="/01_HOME/img/Logo_AGM.png" />
-  <link rel="stylesheet" href="./css/acidentes.css" />
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-</head>
+    <link rel="icon" type="image/png" href="/01_HOME/img/Logo_AGM.png" />
+    <link rel="stylesheet" href="./css/acidentes.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
 
-<body>
-  <div class="layout">
-    <aside class="sidebar">
-      <div class="logo">
-        <h2>SIGMA</h2>
-        <span>SMS</span>
-      </div>
-
-      <nav class="menu">
-        <a href="./acidentes.html" class="active">Dashboard</a>
-        <a href="./01_HISTORICO/historico.html">Histórico</a>
-        <a href="./02_REGISTRO/registro.html">Fazer Registro</a>
-      </nav>
-    </aside>
-
-    <main class="main">
-      <header class="hero">
-        <div>
-          <h1>Indicadores de Acidentes</h1>
-          <p>Transformando dados em prevenção</p>
+  <body>
+    <div class="layout">
+      <aside class="sidebar">
+        <div class="logo">
+          <h2>Acidentes</h2>
+          <span>Deashbord</span>
         </div>
 
-        <div class="ultimo-acidente">
-          <span>Último acidente</span>
-          <strong id="ultimoAcidente">--/--/----</strong>
-          <small id="diasSemAcidente">0 dias sem acidente com afastamento</small>
-        </div>
-      </header>
-
-      <section class="kpis">
-        <div class="kpi-card">
-          <span>Total de acidentes</span>
-          <strong id="totalAcidentes">0</strong>
-        </div>
-
-        <div class="kpi-card">
-          <span>Com afastamento</span>
-          <strong id="comAfastamento">0</strong>
-          <small id="percComAfastamento">0%</small>
-        </div>
-
-        <div class="kpi-card">
-          <span>Sem afastamento</span>
-          <strong id="semAfastamento">0</strong>
-          <small id="percSemAfastamento">0%</small>
-        </div>
-
-        <div class="kpi-card fatalidade">
-          <span>Fatalidade</span>
-          <strong id="fatalidade">0</strong>
-          <small id="percFatalidade">0%</small>
-        </div>
-
-        <div class="kpi-card">
-          <span>Taxa frequência</span>
-          <strong id="taxaFrequencia">0,00</strong>
-          <small>Meta 1,50</small>
-        </div>
-
-        <div class="kpi-card">
-          <span>Taxa gravidade</span>
-          <strong id="taxaGravidade">0</strong>
-        </div>
-      </section>
-
-      <section class="grid-dashboard">
-        <div class="painel grande">
-          <h3>Acidente por mês</h3>
-          <canvas id="graficoMeses"></canvas>
-        </div>
-
-        <div class="painel">
-          <h3>Distribuição por área</h3>
-          <div id="listaAreas" class="lista-barras"></div>
-        </div>
-
-        <div class="painel corpo">
-          <h3>Parte do corpo atingida</h3>
-          <div class="corpo-grid">
-            <div class="boneco">👷</div>
-            <div id="listaCorpo" class="lista-corpo"></div>
+        <nav class="menu">
+          <a href="./acidentes.html" class="active">Dashboard</a>
+          <a href="./02_REGISTRO/registro.html">Fazer Registro</a>
+        </nav>
+        <div class="sidebar-historico">
+          <div class="sidebar-historico-header">
+            <h3>Histórico recente</h3>
+            <a href="./01_HISTORICO/historico.html">Ver todos</a>
           </div>
-        </div>
 
-        <div class="painel">
-          <h3>Principais agentes causadores</h3>
-          <div id="listaAgentes" class="lista-barras"></div>
+          <div id="historicoSidebar" class="historico-sidebar-lista"></div>
         </div>
+      </aside>
 
-        <div class="painel">
-          <h3>Oportunidades de prevenção</h3>
-          <div id="listaPrevencao" class="lista-prevencao"></div>
-        </div>
-      </section>
-    </main>
-  </div>
+      <main class="main">
+        <header class="hero">
+          <div>
+            <h1>Indicadores de Acidentes</h1>
+            <p>Transformando dados em prevenção</p>
+          </div>
 
-  <script type="module" src="./js/acidentes.js"></script>
-</body>
+          <div class="ultimo-acidente">
+            <span>Último acidente</span>
+            <strong id="ultimoAcidente">--/--/----</strong>
+            <small id="diasSemAcidente"
+              >0 dias sem acidente com afastamento</small
+            >
+          </div>
+        </header>
+
+        <section class="kpis">
+          <div class="kpi-card">
+            <span>Total de acidentes</span>
+            <strong id="totalAcidentes">0</strong>
+          </div>
+
+          <div class="kpi-card">
+            <span>Com afastamento</span>
+            <strong id="comAfastamento">0</strong>
+            <small id="percComAfastamento">0%</small>
+          </div>
+
+          <div class="kpi-card">
+            <span>Sem afastamento</span>
+            <strong id="semAfastamento">0</strong>
+            <small id="percSemAfastamento">0%</small>
+          </div>
+
+          <div class="kpi-card dano-material">
+            <span>Danos materiais</span>
+            <strong id="danoMaterial">0</strong>
+            <small>Ocorrências registradas</small>
+          </div>
+
+          <div class="kpi-card fatalidade">
+            <span>Fatalidade</span>
+            <strong id="fatalidade">0</strong>
+            <small id="percFatalidade">0%</small>
+          </div>
+
+          <div class="kpi-card">
+            <span>Taxa frequência</span>
+            <strong id="taxaFrequencia">0,00</strong>
+            <small>Meta 1,50</small>
+          </div>
+        </section>
+
+        <section class="grid-dashboard">
+          <div class="painel grande">
+            <h3>Acidente por mês</h3>
+            <canvas id="graficoMeses"></canvas>
+          </div>
+
+          <div class="painel">
+            <h3>Distribuição por área</h3>
+            <div id="listaAreas" class="lista-barras"></div>
+          </div>
+
+          <div class="painel corpo">
+            <h3>Parte do corpo atingida</h3>
+            <div class="corpo-grid">
+              <div class="boneco">
+                <img src="../assets/corpo humano.png" alt="Corpo Humano" />
+              </div>
+              <div id="listaCorpo" class="lista-corpo"></div>
+            </div>
+          </div>
+
+          <div class="painel">
+            <h3>Principais agentes causadores</h3>
+            <div id="listaAgentes" class="lista-barras"></div>
+          </div>
+
+          <div class="painel">
+            <h3>Acidentes por turno</h3>
+
+            <div class="grafico-turnos-sidebar">
+              <canvas id="graficoTurnos"></canvas>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script type="module" src="./js/acidentes.js"></script>
+  </body>
 </html>

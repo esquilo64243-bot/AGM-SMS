@@ -1,137 +1,171 @@
 <!doctype html>
 <html lang="pt-BR">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>Registro de Acidente</title>
+    <title>Registro de Acidente</title>
 
-  <link rel="icon" type="image/png" href="/01_HOME/img/Logo_AGM.png" />
-  <link rel="stylesheet" href="./registro.css" />
-</head>
+    <link rel="icon" type="image/png" href="/01_HOME/img/Logo_AGM.png" />
+    <link rel="stylesheet" href="./registro.css" />
+  </head>
 
-<body>
-  <div class="container">
-    <header class="top-bar">
-      <div>
-        <span class="page-badge">ACIDENTES</span>
-        <h1>Registro de Acidente</h1>
-        <p>Cadastre uma nova ocorrência para alimentar os indicadores.</p>
-      </div>
-
-      <div class="header-actions">
-        <a href="../acidentes.html" class="btn-secondary">Dashboard</a>
-        <a href="../01_HISTORICO/historico.html" class="btn-secondary">Histórico</a>
-      </div>
-    </header>
-
-    <main class="registro-card">
-      <form id="formRegistro">
-        <section class="form-section">
-          <h2>Dados principais</h2>
-
-          <div class="form-grid">
-            <div class="campo">
-              <label>Nome do acidentado</label>
-              <input type="text" id="nome" placeholder="Ex: João Silva" required />
-            </div>
-
-            <div class="campo">
-              <label>Data do acidente</label>
-              <input type="date" id="data" required />
-            </div>
-
-            <div class="campo">
-              <label>Tipo de ocorrência</label>
-              <select id="tipo" required>
-                <option value="">Selecione</option>
-                <option value="Dano Material">Dano Material</option>
-                <option value="Sem Afastamento">Sem Afastamento</option>
-                <option value="Com Afastamento">Com Afastamento</option>
-                <option value="Fatalidade">Fatalidade</option>
-              </select>
-            </div>
-
-            <div class="campo">
-              <label>Local</label>
-              <input type="text" id="local" placeholder="Ex: Oficina / Pátio / Área operacional" required />
-            </div>
-          </div>
-        </section>
-
-        <section class="form-section">
-          <h2>Classificação do acidente</h2>
-
-          <div class="form-grid">
-            <div class="campo">
-              <label>Área / Setor</label>
-              <input type="text" id="area" placeholder="Ex: Manutenção, Operação, Administrativo" />
-            </div>
-
-            <div class="campo">
-              <label>Parte do corpo atingida</label>
-              <select id="corpo">
-                <option value="">Selecione</option>
-                <option>Cabeça</option>
-                <option>Olhos</option>
-                <option>Mãos</option>
-                <option>Braços</option>
-                <option>Pernas</option>
-                <option>Pés</option>
-                <option>Coluna</option>
-                <option>Não se aplica</option>
-              </select>
-            </div>
-
-            <div class="campo">
-              <label>Agente causador</label>
-              <select id="agente">
-                <option value="">Selecione</option>
-                <option>Queda de mesmo nível</option>
-                <option>Queda de altura</option>
-                <option>Ferramenta manual</option>
-                <option>Máquina / Equipamento</option>
-                <option>Produto químico</option>
-                <option>Veículo</option>
-                <option>Esforço excessivo</option>
-                <option>Impacto contra objeto</option>
-                <option>Não informado</option>
-              </select>
-            </div>
-
-            <div class="campo">
-              <label>Dias perdidos</label>
-              <input type="number" id="diasPerdidos" min="0" value="0" />
-            </div>
-          </div>
-        </section>
-
-        <section class="form-section">
-          <h2>Descrição e ação preventiva</h2>
-
-          <div class="form-grid">
-            <div class="campo full">
-              <label>Descrição do acidente</label>
-              <textarea id="descricao" placeholder="Descreva o que aconteceu..." required></textarea>
-            </div>
-
-            <div class="campo full">
-              <label>Ação preventiva / oportunidade de melhoria</label>
-              <textarea id="prevencao" placeholder="Ex: Reforçar DDS, revisar procedimento, sinalizar área..."></textarea>
-            </div>
-          </div>
-        </section>
-
-        <div class="form-actions">
-          <button type="reset" class="btn-secondary">Limpar</button>
-          <button type="submit" class="btn-primary">Salvar Registro</button>
+  <body>
+    <div class="container">
+      <header class="top-bar">
+        <div>
+          <span class="page-badge">ACIDENTES</span>
+          <h1>Registro de Acidente</h1>
+          <p>Cadastre uma nova ocorrência para alimentar os indicadores.</p>
         </div>
 
-        <div id="mensagemStatus" class="mensagem-status"></div>
-      </form>
-    </main>
-  </div>
+        <div class="header-actions">
+          <a href="../acidentes.html" class="btn-secondary">Dashboard</a>
+          <a href="../01_HISTORICO/historico.html" class="btn-secondary"
+            >Histórico</a
+          >
+        </div>
+      </header>
 
-  <script type="module" src="./registro.js"></script>
-</body>
+      <main class="registro-card">
+        <form id="formRegistro">
+          <section class="form-section">
+            <h2>Dados principais</h2>
+
+            <div class="form-grid">
+              <div class="campo">
+                <label>Nome do acidentado</label>
+                <input
+                  type="text"
+                  id="nome"
+                  placeholder="Ex: João Silva"
+                  required
+                />
+              </div>
+
+              <div class="campo">
+                <label>Data do acidente</label>
+                <input type="date" id="data" required />
+              </div>
+
+              <div class="campo">
+                <label>Tipo de ocorrência</label>
+                <select id="tipo" required>
+                  <option value="">Selecione</option>
+                  <option value="Dano Material">Dano Material</option>
+                  <option value="Sem Afastamento">Sem Afastamento</option>
+                  <option value="Com Afastamento">Com Afastamento</option>
+                  <option value="Fatalidade">Fatalidade</option>
+                </select>
+              </div>
+
+              <div class="campo">
+                <label>Local</label>
+                <input
+                  type="text"
+                  id="local"
+                  placeholder="Ex: Oficina / Pátio / Área operacional"
+                  required
+                />
+              </div>
+            </div>
+          </section>
+
+          <section class="form-section">
+            <h2>Classificação do acidente</h2>
+
+            <div class="form-grid">
+              <div class="campo">
+                <label>Área / Setor</label>
+                <input
+                  type="text"
+                  id="area"
+                  placeholder="Ex: Manutenção, Operação, Administrativo"
+                />
+              </div>
+
+              <div class="campo">
+                <label>Turno</label>
+                <select id="turno">
+                  <option value="">Selecione</option>
+                  <option>1º Turno</option>
+                  <option>2º Turno</option>
+                  <option>3º Turno</option>
+                  <option>Administrativo</option>
+                </select>
+              </div>
+
+              <div class="campo">
+                <label>Parte do corpo atingida</label>
+                <select id="corpo">
+                  <option value="">Selecione</option>
+                  <option>Cabeça</option>
+                  <option>Olhos</option>
+                  <option>Mãos</option>
+                  <option>Braços</option>
+                  <option>Pernas</option>
+                  <option>Pés</option>
+                  <option>Coluna</option>
+                  <option>Não se aplica</option>
+                </select>
+              </div>
+
+              <div class="campo">
+                <label>Agente causador</label>
+                <select id="agente">
+                  <option value="">Selecione</option>
+                  <option>Queda de mesmo nível</option>
+                  <option>Queda de altura</option>
+                  <option>Ferramenta manual</option>
+                  <option>Máquina / Equipamento</option>
+                  <option>Produto químico</option>
+                  <option>Veículo</option>
+                  <option>Esforço excessivo</option>
+                  <option>Impacto contra objeto</option>
+                  <option>Não informado</option>
+                </select>
+              </div>
+
+              <div class="campo">
+                <label>Dias perdidos</label>
+                <input type="number" id="diasPerdidos" min="0" value="0" />
+              </div>
+            </div>
+          </section>
+
+          <section class="form-section">
+            <h2>Descrição e ação preventiva</h2>
+
+            <div class="form-grid">
+              <div class="campo full">
+                <label>Descrição do acidente</label>
+                <textarea
+                  id="descricao"
+                  placeholder="Descreva o que aconteceu..."
+                  required
+                ></textarea>
+              </div>
+
+              <div class="campo full">
+                <label>Ação preventiva / oportunidade de melhoria</label>
+                <textarea
+                  id="prevencao"
+                  placeholder="Ex: Reforçar DDS, revisar procedimento, sinalizar área..."
+                ></textarea>
+              </div>
+            </div>
+          </section>
+
+          <div class="form-actions">
+            <button type="reset" class="btn-secondary">Limpar</button>
+            <button type="submit" class="btn-primary">Salvar Registro</button>
+          </div>
+
+          <div id="mensagemStatus" class="mensagem-status"></div>
+        </form>
+      </main>
+    </div>
+
+    <script type="module" src="./registro.js"></script>
+  </body>
 </html>

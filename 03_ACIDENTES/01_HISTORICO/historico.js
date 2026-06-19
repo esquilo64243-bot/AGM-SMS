@@ -53,8 +53,9 @@ async function carregarAcidentes() {
     });
   });
 
-  preencherFiltroAno();
-  renderizarHistorico();
+  montarUltimosRegistros();
+montarHistoricoSidebar();
+console.log("histórico sidebar chamado");
 }
 
 function preencherFiltroAno() {
@@ -116,7 +117,7 @@ function renderizarHistorico() {
     const acidentesAno = filtrados.filter(a => a.ano === ano);
 
     html += `
-      <section class="ano-card open">
+      <section class="ano-card">
         <div class="ano-header">
           <span>${ano}</span>
           <small>${acidentesAno.length} registro(s)</small>
@@ -133,7 +134,7 @@ function renderizarHistorico() {
       const acidentesMes = acidentesAno.filter(a => a.mes === mes);
 
       html += `
-        <div class="mes-card open">
+        <div class="mes-card">
           <div class="mes-header">
             ${mes} • ${acidentesMes.length} registro(s)
           </div>
