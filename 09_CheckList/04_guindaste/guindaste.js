@@ -361,9 +361,20 @@ function gerarDocumentoChecklist(checklist) {
           <td colspan="4"><strong>Marca / Modelo:</strong> ${checklist.modelo || ""}</td>
         </tr>
         <tr>
-          <td colspan="2"><strong>Inspecionado por:</strong> ${checklist.operador || ""}</td>
-          <td colspan="2"><strong>Assinatura do operador:</strong></td>
-        </tr>
+  <td colspan="2">
+    <strong>Inspecionado por:</strong> ${checklist.operador || ""}
+  </td>
+
+  <td colspan="2">
+    <strong>Assinatura do operador:</strong><br/>
+
+    ${
+      checklist.assinatura
+        ? `<img src="${checklist.assinatura}" style="height:80px; max-width:200px;" />`
+        : "<span>Sem assinatura</span>"
+    }
+  </td>
+</tr>
         <tr>
           <td><strong>Data:</strong> ${formatarData(checklist.data)}</td>
           <td><strong>Turno:</strong> ${checklist.turno || ""}</td>
@@ -419,10 +430,17 @@ function gerarDocumentoChecklist(checklist) {
         </tr>
       </table>
 
-      <div class="condicoes-print">
-        <span>EM CONDIÇÕES DE OPERAR ( &nbsp;&nbsp; )</span>
-        <span>SEM CONDIÇÕES DE OPERAR ( &nbsp;&nbsp; )</span>
-      </div>
+      <div class="condicoes-assinatura">
+  <div class="condicoes">
+    <span>EM CONDIÇÕES DE OPERAR ( &nbsp;&nbsp; )</span>
+    <span>SEM CONDIÇÕES DE OPERAR ( &nbsp;&nbsp; )</span>
+  </div>
+
+  <div class="assinatura-operator">
+    <p>______________________________</p>
+    <span>Assinatura do operador</span>
+  </div>
+</div>
 
       <button class="btn-imprimir" id="btnGerarPDF">
   Gerar PDF

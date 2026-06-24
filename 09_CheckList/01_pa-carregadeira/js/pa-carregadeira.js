@@ -271,7 +271,13 @@ function abrirDetalhes(id) {
 
 function respostaMarcada(checklist, pergunta, opcao) {
   const item = checklist.respostas?.find((r) => r.pergunta === pergunta);
-  return item?.resposta === opcao ? "X" : "";
+  function respostaMarcada(checklist, pergunta, opcao) {
+  const item = checklist.respostas?.find(
+    (r) => r.pergunta.trim() === pergunta.trim()
+  );
+
+  return item && item.resposta === opcao ? "X" : "";
+}
 }
 
 function gerarLinhaChecklist(checklist, pergunta) {
@@ -365,9 +371,13 @@ function gerarDocumentoChecklist(checklist) {
           <td colspan="4"><strong>Marca / Modelo:</strong> ${checklist.modelo || ""}</td>
         </tr>
         <tr>
-          <td colspan="2"><strong>Inspecionado por:</strong> ${checklist.operador || ""}</td>
-          <td colspan="2"><strong>Assinatura do operador:</strong></td>
-        </tr>
+  <td colspan="2">
+    <strong>Inspecionado por:</strong> ${checklist.operador || ""}
+  </td>
+
+  <td colspan="2">
+  </td>
+</tr>
         <tr>
           <td><strong>Data:</strong> ${formatarData(checklist.data)}</td>
           <td><strong>Turno:</strong> ${checklist.turno || ""}</td>
@@ -423,10 +433,43 @@ function gerarDocumentoChecklist(checklist) {
         </tr>
       </table>
 
-      <div class="condicoes-print">
-        <span>EM CONDIÇÕES DE OPERAR ( &nbsp;&nbsp; )</span>
-        <span>SEM CONDIÇÕES DE OPERAR ( &nbsp;&nbsp; )</span>
-      </div>
+      <table style="width:100%; margin-top:15px; border-collapse:collapse;">
+  <tr>
+    <td style="width:50%; font-size:12px;">
+      EM CONDIÇÕES DE OPERAR ( ${checklist.condicaoOperacao === "operando" ? "X" : "&nbsp;&nbsp;"} )
+<br>
+SEM CONDIÇÕES DE OPERAR ( ${checklist.condicaoOperacao === "parado" ? "X" : "&nbsp;&nbsp;"} )
+    </td>
+
+    <td style="width:50%; text-align:center;">
+  <div style="
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:flex-end;
+    height:120px;
+  ">
+
+    ${
+      checklist.assinatura
+        ? `<img src="${checklist.assinatura}" style="height:80px; max-width:200px; margin-bottom:6px;" />`
+        : "<span style='margin-bottom:6px;'>Sem assinatura</span>"
+    }
+
+    <div style="
+      width:220px;
+      border-top:1px solid #000;
+      margin-bottom:5px;
+    "></div>
+
+    <span style="font-size:12px;">
+      Assinatura do operador
+    </span>
+
+  </div>
+</td>
+  </tr>
+</table>
 
       <button class="btn-imprimir" id="btnGerarPDF">
   Gerar PDF
