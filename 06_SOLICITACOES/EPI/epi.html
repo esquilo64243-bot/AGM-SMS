@@ -12,6 +12,9 @@
         <h2>Solicitação de EPI</h2>
 
         <div class="acoes-topo">
+
+          <button class="btn-topo" onclick="abrirHistorico()">Histórico</button>
+
           <button class="btn-topo btn-add" onclick="abrirModalCadastro()">
             ➕ Novo EPI
           </button>
@@ -112,7 +115,12 @@
     </div>
   </div>
 </div>
-
-    <script type="module" src="./js/epi.js"></script>
+    <script src="./js/epi.js"></script>
+    <script src="./js/controle.js"></script>
+    <script>
+      function abrirHistorico() {
+        window.location.href = "../../06_SOLICITACOES/EPI/controle.html";
+      }
+    </script>
   </body>
 </html>

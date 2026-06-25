@@ -271,13 +271,7 @@ function abrirDetalhes(id) {
 
 function respostaMarcada(checklist, pergunta, opcao) {
   const item = checklist.respostas?.find((r) => r.pergunta === pergunta);
-  function respostaMarcada(checklist, pergunta, opcao) {
-  const item = checklist.respostas?.find(
-    (r) => r.pergunta.trim() === pergunta.trim()
-  );
-
-  return item && item.resposta === opcao ? "X" : "";
-}
+  return item?.resposta === opcao ? "X" : "";
 }
 
 function gerarLinhaChecklist(checklist, pergunta) {

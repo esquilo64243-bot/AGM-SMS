@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Histórico de Movimentações</title>
+
+  <link rel="stylesheet" href="./css/epi.css">
+</head>
+<body>
+
+<div class="container">
+
+  <div class="top-bar">
+    <h2>📊 Histórico de EPIs</h2>
+
+    <div class="acoes-topo">
+
+      <button class="btn-topo btn-exportar" onclick="gerarPDF()">
+  📄 Exportar PDF
+</button>
+
+      <button class="btn-topo btn-limpar" onclick="limparHistorico()">
+  🧹 Limpar histórico
+</button>
+
+    </div>
+  </div>
+
+  <div class="card">
+  <h3>📥 Entradas de EPI</h3>
+
+  <table class="tabela">
+    <thead>
+      <tr>
+        <th>EPI</th>
+        <th>QTD</th>
+        <th>DATA</th>
+      </tr>
+    </thead>
+
+    <tbody id="listaEntradas"></tbody>
+  </table>
+</div>
+
+<div class="card">
+  <h3>📤 Saídas de EPI</h3>
+
+  <table class="tabela">
+    <thead>
+      <tr>
+        <th>EPI</th>
+        <th>QTD</th>
+        <th>DATA</th>
+      </tr>
+    </thead>
+
+    <tbody id="listaSaidas"></tbody>
+  </table>
+</div>
+
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+
+<script src="./js/controle.js"></script>
+<script src="./js/controle.js"></script>
+
+</body>
+</html>

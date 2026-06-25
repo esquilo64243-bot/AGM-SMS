@@ -1,4 +1,7 @@
 // ================= DADOS =================
+console.log("epi.js carregou");
+console.log("movimentarEPI no epi:", typeof movimentarEPI);
+console.log("movimentarEPI no window:", typeof window.movimentarEPI);
 let tipos = JSON.parse(localStorage.getItem("tiposEPI")) || [];
 let pedidos = JSON.parse(localStorage.getItem("pedidosEPI")) || [];
 let editIndex = null;
@@ -154,7 +157,9 @@ function renderTipos() {
   );
 
   tiposFiltrados.forEach((epi) => {
-    const i = tipos.findIndex((t) => t.id === epi.id);
+  const i = tipos.findIndex(t => t.id === epi.id);
+
+  if (i === -1) return;
 
     const tr = document.createElement("tr");
 
@@ -163,13 +168,13 @@ function renderTipos() {
 
       <td>
         <div class="qtd-box">
-          <button class="btn-qtd" onclick="diminuirQtd(${i})">-</button>
+          <button class="btn-qtd" onclick="registrarSaida(${i})">-</button>
 
           <span class="qtd-num" onclick="editarQtd(${i})">
             ${epi.quantidade ?? 0}
           </span>
 
-          <button class="btn-qtd" onclick="aumentarQtd(${i})">+</button>
+          <button class="btn-qtd" onclick="registrarEntrada(${i})">+</button>
         </div>
       </td>
 
@@ -198,6 +203,11 @@ function aumentarQtd(i) {
   tipos[i].quantidade = (tipos[i].quantidade || 0) + 1;
 
   salvarTipos();
+}
+
+function salvarTipos() {
+  localStorage.setItem("tiposEPI", JSON.stringify(tipos));
+  renderTipos();
 }
 
 function diminuirQtd(i) {
@@ -272,6 +282,28 @@ function init() {
 pesquisaEPI.addEventListener("input", renderTipos);
 init();
 
+function registrarEntrada(i) {
+  const epi = tipos[i];
+  if (!epi) return;
+
+  epi.quantidade = (epi.quantidade || 0) + 1;
+
+  movimentarEPI(epi.nome, "+", "Sistema");
+  salvarTipos();
+}
+
+function registrarSaida(i) {
+  const epi = tipos[i];
+  if (!epi) return;
+
+  if ((epi.quantidade || 0) > 0) {
+    epi.quantidade--;
+  }
+
+  movimentarEPI(epi.nome, "-", "Sistema");
+  salvarTipos();
+}
+
 // ================= GLOBAL =================
 window.abrirModalCadastro = abrirModalCadastro;
 window.abrirModalPedido = abrirModalPedido;
@@ -285,3 +317,6 @@ window.diminuirQtd = diminuirQtd;
 window.editarQtd = editarQtd;
 window.excluir = excluir;
 window.salvarQtdModal = salvarQtdModal;
+window.registrarEntrada = registrarEntrada;
+window.registrarSaida = registrarSaida;
+window.movimentarEPI = movimentarEPI;
