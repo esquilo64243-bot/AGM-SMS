@@ -304,6 +304,11 @@ function registrarSaida(i) {
   salvarTipos();
 }
 
+function salvarTipos() {
+  localStorage.setItem("tiposEPI", JSON.stringify(tipos));
+  renderTipos();
+}
+
 // ================= GLOBAL =================
 window.abrirModalCadastro = abrirModalCadastro;
 window.abrirModalPedido = abrirModalPedido;
@@ -320,3 +325,4 @@ window.salvarQtdModal = salvarQtdModal;
 window.registrarEntrada = registrarEntrada;
 window.registrarSaida = registrarSaida;
 window.movimentarEPI = movimentarEPI;
+window.salvarTipos = salvarTipos;
