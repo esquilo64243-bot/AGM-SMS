@@ -1,4 +1,4 @@
-import { authMaster, dbMaster } from "./01_HOME/js/firebaseManager.js";
+import { authMaster, dbMaster } from "../01_HOME/js/firebaseManager.js";
 
 import {
   signInWithEmailAndPassword,
