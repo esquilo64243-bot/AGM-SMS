@@ -310,8 +310,6 @@ document.querySelectorAll(".filters input").forEach(input => {
   input.addEventListener("input", render);
 });
 
-
-// =============================
 function render() {
 
   tableBody.innerHTML = "";

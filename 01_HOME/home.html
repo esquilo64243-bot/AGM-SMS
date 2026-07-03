@@ -126,14 +126,23 @@
     </script>
 
     <script type="module">
-      import { auth } from "./js/firebase.js";
+      import { authMaster } from "./js/firebaseManager.js";
 
       import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-      onAuthStateChanged(auth, (user) => {
-        if (!user) {
-          window.location.href = "index.html";
+      onAuthStateChanged(authMaster, (user) => {
+        const ambiente = localStorage.getItem("firebase");
+
+        // Só permite entrar se estiver autenticado no Master
+        // e tiver um ambiente definido no login.
+        if (!user || !ambiente) {
+          localStorage.clear();
+          window.location.href = "../index.html";
+          return;
         }
+
+        console.log("✅ Sessão Master ativa:", user.email);
+        console.log("🏢 Ambiente:", ambiente);
       });
     </script>
   </body>

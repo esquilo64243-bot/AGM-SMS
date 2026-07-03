@@ -46,10 +46,14 @@ async function carregarChecklists() {
 
   checklists = [];
 
+  // Excluir depois
+  //TESTE...
+  //Excluir depois
+
   snapshot.forEach((doc) => {
     const dados = doc.data();
 
-    if (dados.tipo === "Guindaste") {
+    if (dados.tipo === "Pá Carregadeira") {
       checklists.push({
         id: doc.id,
         ...dados,
@@ -366,13 +370,6 @@ function gerarDocumentoChecklist(checklist) {
   </td>
 
   <td colspan="2">
-    <strong>Assinatura do operador:</strong><br/>
-
-    ${
-      checklist.assinatura
-        ? `<img src="${checklist.assinatura}" style="height:80px; max-width:200px;" />`
-        : "<span>Sem assinatura</span>"
-    }
   </td>
 </tr>
         <tr>
@@ -430,17 +427,43 @@ function gerarDocumentoChecklist(checklist) {
         </tr>
       </table>
 
-      <div class="condicoes-assinatura">
-  <div class="condicoes">
-    <span>EM CONDIÇÕES DE OPERAR ( &nbsp;&nbsp; )</span>
-    <span>SEM CONDIÇÕES DE OPERAR ( &nbsp;&nbsp; )</span>
-  </div>
+      <table style="width:100%; margin-top:15px; border-collapse:collapse;">
+  <tr>
+    <td style="width:50%; font-size:12px;">
+      EM CONDIÇÕES DE OPERAR ( ${checklist.condicaoOperacao === "operando" ? "X" : "&nbsp;&nbsp;"} )
+<br>
+SEM CONDIÇÕES DE OPERAR ( ${checklist.condicaoOperacao === "parado" ? "X" : "&nbsp;&nbsp;"} )
+    </td>
 
-  <div class="assinatura-operator">
-    <p>______________________________</p>
-    <span>Assinatura do operador</span>
+    <td style="width:50%; text-align:center;">
+  <div style="
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:flex-end;
+    height:120px;
+  ">
+
+    ${
+      checklist.assinatura
+        ? `<img src="${checklist.assinatura}" style="height:80px; max-width:200px; margin-bottom:6px;" />`
+        : "<span style='margin-bottom:6px;'>Sem assinatura</span>"
+    }
+
+    <div style="
+      width:220px;
+      border-top:1px solid #000;
+      margin-bottom:5px;
+    "></div>
+
+    <span style="font-size:12px;">
+      Assinatura do operador
+    </span>
+
   </div>
-</div>
+</td>
+  </tr>
+</table>
 
       <button class="btn-imprimir" id="btnGerarPDF">
   Gerar PDF
@@ -485,7 +508,7 @@ document.addEventListener("click", async (event) => {
     const y = margin;
 
     pdf.addImage(imgData, "JPEG", x, y, finalWidth, finalHeight);
-    pdf.save("checklist-guindaste.pdf");
+    pdf.save("checklist-pa-carregadeira.pdf");
   } catch (erro) {
     console.error("Erro ao gerar PDF:", erro);
     alert("Erro ao gerar PDF. Veja o console.");

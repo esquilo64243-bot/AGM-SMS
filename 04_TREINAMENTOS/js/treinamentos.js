@@ -1,6 +1,14 @@
+console.log("🎓 ARQUIVO NOVO DE TREINAMENTOS CARREGOU");
+
+import { db } from "../../01_HOME/js/firebase.js";
+
 import {
   addDoc,
-  deleteDoc
+  deleteDoc,
+  getDocs,
+  collection,
+  doc,
+  updateDoc
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 const btnTreinoMassa = document.getElementById("btnTreinoMassa");
