@@ -3,103 +3,112 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Checklists - Pá Carregadeira</title>
+    <title>Histórico - Pá Carregadeira</title>
 
     <link rel="stylesheet" href="../css/itens.css" />
-    <link rel="icon" type="image/png" href="../../01_HOME/img/Logo_AGM.png" />
+    <link rel="icon" type="image/png" href="logo" />
   </head>
 
   <body>
-    <main class="container">
-      <header class="topo">
-        <div>
-          <span>SMS • CHECKLIST</span>
-          <h1>Pá Carregadeira</h1>
-          <p>Checklists recebidos dos operadores</p>
-        </div>
-
-        <a href="../../09_CheckList/checklist.html" class="btn-voltar"
-          >Voltar</a
-        >
-      </header>
-
-      <section class="resumo">
-        <div class="card-resumo">
-          <h3>Total</h3>
-          <strong id="totalChecklists">0</strong>
-        </div>
-
-        <div class="card-resumo alerta">
-          <h3>Com NC</h3>
-          <strong id="totalNC">0</strong>
-        </div>
-
-        <div class="card-resumo ok">
-          <h3>Conformes</h3>
-          <strong id="totalConformes">0</strong>
-        </div>
-      </section>
-
-      <div class="titulo-dashboard">
-        <span>ANÁLISE OPERACIONAL</span>
-        <h2>Dashboard de Não Conformidades</h2>
-        <p>Recorrência de falhas registradas nos checklists</p>
-      </div>
-
-      <section class="dashboard-nc">
-        <div id="alertaOperacional" class="dashboard-alerta"></div>
-
-        <div class="dash-card alerta">
-          <small>⚠️ NC mais recorrente</small>
-          <strong id="itemMaisRecorrente">-</strong>
-          <span id="qtdItemMaisRecorrente">0 ocorrências</span>
-        </div>
-
-        <div class="dash-card maquina">
-          <small>🚜 Equipamento crítico</small>
-          <strong id="equipamentoMaisNC">-</strong>
-          <span id="qtdEquipamentoMaisNC">0 ocorrências</span>
-        </div>
-
-        <div class="dash-card periodo">
-          <small>📅 Período analisado</small>
-          <div class="filtro-periodo">
-            <button class="btn-periodo ativo" data-periodo="mes">
-              Este mês
-            </button>
-            <button class="btn-periodo" data-periodo="3meses">3 meses</button>
-            <button class="btn-periodo" data-periodo="total">Histórico</button>
+    <div class="layout-checklist">
+      <aside class="menu-lateral">
+        <div class="menu-logo">
+          <img src="../../01_HOME/img/Logo_AGM.png" alt="Logo" />
+          <div>
+            <strong>PrevTech</strong>
+            <span>SMS</span>
           </div>
         </div>
 
-        <div class="dash-ranking">
-          <div class="ranking-header">
+        <div class="menu-titulo">
+          <span>CHECKLIST</span>
+          <strong>Pá Carregadeira</strong>
+        </div>
+
+        <nav class="menu-nav">
+          <a href="./pa-carregadeira.html" class="menu-link ativo">
+            <span>⌂</span>
+            Histórico
+          </a>
+
+          <a href="./dashboard.html" class="menu-link">
+            <span>▣</span>
+            Dashboard
+          </a>
+
+          <a href="./maquinas.html" class="menu-link">
+            <span>🚜</span>
+            Máquinas
+          </a>
+        </nav>
+
+        <a href="../../09_CheckList/checklist.html" class="menu-voltar">
+          ← Voltar aos checklists
+        </a>
+      </aside>
+
+      <main class="container">
+        <header class="topo">
+          <div>
+            <span>SMS • CHECKLIST</span>
+            <h1>Histórico de Pá Carregadeira</h1>
+            <p>Inspeções realizadas pelos operadores</p>
+          </div>
+        </header>
+
+        <section class="resumo">
+          <div class="card-resumo">
+            <h3>Total de checklists</h3>
+            <strong id="totalChecklists">0</strong>
+          </div>
+
+          <div class="card-resumo alerta">
+            <h3>Com NC</h3>
+            <strong id="totalNC">0</strong>
+          </div>
+
+          <div class="card-resumo ok">
+            <h3>Conformes</h3>
+            <strong id="totalConformes">0</strong>
+          </div>
+        </section>
+
+        <section class="area-historico">
+          <div class="titulo-historico">
             <div>
-              <small>📊 Ranking</small>
-              <h3>Top recorrências de NC</h3>
+              <span>REGISTROS</span>
+              <h2>Checklists recebidos</h2>
+              <p>Consulte, filtre, visualize ou exclua inspeções.</p>
             </div>
           </div>
 
-          <div id="rankingNC"></div>
-        </div>
-      </section>
+          <section class="filtros">
+            <input
+              type="text"
+              id="buscar"
+              placeholder="Buscar por operador..."
+            />
 
-      <section class="filtros">
-        <input
-          type="text"
-          id="buscar"
-          placeholder="Buscar por operador, modelo ou data..."
-        />
+            <select id="filtroMaquina">
+              <option value="">Todas as máquinas</option>
+            </select>
 
-        <select id="filtroStatus">
-          <option value="">Todos</option>
-          <option value="com-nc">Com não conformidade</option>
-          <option value="conforme">Sem não conformidade</option>
-        </select>
-      </section>
+            <select id="filtroStatus">
+              <option value="">Todos os status</option>
+              <option value="com-nc">Com não conformidade</option>
+              <option value="conforme">Sem não conformidade</option>
+            </select>
 
-      <section id="listaChecklists" class="lista"></section>
-    </main>
+            <input type="date" id="dataInicio" title="Data inicial" />
+            <input type="date" id="dataFim" title="Data final" />
+          </section>
+
+          <section id="listaChecklists" class="lista"></section>
+
+          <div id="paginacao" class="paginacao"></div>
+        </section>
+      </main>
+    </div>
 
     <div id="modalDetalhes" class="modal">
       <div class="modal-content">

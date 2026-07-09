@@ -1,4 +1,5 @@
 import { db } from "../../../01_HOME/js/firebase.js";
+console.log("🔥 firebase.js carregado");
 
 import {
   collection,
@@ -12,20 +13,16 @@ const totalChecklists = document.getElementById("totalChecklists");
 const totalNC = document.getElementById("totalNC");
 const totalConformes = document.getElementById("totalConformes");
 
-const alertaOperacional = document.getElementById("alertaOperacional");
-
-const botoesPeriodo = document.querySelectorAll(".btn-periodo");
-
-let periodoSelecionado = "mes";
-
-const itemMaisRecorrente = document.getElementById("itemMaisRecorrente");
-const qtdItemMaisRecorrente = document.getElementById("qtdItemMaisRecorrente");
-const equipamentoMaisNC = document.getElementById("equipamentoMaisNC");
-const qtdEquipamentoMaisNC = document.getElementById("qtdEquipamentoMaisNC");
-const rankingNC = document.getElementById("rankingNC");
-
 const buscar = document.getElementById("buscar");
 const filtroStatus = document.getElementById("filtroStatus");
+
+const filtroMaquina = document.getElementById("filtroMaquina");
+const dataInicio = document.getElementById("dataInicio");
+const dataFim = document.getElementById("dataFim");
+const paginacao = document.getElementById("paginacao");
+
+let paginaAtual = 1;
+const itensPorPagina = 10;
 
 const modalDetalhes = document.getElementById("modalDetalhes");
 const conteudoModal = document.getElementById("conteudoModal");
@@ -46,10 +43,6 @@ async function carregarChecklists() {
 
   checklists = [];
 
-  // Excluir depois
-  //TESTE...
-  //Excluir depois
-
   snapshot.forEach((doc) => {
     const dados = doc.data();
 
@@ -68,197 +61,161 @@ async function carregarChecklists() {
     return dataB - dataA;
   });
 
-  console.log(checklists);
-
+  preencherFiltroMaquinas();
   renderizarChecklists();
 }
 
-function temNaoConformidade(checklist) {
-  return checklist.respostas?.some((item) => item.resposta === "NC");
+function preencherFiltroMaquinas() {
+  const maquinaSelecionada = filtroMaquina.value;
+
+  const maquinas = [
+    ...new Set(
+      checklists
+        .map((checklist) => checklist.modelo)
+        .filter((modelo) => modelo && String(modelo).trim() !== ""),
+    ),
+  ].sort();
+
+  filtroMaquina.innerHTML = `
+    <option value="">Todas as máquinas</option>
+    ${maquinas
+      .map((maquina) => `<option value="${maquina}">${maquina}</option>`)
+      .join("")}
+  `;
+
+  filtroMaquina.value = maquinaSelecionada;
 }
 
-function checklistDentroPeriodo(checklist) {
-  if (periodoSelecionado === "total") {
-    return true;
-  }
+function renderizarPaginacao(totalItens) {
+  const totalPaginas = Math.ceil(totalItens / itensPorPagina);
 
-  if (!checklist.data) return false;
-
-  const dataChecklist = new Date(checklist.data);
-  const hoje = new Date();
-
-  if (periodoSelecionado === "mes") {
-    return (
-      dataChecklist.getMonth() === hoje.getMonth() &&
-      dataChecklist.getFullYear() === hoje.getFullYear()
-    );
-  }
-
-  if (periodoSelecionado === "3meses") {
-    const limite = new Date();
-    limite.setMonth(hoje.getMonth() - 3);
-
-    return dataChecklist >= limite;
-  }
-
-  return true;
-}
-
-function renderizarDashboardNC() {
-  const recorrenciaItens = {};
-  const recorrenciaEquipamentos = {};
-
-  checklists.filter(checklistDentroPeriodo).forEach((checklist) => {
-    const modelo = checklist.modelo || "Não informado";
-
-    checklist.respostas?.forEach((item) => {
-      if (item.resposta !== "NC") return;
-
-      recorrenciaItens[item.pergunta] =
-        (recorrenciaItens[item.pergunta] || 0) + 1;
-
-      recorrenciaEquipamentos[modelo] =
-        (recorrenciaEquipamentos[modelo] || 0) + 1;
-    });
-  });
-
-  const itensOrdenados = Object.entries(recorrenciaItens).sort(
-    (a, b) => b[1] - a[1],
-  );
-
-  const equipamentosOrdenados = Object.entries(recorrenciaEquipamentos).sort(
-    (a, b) => b[1] - a[1],
-  );
-
-  const itemTop = itensOrdenados[0];
-  const equipamentoTop = equipamentosOrdenados[0];
-
-  itemMaisRecorrente.textContent = itemTop ? itemTop[0] : "-";
-  qtdItemMaisRecorrente.textContent = itemTop
-    ? `${itemTop[1]} ocorrência(s)`
-    : "0 ocorrências";
-
-  equipamentoMaisNC.textContent = equipamentoTop ? equipamentoTop[0] : "-";
-  qtdEquipamentoMaisNC.textContent = equipamentoTop
-    ? `${equipamentoTop[1]} ocorrência(s)`
-    : "0 ocorrências";
-
-  if (itensOrdenados.length === 0) {
-    itemMaisRecorrente.textContent = "-";
-    qtdItemMaisRecorrente.textContent = "0 ocorrências";
-    equipamentoMaisNC.textContent = "-";
-    qtdEquipamentoMaisNC.textContent = "0 ocorrências";
-    rankingNC.innerHTML = "<p>Nenhuma NC registrada neste período.</p>";
-    alertaOperacional.innerHTML = "";
+  if (totalPaginas <= 1) {
+    paginacao.innerHTML = "";
     return;
   }
 
-  const maiorValor = itensOrdenados[0][1];
-
-  rankingNC.innerHTML = itensOrdenados
-    .slice(0, 5)
-    .map(([item, quantidade]) => {
-      const largura = (quantidade / maiorValor) * 100;
-
-      return `
-        <div class="ranking-item">
-          <div class="ranking-topo">
-            <span>${item}</span>
-            <strong>${quantidade}</strong>
-          </div>
-
-          <div class="ranking-barra">
-            <div class="ranking-preenchimento" style="width: ${largura}%"></div>
-          </div>
-        </div>
-      `;
-    })
-    .join("");
-
-  if (equipamentoTop && equipamentoTop[1] >= 5) {
-    alertaOperacional.innerHTML = `
-    <div class="alerta-operacional">
-      <h4>⚠️ ALERTA OPERACIONAL</h4>
-
-      <p>
-        O equipamento <strong>${equipamentoTop[0]}</strong>
-        apresentou <strong>${equipamentoTop[1]} NC</strong>
-        no período analisado.
-      </p>
-
-      <p>
-        Recomenda-se avaliação da manutenção e análise das recorrências.
-      </p>
-    </div>
+  let html = `
+    <button class="btn-pagina" data-pagina="${paginaAtual - 1}" ${
+      paginaAtual === 1 ? "disabled" : ""
+    }>
+      ←
+    </button>
   `;
-  } else {
-    alertaOperacional.innerHTML = "";
+
+  for (let pagina = 1; pagina <= totalPaginas; pagina++) {
+    html += `
+      <button
+        class="btn-pagina ${pagina === paginaAtual ? "ativo" : ""}"
+        data-pagina="${pagina}"
+      >
+        ${pagina}
+      </button>
+    `;
   }
+
+  html += `
+    <button class="btn-pagina" data-pagina="${paginaAtual + 1}" ${
+      paginaAtual === totalPaginas ? "disabled" : ""
+    }>
+      →
+    </button>
+  `;
+
+  paginacao.innerHTML = html;
 }
 
 function renderizarChecklists() {
   const textoBusca = buscar.value.toLowerCase();
   const status = filtroStatus.value;
+  const maquina = filtroMaquina.value;
+  const inicio = dataInicio.value;
+  const fim = dataFim.value;
 
-  let filtrados = checklists.filter((checklist) => {
+  const filtrados = checklists.filter((checklist) => {
     const possuiNC = temNaoConformidade(checklist);
 
-    const textoCompleto = `
-      ${checklist.operador || ""}
-      ${checklist.modelo || ""}
-      ${checklist.data || ""}
-      ${checklist.turno || ""}
-    `.toLowerCase();
+    const operador = (checklist.operador || "").toLowerCase();
+    const modelo = String(checklist.modelo || "");
+    const data = checklist.data || "";
 
-    const passaBusca = textoCompleto.includes(textoBusca);
+    const passaBusca =
+  operador.includes(textoBusca) ||
+  modelo.toLowerCase().includes(textoBusca);
+    const passaMaquina = maquina === "" || modelo === maquina;
 
     const passaStatus =
       status === "" ||
       (status === "com-nc" && possuiNC) ||
       (status === "conforme" && !possuiNC);
 
-    return passaBusca && passaStatus;
+    const passaDataInicio = !inicio || data >= inicio;
+    const passaDataFim = !fim || data <= fim;
+
+    return (
+      passaBusca &&
+      passaMaquina &&
+      passaStatus &&
+      passaDataInicio &&
+      passaDataFim
+    );
   });
 
   totalChecklists.textContent = checklists.length;
   totalNC.textContent = checklists.filter(temNaoConformidade).length;
   totalConformes.textContent = checklists.filter(
-    (c) => !temNaoConformidade(c),
+    (checklist) => !temNaoConformidade(checklist),
   ).length;
 
-  renderizarDashboardNC();
+  const totalPaginas = Math.ceil(filtrados.length / itensPorPagina);
+
+  if (paginaAtual > totalPaginas && totalPaginas > 0) {
+    paginaAtual = totalPaginas;
+  }
+
+  const inicioPagina = (paginaAtual - 1) * itensPorPagina;
+  const checklistsDaPagina = filtrados.slice(
+    inicioPagina,
+    inicioPagina + itensPorPagina,
+  );
 
   if (filtrados.length === 0) {
     listaChecklists.innerHTML = "<p>Nenhum checklist encontrado.</p>";
+    paginacao.innerHTML = "";
     return;
   }
 
-  listaChecklists.innerHTML = filtrados
+  listaChecklists.innerHTML = checklistsDaPagina
     .map((checklist) => {
       const possuiNC = temNaoConformidade(checklist);
 
       return `
-          <article class="check-card ${possuiNC ? "com-nc" : ""}" data-id="${checklist.id}">
-            <h2>${checklist.tipo || "Checklist"}</h2>
+        <article class="check-card ${possuiNC ? "com-nc" : ""}" data-id="${checklist.id}">
+          <h2>${checklist.tipo || "Checklist"}</h2>
 
-            <div class="check-info">
-              <p><strong>Operador:</strong> ${checklist.operador || "-"}</p>
-              <p><strong>Modelo:</strong> ${checklist.modelo || "-"}</p>
-              <p><strong>Data:</strong> ${formatarData(checklist.data)}</p>
-              <p><strong>Turno:</strong> ${checklist.turno || "-"}</p>
-            </div>
+          <div class="check-info">
+            <p><strong>Operador:</strong> ${checklist.operador || "-"}</p>
+            <p><strong>Máquina:</strong> ${checklist.modelo || "-"}</p>
+            <p><strong>Data:</strong> ${formatarData(checklist.data)}</p>
+            <p><strong>Turno:</strong> ${checklist.turno || "-"}</p>
+          </div>
 
-            <span class="badge ${possuiNC ? "nc" : "ok"}">
-              ${possuiNC ? "COM NÃO CONFORMIDADE" : "SEM NÃO CONFORMIDADE"}
-            </span>
+          <span class="badge ${possuiNC ? "nc" : "ok"}">
+            ${possuiNC ? "COM NÃO CONFORMIDADE" : "SEM NÃO CONFORMIDADE"}
+          </span>
 
-            <button class="btn-excluir-checklist" data-id="${checklist.id}">
-  Excluir
-</button>
-          </article>
-        `;
+          <button class="btn-excluir-checklist" data-id="${checklist.id}">
+            Excluir
+          </button>
+        </article>
+      `;
     })
     .join("");
+
+  renderizarPaginacao(filtrados.length);
+}
+
+function temNaoConformidade(checklist) {
+  return checklist.respostas?.some((item) => item.resposta === "NC");
 }
 
 function abrirDetalhes(id) {
@@ -550,18 +507,24 @@ fecharModal.addEventListener("click", () => {
   modalDetalhes.classList.remove("ativo");
 });
 
-buscar.addEventListener("input", renderizarChecklists);
-filtroStatus.addEventListener("change", renderizarChecklists);
+function aplicarFiltros() {
+  paginaAtual = 1;
+  renderizarChecklists();
+}
 
-botoesPeriodo.forEach((botao) => {
-  botao.addEventListener("click", () => {
-    botoesPeriodo.forEach((b) => b.classList.remove("ativo"));
+buscar.addEventListener("input", aplicarFiltros);
+filtroStatus.addEventListener("change", aplicarFiltros);
+filtroMaquina.addEventListener("change", aplicarFiltros);
+dataInicio.addEventListener("change", aplicarFiltros);
+dataFim.addEventListener("change", aplicarFiltros);
 
-    botao.classList.add("ativo");
-    periodoSelecionado = botao.dataset.periodo;
+paginacao.addEventListener("click", (event) => {
+  const botao = event.target.closest(".btn-pagina");
 
-    renderizarDashboardNC();
-  });
+  if (!botao || botao.disabled) return;
+
+  paginaAtual = Number(botao.dataset.pagina);
+  renderizarChecklists();
 });
 
 cancelarExclusao.addEventListener("click", () => {
