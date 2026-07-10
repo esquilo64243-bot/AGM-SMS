@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard - Pá Carregadeira</title>
+
+    <link rel="stylesheet" href="../css/itens.css" />
+    <link rel="icon" type="image/png" href="" />
+  </head>
+
+  <body>
+    <div class="layout-checklist">
+      <aside class="menu-lateral">
+        <div class="menu-logo">
+          <img src="" alt="Logo" />
+          <div>
+            <strong>PrevTech</strong>
+            <span>SMS</span>
+          </div>
+        </div>
+
+        <div class="menu-titulo">
+          <span>MENU PRINCIPAL</span>
+          <strong>Checklists</strong>
+        </div>
+
+        <nav class="menu-nav menu-pastas">
+          <!-- PÁ CARREGADEIRA -->
+          <div class="menu-pasta aberta">
+            <button class="btn-pasta" type="button">
+              <span class="icone-pasta">📁</span>
+              <span class="nome-pasta">Pá Carregadeira</span>
+              <span class="seta-pasta">⌄</span>
+            </button>
+
+            <div class="sub-menu-pasta">
+              <a href="./pa-carregadeira.html" class="menu-link ativo">
+                <span>◷</span>
+                Histórico
+              </a>
+
+              <a href="./dashboard.html" class="menu-link">
+                <span>▣</span>
+                Dashboard
+              </a>
+            </div>
+          </div>
+
+          <!-- EMPILHADEIRA -->
+          <div class="menu-pasta">
+            <button class="btn-pasta" type="button">
+              <span class="icone-pasta">📁</span>
+              <span class="nome-pasta">Empilhadeira</span>
+              <span class="seta-pasta">⌄</span>
+            </button>
+
+            <div class="sub-menu-pasta">
+              <a href="../02_EMPILHADEIRA/empilhadeira.html" class="menu-link">
+                <span>◷</span>
+                Histórico
+              </a>
+
+              <a href="../02_EMPILHADEIRA/dashboard.html" class="menu-link">
+                <span>▣</span>
+                Dashboard
+              </a>
+            </div>
+          </div>
+
+          <!-- CINTO DE SEGURANÇA -->
+          <div class="menu-pasta">
+            <button class="btn-pasta" type="button">
+              <span class="icone-pasta">📁</span>
+              <span class="nome-pasta">Cinto de Segurança</span>
+              <span class="seta-pasta">⌄</span>
+            </button>
+
+            <div class="sub-menu-pasta">
+              <a
+                href="../03_CINTO_DE_SEGURANÇA/cinto_de_segurança.html"
+                class="menu-link"
+              >
+                <span>◷</span>
+                Histórico
+              </a>
+
+              <a
+                href="../03_CINTO_DE_SEGURANÇA/dashboard.html"
+                class="menu-link"
+              >
+                <span>▣</span>
+                Dashboard
+              </a>
+            </div>
+          </div>
+
+          <!-- Guindaste -->
+          <div class="menu-pasta">
+            <button class="btn-pasta" type="button">
+              <span class="icone-pasta">📁</span>
+              <span class="nome-pasta">Guindaste</span>
+              <span class="seta-pasta">⌄</span>
+            </button>
+
+            <div class="sub-menu-pasta">
+              <a href="../04_GUINDASTE/guindaste.html" class="menu-link">
+                <span>◷</span>
+                Histórico
+              </a>
+
+              <a href="../04_GUINDASTE/dashboard.html" class="menu-link">
+                <span>▣</span>
+                Dashboard
+              </a>
+            </div>
+          </div>
+
+          <!-- Atracação -->
+          <div class="menu-pasta">
+            <button class="btn-pasta" type="button">
+              <span class="icone-pasta">📁</span>
+              <span class="nome-pasta">Atracação de Navio</span>
+              <span class="seta-pasta">⌄</span>
+            </button>
+
+            <div class="sub-menu-pasta">
+              <a href="../05_ATRACAÇÃO/atracação.html" class="menu-link">
+                <span>◷</span>
+                Histórico
+              </a>
+
+              <a href="../05_ATRACAÇÃO/dashboard.html" class="menu-link">
+                <span>▣</span>
+                Dashboard
+              </a>
+            </div>
+          </div>
+
+          <!-- escavadeira hidraulica -->
+          <div class="menu-pasta">
+            <button class="btn-pasta" type="button">
+              <span class="icone-pasta">📁</span>
+              <span class="nome-pasta">escavadeira hidraulica de Navio</span>
+              <span class="seta-pasta">⌄</span>
+            </button>
+
+            <div class="sub-menu-pasta">
+              <a
+                href="../06_ESCAVADEIRA_HIDRAULICA/escavedeira_hidraulica.html"
+                class="menu-link"
+              >
+                <span>◷</span>
+                Histórico
+              </a>
+
+              <a
+                href="../06_ESCAVADEIRA_HIDRAULICA/dashboard.html"
+                class="menu-link"
+              >
+                <span>▣</span>
+                Dashboard
+              </a>
+            </div>
+          </div>
+        </nav>
+
+        <a href="../../09_CheckList/checklist.html" class="menu-voltar">
+          ← Voltar aos checklists
+        </a>
+      </aside>
+
+      <main class="container">
+        <header class="topo">
+          <div>
+            <span>SMS • DASHBOARD</span>
+            <h1>Dashboard Operacional</h1>
+            <p>Análise das inspeções de Pá Carregadeira</p>
+          </div>
+        </header>
+
+        <section class="dashboard-cabecalho">
+          <div>
+            <span>PERÍODO DE ANÁLISE</span>
+            <h2>Indicadores de não conformidade</h2>
+          </div>
+
+          <div class="filtro-periodo">
+            <button class="btn-periodo ativo" data-periodo="mes">
+              Este mês
+            </button>
+            <button class="btn-periodo" data-periodo="3meses">
+              Últimos 3 meses
+            </button>
+            <button class="btn-periodo" data-periodo="total">
+              Histórico completo
+            </button>
+          </div>
+        </section>
+
+        <section class="dashboard-kpis">
+          <article class="kpi-card total">
+            <span>Total de inspeções</span>
+            <strong id="totalInspecoes">0</strong>
+            <small id="textoPeriodo">No período selecionado</small>
+          </article>
+
+          <article class="kpi-card nc">
+            <span>Inspeções com NC</span>
+            <strong id="totalNCPeriodo">0</strong>
+            <small id="percentualNC">0% das inspeções</small>
+          </article>
+
+          <article class="kpi-card ok">
+            <span>Inspeções conformes</span>
+            <strong id="totalConformesPeriodo">0</strong>
+            <small id="percentualConformes">0% das inspeções</small>
+          </article>
+
+          <article class="kpi-card alerta">
+            <span>NC mais recorrente</span>
+            <strong id="itemMaisRecorrente">-</strong>
+            <small id="qtdItemMaisRecorrente">0 ocorrências</small>
+          </article>
+        </section>
+
+        <section class="dashboard-grade">
+          <article class="painel-dashboard painel-maquinas">
+            <div class="painel-titulo">
+              <div>
+                <span>🚜 EQUIPAMENTOS</span>
+                <h2>Máquinas com mais NC</h2>
+              </div>
+            </div>
+
+            <div id="rankingMaquinasNC" class="ranking-lista"></div>
+          </article>
+
+          <article class="painel-dashboard painel-ranking">
+            <div class="painel-titulo">
+              <div>
+                <span>⚠️ RECORRÊNCIAS</span>
+                <h2>Itens mais críticos</h2>
+              </div>
+            </div>
+
+            <div id="rankingNC" class="ranking-lista"></div>
+          </article>
+        </section>
+
+        <section class="alerta-operacional" id="alertaOperacional"></section>
+      </main>
+    </div>
+
+    <script type="module" src="./js/dashboard.js"></script>
+  </body>
+</html>

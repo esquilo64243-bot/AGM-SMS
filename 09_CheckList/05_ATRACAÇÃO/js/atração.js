@@ -46,7 +46,7 @@ async function carregarChecklists() {
   snapshot.forEach((doc) => {
     const dados = doc.data();
 
-    if (dados.tipo === "Pá Carregadeira") {
+    if (dados.tipo === "Atracação de Navio") {
       checklists.push({
         id: doc.id,
         ...dados,
@@ -139,8 +139,8 @@ function renderizarChecklists() {
     const data = checklist.data || "";
 
     const passaBusca =
-  operador.includes(textoBusca) ||
-  modelo.toLowerCase().includes(textoBusca);
+      operador.includes(textoBusca) ||
+      modelo.toLowerCase().includes(textoBusca);
     const passaMaquina = maquina === "" || modelo === maquina;
 
     const passaStatus =
@@ -307,7 +307,7 @@ function gerarDocumentoChecklist(checklist) {
 
         <div class="doc-titulo">
           <h2>CHECK LIST</h2>
-          <h1>PÁ-CARREGADEIRA</h1>
+          <h1>Atracação de Navio</h1>
         </div>
 
         <div class="doc-codigo">
@@ -470,9 +470,9 @@ document.addEventListener("click", async (event) => {
     console.error("Erro ao gerar PDF:", erro);
     alert("Erro ao gerar PDF. Veja o console.");
   } finally {
-  document.body.classList.remove("pdf-exportando");
-  botao.style.display = "";
-}
+    document.body.classList.remove("pdf-exportando");
+    botao.style.display = "";
+  }
 });
 //Eventos liners
 

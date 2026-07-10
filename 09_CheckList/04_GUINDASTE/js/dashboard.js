@@ -7,15 +7,11 @@ import {
 
 const totalInspecoes = document.getElementById("totalInspecoes");
 const totalNCPeriodo = document.getElementById("totalNCPeriodo");
-const totalConformesPeriodo = document.getElementById(
-  "totalConformesPeriodo",
-);
+const totalConformesPeriodo = document.getElementById("totalConformesPeriodo");
 const percentualNC = document.getElementById("percentualNC");
 const percentualConformes = document.getElementById("percentualConformes");
 const itemMaisRecorrente = document.getElementById("itemMaisRecorrente");
-const qtdItemMaisRecorrente = document.getElementById(
-  "qtdItemMaisRecorrente",
-);
+const qtdItemMaisRecorrente = document.getElementById("qtdItemMaisRecorrente");
 const rankingNC = document.getElementById("rankingNC");
 const rankingMaquinasNC = document.getElementById("rankingMaquinasNC");
 const alertaOperacional = document.getElementById("alertaOperacional");
@@ -209,7 +205,7 @@ async function carregarDashboard() {
     snapshot.forEach((doc) => {
       const dados = doc.data();
 
-      if (dados.tipo === "Pá Carregadeira") {
+      if (dados.tipo === "Guindaste") {
         checklists.push({
           id: doc.id,
           ...dados,

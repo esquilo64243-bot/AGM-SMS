@@ -3,10 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Histórico - Pá Carregadeira</title>
+    <title>Dashboard - Cinto de Segurança</title>
 
     <link rel="stylesheet" href="../css/itens.css" />
-    <link rel="icon" type="image/png" href="logo" />
+    <link rel="icon" type="image/png" href="" />
   </head>
 
   <body>
@@ -173,90 +173,85 @@
       <main class="container">
         <header class="topo">
           <div>
-            <span>SMS • CHECKLIST</span>
-            <h1>Histórico de Pá Carregadeira</h1>
-            <p>Inspeções realizadas pelos operadores</p>
+            <span>SMS • DASHBOARD</span>
+            <h1>Dashboard Operacional</h1>
+            <p>Análise das inspeções de Cinto de Segurança</p>
           </div>
         </header>
 
-        <section class="resumo">
-          <div class="card-resumo">
-            <h3>Total de checklists</h3>
-            <strong id="totalChecklists">0</strong>
+        <section class="dashboard-cabecalho">
+          <div>
+            <span>PERÍODO DE ANÁLISE</span>
+            <h2>Indicadores de não conformidade</h2>
           </div>
 
-          <div class="card-resumo alerta">
-            <h3>Com NC</h3>
-            <strong id="totalNC">0</strong>
-          </div>
-
-          <div class="card-resumo ok">
-            <h3>Conformes</h3>
-            <strong id="totalConformes">0</strong>
+          <div class="filtro-periodo">
+            <button class="btn-periodo ativo" data-periodo="mes">
+              Este mês
+            </button>
+            <button class="btn-periodo" data-periodo="3meses">
+              Últimos 3 meses
+            </button>
+            <button class="btn-periodo" data-periodo="total">
+              Histórico completo
+            </button>
           </div>
         </section>
 
-        <section class="area-historico">
-          <div class="titulo-historico">
-            <div>
-              <span>REGISTROS</span>
-              <h2>Checklists recebidos</h2>
-              <p>Consulte, filtre, visualize ou exclua inspeções.</p>
+        <section class="dashboard-kpis">
+          <article class="kpi-card total">
+            <span>Total de inspeções</span>
+            <strong id="totalInspecoes">0</strong>
+            <small id="textoPeriodo">No período selecionado</small>
+          </article>
+
+          <article class="kpi-card nc">
+            <span>Inspeções com NC</span>
+            <strong id="totalNCPeriodo">0</strong>
+            <small id="percentualNC">0% das inspeções</small>
+          </article>
+
+          <article class="kpi-card ok">
+            <span>Inspeções conformes</span>
+            <strong id="totalConformesPeriodo">0</strong>
+            <small id="percentualConformes">0% das inspeções</small>
+          </article>
+
+          <article class="kpi-card alerta">
+            <span>NC mais recorrente</span>
+            <strong id="itemMaisRecorrente">-</strong>
+            <small id="qtdItemMaisRecorrente">0 ocorrências</small>
+          </article>
+        </section>
+
+        <section class="dashboard-grade">
+          <article class="painel-dashboard painel-maquinas">
+            <div class="painel-titulo">
+              <div>
+                <span>🚜 EQUIPAMENTOS</span>
+                <h2>Máquinas com mais NC</h2>
+              </div>
             </div>
-          </div>
 
-          <section class="filtros">
-            <input
-              type="text"
-              id="buscar"
-              placeholder="Buscar por operador..."
-            />
+            <div id="rankingMaquinasNC" class="ranking-lista"></div>
+          </article>
 
-            <select id="filtroMaquina">
-              <option value="">Todas as máquinas</option>
-            </select>
+          <article class="painel-dashboard painel-ranking">
+            <div class="painel-titulo">
+              <div>
+                <span>⚠️ RECORRÊNCIAS</span>
+                <h2>Itens mais críticos</h2>
+              </div>
+            </div>
 
-            <select id="filtroStatus">
-              <option value="">Todos os status</option>
-              <option value="com-nc">Com não conformidade</option>
-              <option value="conforme">Sem não conformidade</option>
-            </select>
-
-            <input type="date" id="dataInicio" title="Data inicial" />
-            <input type="date" id="dataFim" title="Data final" />
-          </section>
-
-          <section id="listaChecklists" class="lista"></section>
-
-          <div id="paginacao" class="paginacao"></div>
+            <div id="rankingNC" class="ranking-lista"></div>
+          </article>
         </section>
+
+        <section class="alerta-operacional" id="alertaOperacional"></section>
       </main>
     </div>
 
-    <div id="modalDetalhes" class="modal">
-      <div class="modal-content">
-        <button id="fecharModal" class="fechar">×</button>
-        <div id="conteudoModal"></div>
-      </div>
-    </div>
-
-    <div id="modalExcluir" class="modal">
-      <div class="modal-confirmacao">
-        <h2>Confirmar exclusão</h2>
-        <p>Tem certeza que deseja excluir este checklist?</p>
-
-        <div class="acoes-confirmacao">
-          <button id="cancelarExclusao" class="btn-cancelar">Cancelar</button>
-          <button id="confirmarExclusao" class="btn-confirmar-exclusao">
-            Excluir
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-
-    <script type="module" src="./js/pa-carregadeira.js"></script>
+    <script type="module" src="./js/dashboard.js"></script>
   </body>
 </html>
