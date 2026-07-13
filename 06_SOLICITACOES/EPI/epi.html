@@ -12,7 +12,6 @@
         <h2>Solicitação de EPI</h2>
 
         <div class="acoes-topo">
-
           <button class="btn-topo" onclick="abrirHistorico()">Histórico</button>
 
           <button class="btn-topo btn-add" onclick="abrirModalCadastro()">
@@ -47,16 +46,17 @@
         <h3>Controle de EPIs</h3>
 
         <div class="filtro-box">
-  <input
-    id="pesquisaEPI"
-    type="text"
-    placeholder="Pesquisar EPI em estoque..."
-  />
-</div>
+          <input
+            id="pesquisaEPI"
+            type="text"
+            placeholder="Pesquisar EPI por nome ou código..."
+          />
+        </div>
 
         <table class="tabela">
           <thead>
             <tr>
+              <th>CÓDIGO</th>
               <th>NOME</th>
               <th>QUANTIDADE</th>
               <th>AÇÕES</th>
@@ -72,12 +72,41 @@
       <div class="modal-content">
         <h3>Novo EPI</h3>
 
+        <input id="codigoEPI" placeholder="Código do EPI (ex: CA-12345)" />
         <input id="nomeEPI" placeholder="Nome do EPI" />
         <input id="qtdEPI" type="number" placeholder="Quantidade em estoque" />
+        <input
+          id="estoqueMinimoEPI"
+          type="number"
+          min="0"
+          placeholder="Estoque mínimo (opcional)"
+        />
 
         <div class="modal-buttons">
           <button class="btn-cancel" onclick="fecharModal()">Cancelar</button>
           <button class="btn-save" onclick="salvarTipo()">Salvar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL EDITAR EPI -->
+    <div class="modal" id="modalEditarEpi">
+      <div class="modal-content">
+        <h3>Editar EPI</h3>
+
+        <p id="codigoEdicaoInfo" class="modal-info"></p>
+
+        <input id="nomeEdicaoEPI" placeholder="Nome do EPI" />
+        <input
+          id="estoqueMinimoEdicaoEPI"
+          type="number"
+          min="0"
+          placeholder="Estoque mínimo"
+        />
+
+        <div class="modal-buttons">
+          <button class="btn-cancel" onclick="fecharModal()">Cancelar</button>
+          <button class="btn-save" onclick="salvarEdicaoEpi()">Salvar</button>
         </div>
       </div>
     </div>
@@ -98,25 +127,117 @@
       </div>
     </div>
 
-    <!-- Modal edição -->
-
     <!-- MODAL EDITAR QUANTIDADE -->
-<div class="modal" id="modalQtd">
-  <div class="modal-content">
-    <h3>Alterar estoque</h3>
+    <div class="modal" id="modalQtd">
+      <div class="modal-content">
+        <h3>Alterar estoque</h3>
 
-    <p id="nomeQtdModal" class="modal-info"></p>
+        <p id="nomeQtdModal" class="modal-info"></p>
 
-    <input id="novaQtdEPI" type="number" min="0" placeholder="Nova quantidade" />
+        <input
+          id="novaQtdEPI"
+          type="number"
+          min="0"
+          placeholder="Nova quantidade"
+        />
 
-    <div class="modal-buttons">
-      <button class="btn-cancel" onclick="fecharModal()">Cancelar</button>
-      <button class="btn-save" onclick="salvarQtdModal()">Salvar</button>
+        <div class="modal-buttons">
+          <button class="btn-cancel" onclick="fecharModal()">Cancelar</button>
+          <button class="btn-save" onclick="salvarQtdModal()">Salvar</button>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
-    <script src="./js/controle.js"></script>
-    <script src="./js/epi.js"></script>
+
+    <!-- MODAL SAÍDA DE EPI -->
+    <div class="modal" id="modalSaida">
+      <div class="modal-content">
+        <h3>Registrar Saída</h3>
+
+        <p id="epiSaidaInfo" class="modal-info"></p>
+
+        <input
+          id="buscaFuncionarioSaida"
+          type="text"
+          placeholder="Pesquisar colaborador..."
+          autocomplete="off"
+        />
+        <select id="selectFuncionarioSaida"></select>
+        <p id="setorFuncionarioSaida" class="modal-info"></p>
+
+        <input
+          id="qtdSaida"
+          type="number"
+          min="1"
+          value="1"
+          placeholder="Quantidade"
+        />
+        <input id="dataSaida" type="date" />
+
+        <div class="modal-buttons">
+          <button class="btn-cancel" onclick="fecharModal()">Cancelar</button>
+          <button class="btn-save" onclick="confirmarSaida()">OK</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL ENTRADA DE EPI -->
+    <div class="modal" id="modalEntrada">
+      <div class="modal-content">
+        <h3>Registrar Entrada</h3>
+
+        <p id="epiEntradaInfo" class="modal-info"></p>
+
+        <div class="tipo-entrada-box">
+          <label>
+            <input
+              type="radio"
+              name="tipoEntrada"
+              value="reposicao"
+              checked
+              onchange="alternarTipoEntrada()"
+            />
+            Reposição
+          </label>
+          <label>
+            <input
+              type="radio"
+              name="tipoEntrada"
+              value="devolucao"
+              onchange="alternarTipoEntrada()"
+            />
+            Devolução
+          </label>
+        </div>
+
+        <div id="colaboradorEntradaBox" style="display: none">
+          <input
+            id="buscaFuncionarioEntrada"
+            type="text"
+            placeholder="Pesquisar colaborador..."
+            autocomplete="off"
+          />
+          <select id="selectFuncionarioEntrada"></select>
+          <p id="setorFuncionarioEntrada" class="modal-info"></p>
+        </div>
+
+        <input
+          id="qtdEntrada"
+          type="number"
+          min="1"
+          value="1"
+          placeholder="Quantidade"
+        />
+        <input id="dataEntrada" type="date" />
+
+        <div class="modal-buttons">
+          <button class="btn-cancel" onclick="fecharModal()">Cancelar</button>
+          <button class="btn-save" onclick="confirmarEntrada()">OK</button>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="./js/controle.js"></script>
+    <script type="module" src="./js/epi.js"></script>
     <script>
       function abrirHistorico() {
         window.location.href = "../../06_SOLICITACOES/EPI/controle.html";
