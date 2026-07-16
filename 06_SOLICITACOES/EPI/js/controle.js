@@ -23,6 +23,9 @@ let funcionarios = [];
 let mapaFuncionarios = {};
 let movimentacaoEditandoId = null;
 
+const TIPOS_ENTRADA = ["entrada_reposicao", "entrada_devolucao"];
+const TIPOS_SAIDA = ["saida"];
+
 // Rótulos amigáveis pros tipos de movimentação
 const ROTULO_TIPO = {
   saida: "Saída",
@@ -31,27 +34,15 @@ const ROTULO_TIPO = {
 };
 
 // ================= ELEMENTOS DO MODAL DE EDIÇÃO =================
-const modalEditarMovimentacao = document.getElementById(
-  "modalEditarMovimentacao",
-);
-const infoEdicaoMovimentacao = document.getElementById(
-  "infoEdicaoMovimentacao",
-);
+const modalEditarMovimentacao = document.getElementById("modalEditarMovimentacao");
+const infoEdicaoMovimentacao = document.getElementById("infoEdicaoMovimentacao");
 const tipoEntradaEdicaoBox = document.getElementById("tipoEntradaEdicaoBox");
 const colaboradorEdicaoBox = document.getElementById("colaboradorEdicaoBox");
-const buscaFuncionarioEdicao = document.getElementById(
-  "buscaFuncionarioEdicao",
-);
-const selectFuncionarioEdicao = document.getElementById(
-  "selectFuncionarioEdicao",
-);
-const setorFuncionarioEdicao = document.getElementById(
-  "setorFuncionarioEdicao",
-);
+const buscaFuncionarioEdicao = document.getElementById("buscaFuncionarioEdicao");
+const selectFuncionarioEdicao = document.getElementById("selectFuncionarioEdicao");
+const setorFuncionarioEdicao = document.getElementById("setorFuncionarioEdicao");
 const qtdEdicaoMovimentacao = document.getElementById("qtdEdicaoMovimentacao");
-const dataEdicaoMovimentacao = document.getElementById(
-  "dataEdicaoMovimentacao",
-);
+const dataEdicaoMovimentacao = document.getElementById("dataEdicaoMovimentacao");
 
 // ===============================
 // SALVAR NO LOCALSTORAGE (cache local)
@@ -64,7 +55,6 @@ function salvarDados() {
 // UTIL
 // ===============================
 function diaParaISO(dia) {
-  // dia vem como "12/07/2026" -> retorna "2026-07-12"
   if (!dia) return "";
   const [d, m, y] = dia.split("/");
   return `${y}-${m}-${d}`;
@@ -177,10 +167,7 @@ async function movimentarEPI(
 // ===============================
 async function carregarHistoricoFirebase() {
   try {
-    const q = query(
-      collection(db, "movimentacoesEpi"),
-      orderBy("criadoEm", "desc"),
-    );
+    const q = query(collection(db, "movimentacoesEpi"), orderBy("criadoEm", "desc"));
     const snapshot = await getDocs(q);
 
     if (!snapshot.empty) {
@@ -192,10 +179,7 @@ async function carregarHistoricoFirebase() {
       salvarDados();
     }
   } catch (e) {
-    console.error(
-      "Erro ao carregar histórico do Firebase, usando cache local:",
-      e,
-    );
+    console.error("Erro ao carregar histórico do Firebase, usando cache local:", e);
   }
 
   renderHistorico();
@@ -272,10 +256,8 @@ function abrirModalEditarMovimentacao(id) {
   qtdEdicaoMovimentacao.value = item.quantidade;
   dataEdicaoMovimentacao.value = diaParaISO(item.dia);
 
-  const precisaColaborador =
-    item.tipo === "saida" || item.tipo === "entrada_devolucao";
+  const precisaColaborador = item.tipo === "saida" || item.tipo === "entrada_devolucao";
 
-  // tipo (reposição/devolução) só é editável pra registros de entrada
   if (item.tipo === "saida") {
     tipoEntradaEdicaoBox.style.display = "none";
   } else {
@@ -304,9 +286,7 @@ function abrirModalEditarMovimentacao(id) {
 }
 
 function alternarTipoEdicaoEntrada() {
-  const tipo = document.querySelector(
-    'input[name="tipoEdicaoEntrada"]:checked',
-  ).value;
+  const tipo = document.querySelector('input[name="tipoEdicaoEntrada"]:checked').value;
   colaboradorEdicaoBox.style.display = tipo === "devolucao" ? "block" : "none";
 }
 
@@ -337,17 +317,11 @@ async function confirmarEdicaoMovimentacao() {
   let novaEmpresa = item.empresa;
 
   if (item.tipo !== "saida") {
-    const tipoSelecionado = document.querySelector(
-      'input[name="tipoEdicaoEntrada"]:checked',
-    ).value;
-    novoTipo =
-      tipoSelecionado === "devolucao"
-        ? "entrada_devolucao"
-        : "entrada_reposicao";
+    const tipoSelecionado = document.querySelector('input[name="tipoEdicaoEntrada"]:checked').value;
+    novoTipo = tipoSelecionado === "devolucao" ? "entrada_devolucao" : "entrada_reposicao";
   }
 
-  const precisaColaborador =
-    novoTipo === "saida" || novoTipo === "entrada_devolucao";
+  const precisaColaborador = novoTipo === "saida" || novoTipo === "entrada_devolucao";
 
   if (precisaColaborador) {
     const f = mapaFuncionarios[selectFuncionarioEdicao.value];
@@ -364,16 +338,12 @@ async function confirmarEdicaoMovimentacao() {
     novaEmpresa = null;
   }
 
-  // ---- ajuste de estoque no Firestore (reverte efeito antigo, aplica o novo) ----
-  const eraSaida = item.tipo === "saida";
-  const agoraSaida = novoTipo === "saida"; // sempre igual, tipo saída não muda pra entrada aqui
+  const agoraSaida = novoTipo === "saida";
 
   let deltaEstoque = 0;
   if (agoraSaida) {
-    // saída: estoque = estoque + qtdAntiga - qtdNova
     deltaEstoque = item.quantidade - novaQtd;
   } else {
-    // entrada: estoque = estoque - qtdAntiga + qtdNova
     deltaEstoque = novaQtd - item.quantidade;
   }
 
@@ -384,9 +354,7 @@ async function confirmarEdicaoMovimentacao() {
       });
     } catch (e) {
       console.error("Erro ao ajustar estoque no Firebase:", e);
-      alert(
-        "Não foi possível ajustar o estoque no Firebase. Verifique sua conexão.",
-      );
+      alert("Não foi possível ajustar o estoque no Firebase. Verifique sua conexão.");
       return;
     }
   }
@@ -408,10 +376,7 @@ async function confirmarEdicaoMovimentacao() {
   if (item.firestoreId) {
     try {
       const { firestoreId, ...dadosParaSalvar } = registroAtualizado;
-      await updateDoc(
-        doc(db, "movimentacoesEpi", item.firestoreId),
-        dadosParaSalvar,
-      );
+      await updateDoc(doc(db, "movimentacoesEpi", item.firestoreId), dadosParaSalvar);
     } catch (e) {
       console.error("Erro ao atualizar movimentação no Firebase:", e);
     }
@@ -427,19 +392,14 @@ async function confirmarEdicaoMovimentacao() {
 // EXCLUIR MOVIMENTAÇÃO (com reversão de estoque)
 // ===============================
 async function excluirMovimentacao(id) {
-  if (
-    !confirm("Excluir este registro? O estoque do EPI será ajustado de volta.")
-  )
-    return;
+  if (!confirm("Excluir este registro? O estoque do EPI será ajustado de volta.")) return;
 
   const index = historicoEPI.findIndex((h) => h.id === id);
   if (index === -1) return;
 
   const item = historicoEPI[index];
 
-  // reverte o efeito que essa movimentação teve no estoque
-  const deltaReversao =
-    item.tipo === "saida" ? item.quantidade : -item.quantidade;
+  const deltaReversao = item.tipo === "saida" ? item.quantidade : -item.quantidade;
 
   try {
     await updateDoc(doc(db, "epis", item.epiId), {
@@ -479,21 +439,9 @@ function gerarPDF() {
 
   historicoEPI.forEach((item) => {
     if (item.tipo === "saida") {
-      saidas.push([
-        item.epi,
-        item.colaborador || "-",
-        item.setor || "-",
-        String(item.quantidade),
-        item.dia,
-      ]);
+      saidas.push([item.epi, item.colaborador || "-", item.setor || "-", String(item.quantidade), item.dia]);
     } else {
-      entradas.push([
-        item.epi,
-        ROTULO_TIPO[item.tipo] || item.tipo,
-        item.colaborador || "-",
-        String(item.quantidade),
-        item.dia,
-      ]);
+      entradas.push([item.epi, ROTULO_TIPO[item.tipo] || item.tipo, item.colaborador || "-", String(item.quantidade), item.dia]);
     }
   });
 
@@ -530,28 +478,26 @@ function gerarPDF() {
   doc.save("Relatorio_EPI.pdf");
 }
 
-async function limparHistorico() {
-  const confirmar = confirm(
-    "Tem certeza que deseja apagar TODO o histórico?\n\nEssa ação NÃO pode ser desfeita.",
-  );
-
-  if (!confirmar) return;
+// ===============================
+// LIMPAR HISTÓRICO POR TIPO (entrada ou saída, separado)
+// ===============================
+async function limparHistoricoPorTipo(tiposParaApagar, mensagemConfirm) {
+  if (!confirm(mensagemConfirm)) return;
 
   try {
-    // Busca todos os registros
     const snapshot = await getDocs(collection(db, "movimentacoesEpi"));
 
-    // Exclui todos
     const promessas = [];
-
     snapshot.forEach((docSnap) => {
-      promessas.push(deleteDoc(doc(db, "movimentacoesEpi", docSnap.id)));
+      const data = docSnap.data();
+      if (tiposParaApagar.includes(data.tipo)) {
+        promessas.push(deleteDoc(doc(db, "movimentacoesEpi", docSnap.id)));
+      }
     });
 
     await Promise.all(promessas);
 
-    // Limpa memória e cache
-    historicoEPI = [];
+    historicoEPI = historicoEPI.filter((item) => !tiposParaApagar.includes(item.tipo));
     salvarDados();
     renderHistorico();
 
@@ -560,6 +506,20 @@ async function limparHistorico() {
     console.error("Erro ao limpar histórico:", erro);
     alert("Erro ao apagar histórico.");
   }
+}
+
+function limparHistoricoEntradas() {
+  return limparHistoricoPorTipo(
+    TIPOS_ENTRADA,
+    "Apagar TODO o histórico de ENTRADAS (reposição + devolução)?\n\nEssa ação NÃO pode ser desfeita.",
+  );
+}
+
+function limparHistoricoSaidas() {
+  return limparHistoricoPorTipo(
+    TIPOS_SAIDA,
+    "Apagar TODO o histórico de SAÍDAS?\n\nEssa ação NÃO pode ser desfeita.",
+  );
 }
 
 // ===============================
@@ -574,9 +534,7 @@ async function initControle() {
   if (buscaFuncionarioEdicao) {
     buscaFuncionarioEdicao.addEventListener("input", () => {
       const termo = buscaFuncionarioEdicao.value.toLowerCase();
-      const filtrados = funcionarios.filter((f) =>
-        f.nome.toLowerCase().includes(termo),
-      );
+      const filtrados = funcionarios.filter((f) => f.nome.toLowerCase().includes(termo));
       preencherSelectFuncionarios(selectFuncionarioEdicao, filtrados);
       atualizarSetorEdicao();
     });
@@ -588,7 +546,8 @@ async function initControle() {
 
 window.movimentarEPI = movimentarEPI;
 window.renderHistorico = renderHistorico;
-window.limparHistorico = limparHistorico;
+window.limparHistoricoEntradas = limparHistoricoEntradas;
+window.limparHistoricoSaidas = limparHistoricoSaidas;
 window.gerarPDF = gerarPDF;
 window.filtrarHistoricoPorEPI = filtrarHistoricoPorEPI;
 window.filtrarHistoricoPorDia = filtrarHistoricoPorDia;

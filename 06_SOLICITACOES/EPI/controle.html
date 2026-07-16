@@ -1,129 +1,119 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Histórico de Movimentações</title>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Histórico de Movimentações</title>
 
-    <link rel="stylesheet" href="./css/epi.css" />
-  </head>
-  <body>
-    <div class="container">
-      <div class="top-bar">
-        <h2>📊 Histórico de Movimentações EPIs</h2>
+  <link rel="stylesheet" href="./css/epi.css">
+</head>
+<body>
 
-        <div class="acoes-topo">
-          <button class="btn-topo btn-exportar" onclick="gerarPDF()">
-            📄 Exportar PDF
-          </button>
+<div class="container">
 
-          <button class="btn-topo btn-limpar" onclick="limparHistorico()">
-            🧹 Limpar histórico
-          </button>
-        </div>
-      </div>
+  <div class="top-bar">
+    <h2>📊 Histórico de Movimentações EPIs</h2>
 
-      <div class="card">
-        <h3>📥 Entradas de EPI</h3>
+    <div class="acoes-topo">
+      <button class="btn-topo btn-exportar" onclick="gerarPDF()">
+        📄 Exportar PDF
+      </button>
+    </div>
+  </div>
 
-        <table class="tabela">
-          <thead>
-            <tr>
-              <th>EPI</th>
-              <th>TIPO</th>
-              <th>COLABORADOR</th>
-              <th>QTD</th>
-              <th>DATA</th>
-              <th>AÇÕES</th>
-            </tr>
-          </thead>
-
-          <tbody id="listaEntradas"></tbody>
-        </table>
-      </div>
-
-      <div class="card">
-        <h3>📤 Saídas de EPI</h3>
-
-        <table class="tabela">
-          <thead>
-            <tr>
-              <th>EPI</th>
-              <th>COLABORADOR</th>
-              <th>SETOR</th>
-              <th>QTD</th>
-              <th>DATA</th>
-              <th>AÇÕES</th>
-            </tr>
-          </thead>
-
-          <tbody id="listaSaidas"></tbody>
-        </table>
-      </div>
+  <div class="card">
+    <div class="card-header">
+      <h3>📥 Entradas de EPI</h3>
+      <button class="btn-limpar-card" onclick="limparHistoricoEntradas()" title="Limpar histórico de entradas">
+        🧹
+      </button>
     </div>
 
-    <!-- MODAL EDITAR MOVIMENTAÇÃO -->
-    <div class="modal" id="modalEditarMovimentacao">
-      <div class="modal-content">
-        <h3>Editar Movimentação</h3>
+    <table class="tabela">
+      <thead>
+        <tr>
+          <th>EPI</th>
+          <th>TIPO</th>
+          <th>COLABORADOR</th>
+          <th>QTD</th>
+          <th>DATA</th>
+          <th>AÇÕES</th>
+        </tr>
+      </thead>
 
-        <p id="infoEdicaoMovimentacao" class="modal-info"></p>
+      <tbody id="listaEntradas"></tbody>
+    </table>
+  </div>
 
-        <div class="tipo-entrada-box" id="tipoEntradaEdicaoBox">
-          <label>
-            <input
-              type="radio"
-              name="tipoEdicaoEntrada"
-              value="reposicao"
-              checked
-              onchange="alternarTipoEdicaoEntrada()"
-            />
-            Reposição
-          </label>
-          <label>
-            <input
-              type="radio"
-              name="tipoEdicaoEntrada"
-              value="devolucao"
-              onchange="alternarTipoEdicaoEntrada()"
-            />
-            Devolução
-          </label>
-        </div>
-
-        <div id="colaboradorEdicaoBox" style="display: none">
-          <input
-            id="buscaFuncionarioEdicao"
-            type="text"
-            placeholder="Pesquisar colaborador..."
-            autocomplete="off"
-          />
-          <select id="selectFuncionarioEdicao"></select>
-          <p id="setorFuncionarioEdicao" class="modal-info"></p>
-        </div>
-
-        <input
-          id="qtdEdicaoMovimentacao"
-          type="number"
-          min="1"
-          placeholder="Quantidade"
-        />
-        <input id="dataEdicaoMovimentacao" type="date" />
-
-        <div class="modal-buttons">
-          <button class="btn-cancel" onclick="fecharModalHistorico()">
-            Cancelar
-          </button>
-          <button class="btn-save" onclick="confirmarEdicaoMovimentacao()">
-            Salvar
-          </button>
-        </div>
-      </div>
+  <div class="card">
+    <div class="card-header">
+      <h3>📤 Saídas de EPI</h3>
+      <button class="btn-limpar-card" onclick="limparHistoricoSaidas()" title="Limpar histórico de saídas">
+        🧹
+      </button>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+    <table class="tabela">
+      <thead>
+        <tr>
+          <th>EPI</th>
+          <th>COLABORADOR</th>
+          <th>SETOR</th>
+          <th>QTD</th>
+          <th>DATA</th>
+          <th>AÇÕES</th>
+        </tr>
+      </thead>
 
-    <script type="module" src="./js/controle.js"></script>
-  </body>
+      <tbody id="listaSaidas"></tbody>
+    </table>
+  </div>
+
+</div>
+
+<!-- MODAL EDITAR MOVIMENTAÇÃO -->
+<div class="modal" id="modalEditarMovimentacao">
+  <div class="modal-content">
+    <h3>Editar Movimentação</h3>
+
+    <p id="infoEdicaoMovimentacao" class="modal-info"></p>
+
+    <div class="tipo-entrada-box" id="tipoEntradaEdicaoBox">
+      <label>
+        <input type="radio" name="tipoEdicaoEntrada" value="reposicao" checked onchange="alternarTipoEdicaoEntrada()" />
+        Reposição
+      </label>
+      <label>
+        <input type="radio" name="tipoEdicaoEntrada" value="devolucao" onchange="alternarTipoEdicaoEntrada()" />
+        Devolução
+      </label>
+    </div>
+
+    <div id="colaboradorEdicaoBox" style="display:none;">
+      <input
+        id="buscaFuncionarioEdicao"
+        type="text"
+        placeholder="Pesquisar colaborador..."
+        autocomplete="off"
+      />
+      <select id="selectFuncionarioEdicao"></select>
+      <p id="setorFuncionarioEdicao" class="modal-info"></p>
+    </div>
+
+    <input id="qtdEdicaoMovimentacao" type="number" min="1" placeholder="Quantidade" />
+    <input id="dataEdicaoMovimentacao" type="date" />
+
+    <div class="modal-buttons">
+      <button class="btn-cancel" onclick="fecharModalHistorico()">Cancelar</button>
+      <button class="btn-save" onclick="confirmarEdicaoMovimentacao()">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+
+<script type="module" src="./js/controle.js"></script>
+
+</body>
 </html>
