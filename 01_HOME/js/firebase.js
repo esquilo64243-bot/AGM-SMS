@@ -55,7 +55,7 @@ const firebaseConfigInformatrix = {
 
 // Esse valor vem do login.js:
 // localStorage.setItem("firebase", usuario.firebase);
-const ambiente = localStorage.getItem("firebase");
+const ambiente = "producao";
 
 const configuracoes = {
   producao: firebaseConfigProducao,

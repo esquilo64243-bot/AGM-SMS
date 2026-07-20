@@ -428,11 +428,299 @@ function fecharModalHistorico() {
 }
 
 // ===============================
+// GRÁFICO DE BARRAS HORIZONTAIS (desenhado direto no jsPDF)
+// ===============================
+function desenharGraficoBarras(doc, titulo, dados, xInicio, yInicio, larguraGrafico) {
+  const alturaBarra = 7;
+  const espacoEntreBarras = 4;
+  const larguraLabel = 55;
+
+  doc.setFontSize(12);
+  doc.setTextColor(30, 30, 30);
+  doc.text(titulo, xInicio, yInicio);
+
+  let y = yInicio + 7;
+
+  if (!dados || dados.length === 0) {
+    doc.setFontSize(9);
+    doc.setTextColor(140, 140, 140);
+    doc.text("Sem dados no período.", xInicio, y);
+    return y + 8;
+  }
+
+  const maxValor = Math.max(...dados.map((d) => d.valor)) || 1;
+
+  dados.forEach((item) => {
+    const larguraBarra = (item.valor / maxValor) * larguraGrafico;
+
+    doc.setFontSize(9);
+    doc.setTextColor(60, 60, 60);
+    doc.text(String(item.label).substring(0, 26), xInicio, y + alturaBarra - 2);
+
+    doc.setFillColor(78, 115, 223);
+    doc.rect(xInicio + larguraLabel, y, Math.max(larguraBarra, 1), alturaBarra, "F");
+
+    doc.setFontSize(9);
+    doc.setTextColor(30, 30, 30);
+    doc.text(String(item.valor), xInicio + larguraLabel + larguraBarra + 3, y + alturaBarra - 1.5);
+
+    y += alturaBarra + espacoEntreBarras;
+  });
+
+  return y + 6;
+}
+
+// ===============================
+// GRÁFICO DE COLUNAS VERTICAIS (desenhado direto no jsPDF)
+// ===============================
+function desenharGraficoColunas(doc, titulo, dados, xInicio, yInicio, larguraTotal, alturaMaxima) {
+  doc.setFontSize(12);
+  doc.setTextColor(30, 30, 30);
+  doc.text(titulo, xInicio, yInicio);
+
+  const topoGrafico = yInicio + 8;
+  const baseline = topoGrafico + alturaMaxima;
+
+  if (!dados || dados.length === 0) {
+    doc.setFontSize(9);
+    doc.setTextColor(140, 140, 140);
+    doc.text("Sem dados no período.", xInicio, topoGrafico + 10);
+    return topoGrafico + 20;
+  }
+
+  const maxValor = Math.max(...dados.map((d) => d.valor)) || 1;
+  const espacamento = larguraTotal / dados.length;
+  const larguraColuna = Math.min(espacamento * 0.5, 18);
+
+  dados.forEach((item, idx) => {
+    const alturaColuna = (item.valor / maxValor) * alturaMaxima;
+    const xColuna = xInicio + idx * espacamento + (espacamento - larguraColuna) / 2;
+    const yColuna = baseline - alturaColuna;
+
+    doc.setFillColor(78, 115, 223);
+    doc.rect(xColuna, yColuna, larguraColuna, Math.max(alturaColuna, 1), "F");
+
+    doc.setFontSize(8);
+    doc.setTextColor(30, 30, 30);
+    doc.text(String(item.valor), xColuna + larguraColuna / 2 - 2, yColuna - 2, { align: "center" });
+
+    doc.setFontSize(7);
+    doc.setTextColor(70, 70, 70);
+    doc.text(String(item.label).substring(0, 16), xColuna + larguraColuna / 2, baseline + 15, {
+      align: "center",
+      angle: 45,
+    });
+  });
+
+  doc.setDrawColor(210, 210, 210);
+  doc.line(xInicio, baseline, xInicio + larguraTotal, baseline);
+
+  return baseline + 24;
+}
+
+// ===============================
+// GRÁFICO DE PIZZA (desenhado direto no jsPDF, sem plugin)
+// ===============================
+function desenharFatiaPizza(doc, xCentro, yCentro, raio, anguloInicioGraus, anguloFimGraus) {
+  const passos = 24;
+  const pontos = [[xCentro, yCentro]];
+
+  for (let i = 0; i <= passos; i++) {
+    const anguloAtual = anguloInicioGraus + ((anguloFimGraus - anguloInicioGraus) * i) / passos;
+    const rad = (anguloAtual * Math.PI) / 180;
+    pontos.push([xCentro + raio * Math.cos(rad), yCentro + raio * Math.sin(rad)]);
+  }
+
+  const linhas = [];
+  for (let i = 1; i < pontos.length; i++) {
+    linhas.push([pontos[i][0] - pontos[i - 1][0], pontos[i][1] - pontos[i - 1][1]]);
+  }
+
+  doc.lines(linhas, pontos[0][0], pontos[0][1], [1, 1], "F", true);
+}
+
+const CORES_PIZZA = [
+  [78, 115, 223],
+  [246, 194, 62],
+  [46, 204, 113],
+  [255, 91, 91],
+  [155, 89, 182],
+];
+
+function desenharGraficoPizza(doc, titulo, dados, xCentro, yCentro, raio) {
+  doc.setFontSize(12);
+  doc.setTextColor(30, 30, 30);
+  doc.text(titulo, xCentro - raio, yCentro - raio - 8);
+
+  const total = dados.reduce((soma, d) => soma + d.valor, 0);
+
+  if (!dados || dados.length === 0 || total === 0) {
+    doc.setFontSize(9);
+    doc.setTextColor(140, 140, 140);
+    doc.text("Sem dados no período.", xCentro - raio, yCentro);
+    return yCentro + raio + 10;
+  }
+
+  let anguloInicial = -90;
+
+  dados.forEach((item, idx) => {
+    const fatia = (item.valor / total) * 360;
+    const anguloFinal = anguloInicial + fatia;
+
+    doc.setFillColor(...CORES_PIZZA[idx % CORES_PIZZA.length]);
+    desenharFatiaPizza(doc, xCentro, yCentro, raio, anguloInicial, anguloFinal);
+
+    anguloInicial = anguloFinal;
+  });
+
+  let yLegenda = yCentro + raio + 10;
+  dados.forEach((item, idx) => {
+    doc.setFillColor(...CORES_PIZZA[idx % CORES_PIZZA.length]);
+    doc.rect(xCentro - raio, yLegenda - 3, 4, 4, "F");
+
+    doc.setFontSize(9);
+    doc.setTextColor(50, 50, 50);
+    const porcentagem = ((item.valor / total) * 100).toFixed(1);
+    doc.text(`${item.label}: ${item.valor} (${porcentagem}%)`, xCentro - raio + 7, yLegenda);
+
+    yLegenda += 6;
+  });
+
+  return yLegenda + 6;
+}
+
+function somarQuantidadePor(lista, chave) {
+  const mapa = {};
+  lista.forEach((item) => {
+    const k = item[chave] || "Não informado";
+    mapa[k] = (mapa[k] || 0) + Number(item.quantidade || 0);
+  });
+  return Object.entries(mapa)
+    .map(([label, valor]) => ({ label, valor }))
+    .sort((a, b) => b.valor - a.valor);
+}
+
+// ===============================
 // PDF
 // ===============================
-function gerarPDF() {
+async function gerarPDF() {
   const { jsPDF } = window.jspdf;
-  const doc = new jsPDF("landscape");
+  const doc = new jsPDF("portrait");
+
+  // ---- busca estoque atual (coleção "epis") pro resumo ----
+  let epis = [];
+  let estoqueTotal = 0;
+  let erroEstoque = null;
+
+  try {
+    const snapshot = await getDocs(collection(db, "epis"));
+
+    console.log("Quantidade de EPIs:", snapshot.size);
+
+snapshot.forEach((docSnap) => {
+    console.log(docSnap.id, docSnap.data());
+});
+
+    if (snapshot.empty) {
+      console.warn("A coleção 'epis' voltou vazia do Firestore.");
+    }
+
+    snapshot.forEach((docSnap) => {
+      const data = docSnap.data();
+      const qtd = Number(data.quantidade) || 0;
+      epis.push({ id: docSnap.id, nome: data.nome || docSnap.id, quantidade: qtd });
+      estoqueTotal += qtd;
+    });
+    epis.sort((a, b) => a.nome.localeCompare(b.nome));
+  } catch (e) {
+    console.error("Erro ao buscar estoque para o PDF:", e);
+    erroEstoque = e.message || String(e);
+    alert("Não foi possível carregar o estoque atual para o PDF:\n" + erroEstoque);
+  }
+
+  // ---- dados de análise (baseados nas saídas) ----
+  const saidasHistorico = historicoEPI.filter((item) => item.tipo === "saida");
+
+  const rankingEpi = somarQuantidadePor(saidasHistorico, "epi").slice(0, 5);
+  const rankingSetor = somarQuantidadePor(saidasHistorico, "setor");
+  const rankingColaborador = somarQuantidadePor(saidasHistorico, "colaborador").slice(0, 5);
+  const rankingDias = somarQuantidadePor(saidasHistorico, "dia").slice(0, 5);
+
+  const larguraPagina = doc.internal.pageSize.getWidth();
+  const margemX = 14;
+  const larguraUtil = larguraPagina - margemX * 2;
+
+  // ---- PÁGINA 1: RESUMO — EPI mais retirado + Colaborador ----
+  doc.setFontSize(20);
+  doc.setTextColor(20, 20, 20);
+  doc.text("RELATÓRIO DE EPI — RESUMO", margemX, 18);
+
+  doc.setFontSize(10);
+  doc.setTextColor(100, 100, 100);
+  doc.text(`Gerado em: ${new Date().toLocaleString("pt-BR")}`, margemX, 25);
+
+  doc.setFontSize(13);
+  doc.setTextColor(30, 30, 30);
+  if (erroEstoque) {
+    doc.setTextColor(214, 48, 49);
+    doc.text("Estoque total atual: erro ao carregar (ver console)", margemX, 34);
+  } else {
+    doc.text(`Estoque total atual: ${estoqueTotal} unidades`, margemX, 34);
+  }
+
+  let y = desenharGraficoColunas(doc, "EPI mais retirado (saídas)", rankingEpi, margemX, 46, larguraUtil, 45);
+  desenharGraficoBarras(doc, "Colaborador que mais retirou", rankingColaborador, margemX, y + 6, larguraUtil - 65);
+
+  // ---- PÁGINA 2: Setor (pizza) + Dia com mais saídas ----
+  doc.addPage();
+  let y2 = 18;
+
+  doc.setFontSize(16);
+  doc.setTextColor(20, 20, 20);
+  doc.text("SETOR E DIAS DE MAIOR SAÍDA", margemX, y2);
+  y2 += 20;
+
+  const xCentroPizza = larguraPagina / 2;
+  y2 = desenharGraficoPizza(doc, "Setor que mais retira", rankingSetor, xCentroPizza, y2 + 25, 25) + 10;
+
+  if (rankingDias.length > 0) {
+    doc.setFontSize(11);
+    doc.setTextColor(214, 48, 49);
+    doc.text(`Dia com mais saídas: ${rankingDias[0].label} (${rankingDias[0].valor} unid.)`, margemX, y2);
+    y2 += 10;
+  }
+
+  desenharGraficoColunas(doc, "Top dias com mais saídas", rankingDias, margemX, y2, larguraUtil, 45);
+
+  // ---- PÁGINA 3: ESTOQUE ATUAL ----
+  doc.addPage();
+  doc.setFontSize(16);
+  doc.setTextColor(20, 20, 20);
+  doc.text("ESTOQUE ATUAL", margemX, 18);
+
+  if (epis.length === 0) {
+    doc.setFontSize(10);
+    doc.setTextColor(214, 48, 49);
+    doc.text(
+      erroEstoque
+        ? "Não foi possível carregar o estoque (erro de conexão com o Firebase)."
+        : "Nenhum EPI encontrado na coleção 'epis'.",
+      margemX,
+      28,
+    );
+  } else {
+    doc.autoTable({
+      startY: 25,
+      head: [["Código", "Nome", "Quantidade"]],
+      body: epis.map((e) => [e.id, e.nome, String(e.quantidade)]),
+      theme: "grid",
+      styles: { fontSize: 10, cellPadding: 3 },
+      headStyles: { fillColor: [246, 194, 62], textColor: [30, 30, 30] },
+    });
+  }
+
+  // ---- PÁGINA 4+: ENTRADAS E SAÍDAS (histórico completo) ----
+  doc.addPage();
 
   const entradas = [];
   const saidas = [];
@@ -445,39 +733,41 @@ function gerarPDF() {
     }
   });
 
-  let y = 15;
+  let y3 = 18;
 
   doc.setFontSize(16);
-  doc.text("ENTRADAS DE EPI", 14, y);
-  y += 5;
+  doc.setTextColor(20, 20, 20);
+  doc.text("ENTRADAS DE EPI", margemX, y3);
+  y3 += 5;
 
   doc.autoTable({
-    startY: y,
+    startY: y3,
     head: [["Item", "Tipo", "Colaborador", "Qtd", "Data"]],
     body: entradas,
     theme: "grid",
-    styles: { fontSize: 11, cellPadding: 3, valign: "middle" },
+    styles: { fontSize: 9, cellPadding: 2.5, valign: "middle" },
     headStyles: { fillColor: [40, 40, 40] },
   });
 
-  y = doc.lastAutoTable.finalY + 15;
+  doc.addPage();
+  let y4 = 18;
 
   doc.setFontSize(16);
-  doc.text("SAÍDAS DE EPI", 14, y);
-  y += 5;
+  doc.setTextColor(20, 20, 20);
+  doc.text("SAÍDAS DE EPI", margemX, y4);
+  y4 += 5;
 
   doc.autoTable({
-    startY: y,
+    startY: y4,
     head: [["Item", "Colaborador", "Setor", "Qtd", "Data"]],
     body: saidas,
     theme: "grid",
-    styles: { fontSize: 11, cellPadding: 3, valign: "middle" },
+    styles: { fontSize: 9, cellPadding: 2.5, valign: "middle" },
     headStyles: { fillColor: [80, 80, 80] },
   });
 
   doc.save("Relatorio_EPI.pdf");
 }
-
 // ===============================
 // LIMPAR HISTÓRICO POR TIPO (entrada ou saída, separado)
 // ===============================

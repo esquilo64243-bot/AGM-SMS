@@ -163,6 +163,21 @@ function preencherSelectFuncionarios(selectEl, lista) {
 
 // ================= FIREBASE: EPIs =================
 async function carregarEpisFirebase() {
+  console.log("=== CARREGANDO EPIS ===");
+
+const snapshot = await getDocs(collection(db, "epis"));
+
+console.log("EPIs encontrados:", snapshot.size);
+
+snapshot.forEach((doc) => {
+    console.log(doc.id, doc.data());
+});
+
+console.log("EPIs encontrados:", snapshot.size);
+
+snapshot.forEach((d) => {
+    console.log(d.id, d.data());
+});
   try {
     const snapshot = await getDocs(collection(db, "epis"));
 
@@ -671,12 +686,17 @@ async function confirmarEntrada() {
 
 // ================= INIT =================
 async function init() {
+  console.log("INIT EXECUTOU");
   preencherSelect();
   render();
   renderTipos();
 
   await carregarFuncionarios();
-  await carregarEpisFirebase();
+  console.log("Antes de carregar EPIs");
+
+await carregarEpisFirebase();
+
+console.log("Depois de carregar EPIs");
 }
 
 pesquisaEPI.addEventListener("input", renderTipos);
