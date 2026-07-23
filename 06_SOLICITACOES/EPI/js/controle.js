@@ -124,6 +124,7 @@ async function movimentarEPI(
   colaboradorNome = null,
   colaboradorSetor = null,
   colaboradorEmpresa = null,
+  ca = null,
   dataMovimento = null,
 ) {
   const dataUsada = dataMovimento
@@ -139,6 +140,7 @@ async function movimentarEPI(
     colaborador: colaboradorNome,
     setor: colaboradorSetor,
     empresa: colaboradorEmpresa,
+    ca,
     dataISO: dataUsada.toISOString(),
     dataFormatada: dataUsada.toLocaleString("pt-BR"),
     dia: dataUsada.toLocaleDateString("pt-BR"),
@@ -216,6 +218,7 @@ function renderHistorico() {
         <td>${item.epi}</td>
         <td>${item.colaborador || "-"}</td>
         <td>${item.setor || "-"}</td>
+        <td>${item.ca || "-"}</td>
         <td>${item.quantidade}</td>
         <td>${item.dia}</td>
         <td>
@@ -229,6 +232,7 @@ function renderHistorico() {
         <td>${item.epi}</td>
         <td>${ROTULO_TIPO[item.tipo] || item.tipo}</td>
         <td>${item.colaborador || "-"}</td>
+        <td>${item.ca || "-"}</td>
         <td>${item.quantidade}</td>
         <td>${item.dia}</td>
         <td>
@@ -727,7 +731,14 @@ snapshot.forEach((docSnap) => {
 
   historicoEPI.forEach((item) => {
     if (item.tipo === "saida") {
-      saidas.push([item.epi, item.colaborador || "-", item.setor || "-", String(item.quantidade), item.dia]);
+      saidas.push([
+    item.epi,
+    item.ca || "-",
+    item.colaborador || "-",
+    item.setor || "-",
+    String(item.quantidade),
+    item.dia
+]);
     } else {
       entradas.push([item.epi, ROTULO_TIPO[item.tipo] || item.tipo, item.colaborador || "-", String(item.quantidade), item.dia]);
     }
@@ -759,7 +770,7 @@ snapshot.forEach((docSnap) => {
 
   doc.autoTable({
     startY: y4,
-    head: [["Item", "Colaborador", "Setor", "Qtd", "Data"]],
+    head: [["Item","CA", "Colaborador", "Setor", "Qtd", "Data"]],
     body: saidas,
     theme: "grid",
     styles: { fontSize: 9, cellPadding: 2.5, valign: "middle" },

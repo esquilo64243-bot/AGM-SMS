@@ -51,6 +51,7 @@ const selectFuncionarioSaida = document.getElementById(
 const setorFuncionarioSaida = document.getElementById("setorFuncionarioSaida");
 const qtdSaida = document.getElementById("qtdSaida");
 const dataSaida = document.getElementById("dataSaida");
+const caSaida = document.getElementById("caSaida");
 
 // elementos do modal de ENTRADA
 const epiEntradaInfo = document.getElementById("epiEntradaInfo");
@@ -548,6 +549,14 @@ function atualizarSetorSaida() {
 }
 
 async function confirmarSaida() {
+
+  const ca = caSaida.value.trim();
+
+  if (!ca) {
+    alert("Informe o CA.");
+    return;
+  }
+
   if (!epiMovimentoAtual) return;
 
   const { index, epi } = epiMovimentoAtual;
@@ -589,11 +598,13 @@ async function confirmarSaida() {
       f.nome,
       f.setor,
       f.empresa,
+      ca,
       data,
     );
   }
 
   salvarTipos();
+  caSaida.value = "";
   fecharModal();
 }
 
