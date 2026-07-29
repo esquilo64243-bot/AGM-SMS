@@ -621,9 +621,9 @@ async function gerarPDF() {
 
     console.log("Quantidade de EPIs:", snapshot.size);
 
-snapshot.forEach((docSnap) => {
-    console.log(docSnap.id, docSnap.data());
-});
+    snapshot.forEach((docSnap) => {
+      console.log(docSnap.id, docSnap.data());
+    });
 
     if (snapshot.empty) {
       console.warn("A coleção 'epis' voltou vazia do Firestore.");
@@ -732,13 +732,13 @@ snapshot.forEach((docSnap) => {
   historicoEPI.forEach((item) => {
     if (item.tipo === "saida") {
       saidas.push([
-    item.epi,
-    item.ca || "-",
-    item.colaborador || "-",
-    item.setor || "-",
-    String(item.quantidade),
-    item.dia
-]);
+        item.epi,
+        item.ca || "-",
+        item.colaborador || "-",
+        item.setor || "-",
+        String(item.quantidade),
+        item.dia
+      ]);
     } else {
       entradas.push([item.epi, ROTULO_TIPO[item.tipo] || item.tipo, item.colaborador || "-", String(item.quantidade), item.dia]);
     }
@@ -770,7 +770,7 @@ snapshot.forEach((docSnap) => {
 
   doc.autoTable({
     startY: y4,
-    head: [["Item","CA", "Colaborador", "Setor", "Qtd", "Data"]],
+    head: [["Item", "CA", "Colaborador", "Setor", "Qtd", "Data"]],
     body: saidas,
     theme: "grid",
     styles: { fontSize: 9, cellPadding: 2.5, valign: "middle" },

@@ -545,14 +545,13 @@ function atualizarSetorSaida() {
 }
 
 async function confirmarSaida() {
-  const ca = caSaida.value.trim();
+  if (!epiMovimentoAtual) return;
 
+  const ca = caSaida.value.trim();
   if (!ca) {
     alert("Informe o CA.");
     return;
   }
-
-  if (!epiMovimentoAtual) return;
 
   const { index, epi } = epiMovimentoAtual;
   const f = mapaFuncionarios[selectFuncionarioSaida.value];
@@ -563,44 +562,50 @@ async function confirmarSaida() {
     alert("Selecione o colaborador!");
     return;
   }
-
   if (!qtd || qtd <= 0) {
     alert("Digite uma quantidade válida!");
     return;
   }
-
   if (qtd > (epi.quantidade || 0)) {
     alert("Quantidade maior que o estoque disponível!");
     return;
   }
-
   if (!data) {
     alert("Selecione a data!");
     return;
   }
 
-  const novaQuantidade = (epi.quantidade || 0) - qtd;
-  tipos[index].quantidade = novaQuantidade;
+  try {
+    const novaQuantidade = (epi.quantidade || 0) - qtd;
+    tipos[index].quantidade = novaQuantidade;
 
-  await atualizarQuantidadeFirestore(epi.id, novaQuantidade);
+    await atualizarQuantidadeFirestore(epi.id, novaQuantidade);
 
-  if (window.movimentarEPI) {
-    await window.movimentarEPI(
-      epi.id,
-      epi.nome,
-      "saida",
-      qtd,
-      f.nome,
-      f.setor,
-      f.empresa,
-      data,  
-      ca,    
-    );
+    if (window.movimentarEPI) {
+      await window.movimentarEPI(
+    epi.id,
+    epi.nome,
+    "saida",
+    qtd,
+    f.nome,
+    f.setor,
+    f.empresa,
+    ca,
+    data
+);
+    } else {
+      console.error("window.movimentarEPI indisponível — controle.js não carregou a tempo.");
+      alert("Erro interno: módulo de histórico não carregou. Recarregue a página.");
+    }
+
+    salvarTipos();
+  } catch (e) {
+    console.error("Erro ao registrar saída:", e);
+    alert("Ocorreu um erro ao registrar a saída. Abra o console (F12) e me mande a mensagem de erro.");
+  } finally {
+    caSaida.value = "";
+    fecharModal();
   }
-
-  salvarTipos();
-  caSaida.value = "";
-  fecharModal();
 }
 
 // ================= MODAL DE ENTRADA =================
@@ -675,20 +680,21 @@ async function confirmarEntrada() {
 
   if (window.movimentarEPI) {
     await window.movimentarEPI(
-      epi.id,
-      epi.nome,
-      tipo === "devolucao" ? "entrada_devolucao" : "entrada_reposicao",
-      qtd,
-      f ? f.nome : null,
-      f ? f.setor : null,
-      f ? f.empresa : null,
-      data,
-    );
-  }
+    epi.id,
+    epi.nome,
+    tipo === "devolucao"
+      ? "entrada_devolucao"
+      : "entrada_reposicao",
+    qtd,
+    f ? f.nome : null,
+    f ? f.setor : null,
+    f ? f.empresa : null,
+    null,
+    data
+);}}
 
-  salvarTipos();
-  fecharModal();
-}
+salvarTipos();
+fecharModal();
 
 // ================= INIT =================
 async function init() {
