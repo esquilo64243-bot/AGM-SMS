@@ -68,48 +68,58 @@
     </div>
 
     <!-- MODAL CADASTRO -->
-    <div class="modal" id="modalCadastro">
-      <div class="modal-content">
-        <h3>Novo EPI</h3>
+<div class="modal" id="modalCadastro">
+  <div class="modal-content">
+    <h3>Novo EPI</h3>
 
-        <input id="codigoEPI" placeholder="Código do EPI (ex: CA-12345)" />
-        <input id="nomeEPI" placeholder="Nome do EPI" />
-        <input id="qtdEPI" type="number" placeholder="Quantidade em estoque" />
-        <input
-          id="estoqueMinimoEPI"
-          type="number"
-          min="0"
-          placeholder="Estoque mínimo (opcional)"
-        />
+    <input id="codigoEPI" placeholder="Código do EPI (ex: CA-12345)" />
+    <input id="nomeEPI" placeholder="Nome do EPI" />
+    <input id="qtdEPI" type="number" placeholder="Quantidade em estoque" />
+    <input
+      id="estoqueMinimoEPI"
+      type="number"
+      min="0"
+      placeholder="Estoque mínimo (opcional)"
+    />
+    <input
+      id="caSugeridoEPI"
+      type="text"
+      placeholder="CA sugerido (Certificado de Aprovação)"
+    />
 
-        <div class="modal-buttons">
-          <button class="btn-cancel" onclick="fecharModal()">Cancelar</button>
-          <button class="btn-save" onclick="salvarTipo()">Salvar</button>
-        </div>
-      </div>
+    <div class="modal-buttons">
+      <button class="btn-cancel" onclick="fecharModal()">Cancelar</button>
+      <button class="btn-save" onclick="salvarTipo()">Salvar</button>
     </div>
+  </div>
+</div>
 
     <!-- MODAL EDITAR EPI -->
-    <div class="modal" id="modalEditarEpi">
-      <div class="modal-content">
-        <h3>Editar EPI</h3>
+<div class="modal" id="modalEditarEpi">
+  <div class="modal-content">
+    <h3>Editar EPI</h3>
 
-        <p id="codigoEdicaoInfo" class="modal-info"></p>
+    <p id="codigoEdicaoInfo" class="modal-info"></p>
 
-        <input id="nomeEdicaoEPI" placeholder="Nome do EPI" />
-        <input
-          id="estoqueMinimoEdicaoEPI"
-          type="number"
-          min="0"
-          placeholder="Estoque mínimo"
-        />
+    <input id="nomeEdicaoEPI" placeholder="Nome do EPI" />
+    <input
+      id="estoqueMinimoEdicaoEPI"
+      type="number"
+      min="0"
+      placeholder="Estoque mínimo"
+    />
+    <input
+      id="caSugeridoEdicaoEPI"
+      type="text"
+      placeholder="CA sugerido (Certificado de Aprovação)"
+    />
 
-        <div class="modal-buttons">
-          <button class="btn-cancel" onclick="fecharModal()">Cancelar</button>
-          <button class="btn-save" onclick="salvarEdicaoEpi()">Salvar</button>
-        </div>
-      </div>
+    <div class="modal-buttons">
+      <button class="btn-cancel" onclick="fecharModal()">Cancelar</button>
+      <button class="btn-save" onclick="salvarEdicaoEpi()">Salvar</button>
     </div>
+  </div>
+</div>
 
     <!-- MODAL PEDIDO -->
     <div class="modal" id="modalPedido">

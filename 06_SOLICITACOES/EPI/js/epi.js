@@ -35,6 +35,7 @@ const modalEditarEpi = document.getElementById("modalEditarEpi");
 const inputCodigo = document.getElementById("codigoEPI");
 const inputNome = document.getElementById("nomeEPI");
 const inputEstoqueMinimo = document.getElementById("estoqueMinimoEPI");
+const caSugeridoEPI = document.getElementById("caSugeridoEPI");
 const selectEPI = document.getElementById("selectEPI");
 const inputQtd = document.getElementById("quantidade");
 const inputObs = document.getElementById("obs");
@@ -74,6 +75,7 @@ const nomeEdicaoEPI = document.getElementById("nomeEdicaoEPI");
 const estoqueMinimoEdicaoEPI = document.getElementById(
   "estoqueMinimoEdicaoEPI",
 );
+const caSugeridoEdicaoEPI = document.getElementById("caSugeridoEdicaoEPI");
 
 let qtdEditIndex = null;
 let epiEditandoIndex = null;
@@ -92,6 +94,7 @@ function abrirModalCadastro() {
   inputNome.value = "";
   inputQtdEPI.value = "";
   inputEstoqueMinimo.value = "";
+  caSugeridoEPI.value = "";
   modalCadastro.classList.add("show");
 }
 
@@ -164,21 +167,6 @@ function preencherSelectFuncionarios(selectEl, lista) {
 
 // ================= FIREBASE: EPIs =================
 async function carregarEpisFirebase() {
-  console.log("=== CARREGANDO EPIS ===");
-
-const snapshot = await getDocs(collection(db, "epis"));
-
-console.log("EPIs encontrados:", snapshot.size);
-
-snapshot.forEach((doc) => {
-    console.log(doc.id, doc.data());
-});
-
-console.log("EPIs encontrados:", snapshot.size);
-
-snapshot.forEach((d) => {
-    console.log(d.id, d.data());
-});
   try {
     const snapshot = await getDocs(collection(db, "epis"));
 
@@ -191,6 +179,7 @@ snapshot.forEach((d) => {
           nome: data.nome,
           quantidade: data.quantidade || 0,
           estoqueMinimo: data.estoqueMinimo || 0,
+          caSugerido: data.caSugerido || null, // NOVO
         });
       });
       tipos.sort((a, b) => a.nome.localeCompare(b.nome));
@@ -218,6 +207,7 @@ async function salvarTipo() {
   const nome = inputNome.value.trim();
   const quantidade = Number(inputQtdEPI.value);
   const estoqueMinimo = Number(inputEstoqueMinimo.value) || 0;
+  const caSugerido = caSugeridoEPI.value.trim() || null;
 
   if (!codigo) {
     alert("Digite o código do EPI");
@@ -259,6 +249,7 @@ async function salvarTipo() {
       nome,
       quantidade,
       estoqueMinimo,
+      caSugerido,
     });
   } catch (e) {
     console.error("Erro ao salvar EPI no Firebase:", e);
@@ -266,7 +257,7 @@ async function salvarTipo() {
     return;
   }
 
-  const novoEPI = { id: codigo, nome, quantidade, estoqueMinimo };
+  const novoEPI = { id: codigo, nome, quantidade, estoqueMinimo, caSugerido }; // NOVO
 
   tipos.push(novoEPI);
   salvarTiposLocal();
@@ -286,6 +277,7 @@ function abrirModalEditarEpi(i) {
   codigoEdicaoInfo.textContent = `Código: ${epi.id} (não pode ser alterado)`;
   nomeEdicaoEPI.value = epi.nome;
   estoqueMinimoEdicaoEPI.value = epi.estoqueMinimo || 0;
+  caSugeridoEdicaoEPI.value = epi.caSugerido || ""; // NOVO
 
   modalEditarEpi.classList.add("show");
 }
@@ -296,6 +288,7 @@ async function salvarEdicaoEpi() {
   const epi = tipos[epiEditandoIndex];
   const novoNome = nomeEdicaoEPI.value.trim();
   const novoEstoqueMinimo = Number(estoqueMinimoEdicaoEPI.value);
+  const novoCaSugerido = caSugeridoEdicaoEPI.value.trim() || null; // NOVO
 
   if (!novoNome) {
     alert("Digite o nome do EPI");
@@ -311,6 +304,7 @@ async function salvarEdicaoEpi() {
     await updateDoc(doc(db, "epis", epi.id), {
       nome: novoNome,
       estoqueMinimo: novoEstoqueMinimo,
+      caSugerido: novoCaSugerido, // NOVO
     });
   } catch (e) {
     console.error("Erro ao editar EPI no Firebase:", e);
@@ -320,6 +314,7 @@ async function salvarEdicaoEpi() {
 
   tipos[epiEditandoIndex].nome = novoNome;
   tipos[epiEditandoIndex].estoqueMinimo = novoEstoqueMinimo;
+  tipos[epiEditandoIndex].caSugerido = novoCaSugerido; // NOVO
 
   salvarTiposLocal();
   preencherSelect();
@@ -539,6 +534,7 @@ function registrarSaida(i) {
   qtdSaida.value = 1;
   qtdSaida.max = epi.quantidade || 1;
   dataSaida.value = hojeISO();
+  caSaida.value = epi.caSugerido || "";
 
   modalSaida.classList.add("show");
 }
@@ -549,7 +545,6 @@ function atualizarSetorSaida() {
 }
 
 async function confirmarSaida() {
-
   const ca = caSaida.value.trim();
 
   if (!ca) {
@@ -598,8 +593,8 @@ async function confirmarSaida() {
       f.nome,
       f.setor,
       f.empresa,
-      ca,
-      data,
+      data,  
+      ca,    
     );
   }
 
