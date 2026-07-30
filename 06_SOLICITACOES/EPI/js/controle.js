@@ -232,7 +232,6 @@ function renderHistorico() {
         <td>${item.epi}</td>
         <td>${ROTULO_TIPO[item.tipo] || item.tipo}</td>
         <td>${item.colaborador || "-"}</td>
-        <td>${item.ca || "-"}</td>
         <td>${item.quantidade}</td>
         <td>${item.dia}</td>
         <td>
@@ -777,7 +776,93 @@ async function gerarPDF() {
     headStyles: { fillColor: [80, 80, 80] },
   });
 
-  doc.save("Relatorio_EPI.pdf");
+  // ---- PÁGINA 6: UNIFORMES EM ESTOQUE ----
+  const pedidosUniforme = JSON.parse(localStorage.getItem("pedidosUniforme")) || [];
+
+  const formatarDataUniforme = (dataISO) => {
+    if (!dataISO) return "-";
+    return new Date(dataISO).toLocaleDateString("pt-BR");
+  };
+
+  const uniformesEstoque = pedidosUniforme
+    .filter((p) => p.status === "ESTOQUE")
+    .map((p) => [
+      formatarDataUniforme(p.data),
+      p.nome,
+      p.cargo,
+      p.empresa,
+      p.item,
+      p.tamanho,
+      String(p.unidade),
+    ]);
+
+  const uniformesFinalizados = pedidosUniforme
+    .filter((p) => p.status === "FINALIZADO")
+    .map((p) => [
+      formatarDataUniforme(p.dataEntrega || p.data),
+      p.nome,
+      p.cargo,
+      p.empresa,
+      p.item,
+      p.tamanho,
+      String(p.unidade),
+    ]);
+
+  doc.addPage();
+  let y5 = 18;
+
+  doc.setFontSize(16);
+  doc.setTextColor(20, 20, 20);
+  doc.text("UNIFORMES EM ESTOQUE", margemX, y5);
+  y5 += 5;
+
+  if (uniformesEstoque.length === 0) {
+    doc.setFontSize(10);
+    doc.setTextColor(140, 140, 140);
+    doc.text("Nenhum uniforme em estoque no momento.", margemX, y5 + 10);
+  } else {
+    doc.autoTable({
+      startY: y5,
+      head: [["Data", "Nome", "Cargo", "Empresa", "Item", "Tamanho", "Qtd"]],
+      body: uniformesEstoque,
+      theme: "grid",
+      styles: { fontSize: 9, cellPadding: 2.5, valign: "middle" },
+      headStyles: { fillColor: [78, 115, 223] },
+    });
+  }
+
+  // ---- PÁGINA 7: UNIFORMES ENTREGUES (FINALIZADOS) ----
+  doc.addPage();
+  let y6 = 18;
+
+  doc.setFontSize(16);
+  doc.setTextColor(20, 20, 20);
+  doc.text("UNIFORMES ENTREGUES (FINALIZADOS)", margemX, y6);
+  y6 += 5;
+
+  if (uniformesFinalizados.length === 0) {
+    doc.setFontSize(10);
+    doc.setTextColor(140, 140, 140);
+    doc.text("Nenhum uniforme entregue registrado.", margemX, y6 + 10);
+  } else {
+    doc.autoTable({
+      startY: y6,
+      head: [["Data", "Nome", "Cargo", "Empresa", "Item", "Tamanho", "Qtd"]],
+      body: uniformesFinalizados,
+      theme: "grid",
+      styles: { fontSize: 9, cellPadding: 2.5, valign: "middle" },
+      headStyles: { fillColor: [28, 200, 138] },
+    });
+  }
+
+  const hoje = new Date();
+
+const data =
+  String(hoje.getDate()).padStart(2, "0") + "-" +
+  String(hoje.getMonth() + 1).padStart(2, "0") + "-" +
+  hoje.getFullYear();
+
+  doc.save(`Relatorio_EPI_Uniformes_${data}.pdf`);
 }
 // ===============================
 // LIMPAR HISTÓRICO POR TIPO (entrada ou saída, separado)

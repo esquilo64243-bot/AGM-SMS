@@ -680,21 +680,26 @@ async function confirmarEntrada() {
 
   if (window.movimentarEPI) {
     await window.movimentarEPI(
-    epi.id,
-    epi.nome,
-    tipo === "devolucao"
-      ? "entrada_devolucao"
-      : "entrada_reposicao",
-    qtd,
-    f ? f.nome : null,
-    f ? f.setor : null,
-    f ? f.empresa : null,
-    null,
-    data
-);}}
+      epi.id,
+      epi.nome,
+      tipo === "devolucao"
+        ? "entrada_devolucao"
+        : "entrada_reposicao",
+      qtd,
+      f ? f.nome : null,
+      f ? f.setor : null,
+      f ? f.empresa : null,
+      null,
+      data
+    );
+  } else {
+    alert("Erro interno: módulo de histórico não carregado.");
+    return;
+  }
 
-salvarTipos();
-fecharModal();
+  salvarTipos();
+  fecharModal();
+}
 
 // ================= INIT =================
 async function init() {

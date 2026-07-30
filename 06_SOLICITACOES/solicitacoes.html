@@ -6,7 +6,6 @@
     <title>Solicitações e Controle</title>
 
     <link rel="stylesheet" href="./css/solicitacoes.css" />
-    
   </head>
 
   <body>
@@ -42,7 +41,6 @@
         <button onclick="gerarPDFGeral()" class="btn-pdf-geral">
           📄 Baixar Solicitações
         </button>
-
       </div>
     </div>
 
@@ -177,7 +175,7 @@
         doc.setTextColor(120);
         doc.text("Sistema AGM • Controle de Solicitações", 14, 290);
 
-        doc.save("Solicitacoes_AGM.pdf");
+        doc.save(`Solicitacoes_AGM_${data}.pdf`);
       }
     </script>
   </body>
